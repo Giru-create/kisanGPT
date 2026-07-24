@@ -8,10 +8,21 @@ This project follows a milestone-based development workflow.
 
 # [Unreleased]
 
+## Added
+
+### Frontend Foundation (Antigravity)
+
+- **Feature-Based Folder Structure**: Modular folder hierarchy following `ARCHITECTURE.md` (`app`, `components`, `constants`, `features`, `hooks`, `lib`, `store`, `styles`, `types`, `utils`).
+- **Design Tokens System**: Centralized design tokens for colors (KisanGPT Emerald `#16a34a`, Harvest Amber `#f59e0b`, Slate base), typography, spacing, radii, z-index (`src/constants/tokens.ts`).
+- **Theme System**: Dark, Light, and System modes with persistent storage, `document.documentElement` class toggle, and smooth color transitions (`src/store/themeStore.ts`, `src/app/providers.tsx`).
+- **Typography & Color System**: Scalable rem typography hierarchy, high contrast WCAG AA color palette (`src/app/globals.css`, `tailwind.config.ts`).
+- **Atomic UI Components**: Accessible `Button`, `Input`, `Card`, `Badge`, `Dialog` (Modal), `Skeleton`, `Spinner`, `Alert`, `Avatar`, `Tooltip`, `Table`, and `ThemeToggle` (`src/components/ui/`).
+- **Layout System**: `AppShell`, `Header`, `Sidebar`, `Footer`, `PageContainer`, and `Grid` primitives (`src/components/layout/`).
+- **Navigation Primitives**: `SkipToContent`, `NavLink` with `aria-current="page"`, `Breadcrumbs`, and `MobileNav` responsive menu (`src/components/navigation/`).
+- **Accessibility Foundation**: `a11y.ts` utilities, `VisuallyHidden`, `FocusTrap`, `LiveRegion`, `useFocusTrap`, `useKeyboardShortcut`, and `useReducedMotion` hooks (`src/components/accessibility/`, `src/hooks/`).
+
 ## Planned
 
-- Project architecture
-- Frontend foundation
 - Backend foundation
 - AI chat
 - Disease detection
@@ -20,7 +31,7 @@ This project follows a milestone-based development workflow.
 - Voice assistant
 - Farm memory
 - Government schemes
-- Testing
+- Testing & CI/CD
 - Deployment
 
 ---
