@@ -10,6 +10,21 @@ This project follows a milestone-based development workflow.
 
 ## Added
 
+### Authentication & AI Chat (OpenCode)
+
+- **Firebase Authentication**: Firebase Admin SDK integration with token verification, `get_current_user` dependency for protected routes (`app/core/security.py`).
+- **User Schema**: `CurrentUser` Pydantic model for authenticated user context (`app/schemas/auth.py`).
+- **Auth Endpoint**: `GET /api/v1/auth/me` returns current user info from Firebase token (`app/api/v1/auth.py`).
+- **Chat Schemas**: `ChatRequest`, `ChatResponse`, `ChatMessage`, `Conversation` Pydantic models (`app/schemas/chat.py`).
+- **Chat Agent**: Gemini-powered chat agent with farming domain system prompt, streaming support (`app/agents/chat.py`).
+- **Conversation Service**: In-memory per-user conversation store with TTL expiry and message limits (`app/services/conversation.py`).
+- **Chat Service**: Orchestrates ChatAgent + ConversationService for message handling (`app/services/chat.py`).
+- **Chat Endpoints**: `POST /api/v1/chat` (standard) and `POST /api/v1/chat/stream` (SSE streaming) (`app/api/v1/chat.py`).
+- **UnauthorizedError**: Custom 401 exception for auth failures (`app/core/exceptions.py`).
+- **Gemini Model Config**: Added `GEMINI_MODEL` setting (default: `gemini-2.0-flash`) (`app/core/config.py`).
+- **Dependencies**: Added `firebase-admin>=7.5.0` and `google-generativeai>=0.8.0` to `pyproject.toml`.
+- **Tests**: Auth dependency tests, chat schema tests, conversation service tests (`tests/test_security.py`, `tests/test_chat.py`).
+
 ### Frontend Foundation (Antigravity)
 
 - **Feature-Based Folder Structure**: Modular folder hierarchy following `ARCHITECTURE.md` (`app`, `components`, `constants`, `features`, `hooks`, `lib`, `store`, `styles`, `types`, `utils`).

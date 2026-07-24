@@ -8,6 +8,11 @@ class AppError(Exception):
         self.detail = detail
 
 
+class UnauthorizedError(AppError):
+    def __init__(self, detail: str = "Unauthorized") -> None:
+        super().__init__(status_code=401, detail=detail)
+
+
 async def app_error_handler(_request: Request, exc: AppError) -> JSONResponse:
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
