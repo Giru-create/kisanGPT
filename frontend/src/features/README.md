@@ -3,6 +3,7 @@
 This directory follows Feature-Based Architecture as defined in `ARCHITECTURE.md`.
 
 Business feature modules will be added here in upcoming milestones:
+
 - `features/chat/`
 - `features/weather/`
 - `features/disease-detection/`

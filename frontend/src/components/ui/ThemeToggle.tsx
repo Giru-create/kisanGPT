@@ -4,7 +4,9 @@ import React from "react";
 import { useTheme } from "@/store/themeStore";
 import { Button } from "./Button";
 
-export const ThemeToggle: React.FC<{ className?: string }> = ({ className }) => {
+export const ThemeToggle: React.FC<{ className?: string }> = ({
+  className,
+}) => {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {

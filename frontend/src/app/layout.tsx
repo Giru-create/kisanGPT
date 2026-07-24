@@ -6,7 +6,8 @@ import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
   title: "KisanGPT | Frontend Foundation",
-  description: "AI-powered farming assistant design system & foundation for Indian farmers",
+  description:
+    "AI-powered farming assistant design system & foundation for Indian farmers",
 };
 
 export default function RootLayout({

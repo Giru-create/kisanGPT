@@ -8,17 +8,27 @@ export const FOCUSABLE_ELEMENTS_SELECTOR =
 /**
  * Returns all focusable DOM elements within a container element.
  */
-export function getFocusableElements(container: HTMLElement | null): HTMLElement[] {
+export function getFocusableElements(
+  container: HTMLElement | null,
+): HTMLElement[] {
   if (!container) return [];
   return Array.from(
-    container.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS_SELECTOR)
-  ).filter((el) => el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).visibility !== "hidden");
+    container.querySelectorAll<HTMLElement>(FOCUSABLE_ELEMENTS_SELECTOR),
+  ).filter(
+    (el) =>
+      el.offsetWidth > 0 &&
+      el.offsetHeight > 0 &&
+      getComputedStyle(el).visibility !== "hidden",
+  );
 }
 
 /**
  * Traps keyboard focus within a container element (useful for modal dialogs and mobile menus).
  */
-export function handleTabFocusTrap(e: KeyboardEvent, container: HTMLElement | null): void {
+export function handleTabFocusTrap(
+  e: KeyboardEvent,
+  container: HTMLElement | null,
+): void {
   if (e.key !== "Tab" || !container) return;
 
   const focusables = getFocusableElements(container);
@@ -43,7 +53,10 @@ export function handleTabFocusTrap(e: KeyboardEvent, container: HTMLElement | nu
 /**
  * Dynamically announces a message to screen readers via a live region.
  */
-export function announceToScreenReader(message: string, politeness: "polite" | "assertive" = "polite"): void {
+export function announceToScreenReader(
+  message: string,
+  politeness: "polite" | "assertive" = "polite",
+): void {
   if (typeof window === "undefined") return;
 
   let region = document.getElementById("a11y-live-region");

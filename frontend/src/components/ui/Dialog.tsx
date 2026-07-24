@@ -49,12 +49,15 @@ export const Dialog: React.FC<DialogProps> = ({
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
         className={cn(
-          "relative z-50 w-full max-w-lg rounded-lg border border-border bg-card p-6 text-card-foreground shadow-lg transition-all animate-in fade-in zoom-in-95"
+          "relative z-50 w-full max-w-lg rounded-lg border border-border bg-card p-6 text-card-foreground shadow-lg transition-all animate-in fade-in zoom-in-95",
         )}
       >
         <div className="flex flex-col space-y-1.5">
           <div className="flex items-center justify-between">
-            <h2 id={titleId} className="text-lg font-semibold tracking-tight text-foreground">
+            <h2
+              id={titleId}
+              className="text-lg font-semibold tracking-tight text-foreground"
+            >
               {title}
             </h2>
             <Button
@@ -76,7 +79,11 @@ export const Dialog: React.FC<DialogProps> = ({
 
         <div className="py-4">{children}</div>
 
-        {footer && <div className="flex items-center justify-end space-x-2 pt-2">{footer}</div>}
+        {footer && (
+          <div className="flex items-center justify-end space-x-2 pt-2">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );

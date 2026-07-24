@@ -37,7 +37,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose }) => {
         aria-modal="true"
         role="dialog"
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-72 bg-card p-6 shadow-2xl border-r border-border flex flex-col justify-between transition-transform duration-200 ease-in-out"
+          "fixed inset-y-0 left-0 z-50 w-72 bg-card p-6 shadow-2xl border-r border-border flex flex-col justify-between transition-transform duration-200 ease-in-out",
         )}
       >
         <div>
@@ -46,7 +46,9 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose }) => {
               <div className="h-7 w-7 rounded-md bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
                 K
               </div>
-              <span className="font-bold text-lg text-foreground">KisanGPT</span>
+              <span className="font-bold text-lg text-foreground">
+                KisanGPT
+              </span>
             </div>
             <Button
               variant="ghost"
@@ -59,7 +61,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose }) => {
             </Button>
           </div>
 
-          <nav className="mt-6 flex flex-col space-y-2" aria-label="Mobile Main Navigation">
+          <nav
+            className="mt-6 flex flex-col space-y-2"
+            aria-label="Mobile Main Navigation"
+          >
             {MAIN_NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.id}

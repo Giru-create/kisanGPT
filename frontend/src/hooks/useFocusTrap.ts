@@ -3,7 +3,10 @@
 import { useEffect, RefObject } from "react";
 import { handleTabFocusTrap, getFocusableElements } from "@/utils/a11y";
 
-export function useFocusTrap(ref: RefObject<HTMLElement | null>, isActive: boolean): void {
+export function useFocusTrap(
+  ref: RefObject<HTMLElement | null>,
+  isActive: boolean,
+): void {
   useEffect(() => {
     if (!isActive || !ref.current) return;
 

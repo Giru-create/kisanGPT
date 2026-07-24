@@ -2,7 +2,11 @@
 
 import { useEffect } from "react";
 
-export function useKeyboardShortcut(key: string, callback: () => void, enabled: boolean = true): void {
+export function useKeyboardShortcut(
+  key: string,
+  callback: () => void,
+  enabled: boolean = true,
+): void {
   useEffect(() => {
     if (!enabled) return;
 

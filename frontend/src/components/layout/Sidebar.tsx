@@ -11,14 +11,17 @@ export interface SidebarProps {
   className?: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, className }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  isCollapsed = false,
+  className,
+}) => {
   return (
     <aside
       aria-label="Sidebar Navigation"
       className={cn(
         "hidden lg:flex flex-col border-r border-border bg-card/50 transition-all duration-200 shrink-0",
         isCollapsed ? "w-16" : "w-64",
-        className
+        className,
       )}
     >
       <div className="flex flex-col flex-1 p-4 space-y-6">
@@ -33,9 +36,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, className
               <NavLink
                 key={item.id}
                 href={item.href}
-                className={cn("w-full justify-start py-2.5", isCollapsed && "px-2 justify-center")}
+                className={cn(
+                  "w-full justify-start py-2.5",
+                  isCollapsed && "px-2 justify-center",
+                )}
               >
-                <span className={cn(isCollapsed && "sr-only")}>{item.label}</span>
+                <span className={cn(isCollapsed && "sr-only")}>
+                  {item.label}
+                </span>
               </NavLink>
             ))}
           </nav>
@@ -44,7 +52,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed = false, className
         {!isCollapsed && (
           <div className="mt-auto p-4 rounded-lg bg-accent/40 border border-border/60">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-foreground">Status</span>
+              <span className="text-xs font-semibold text-foreground">
+                Status
+              </span>
               <Badge variant="success">Phase 1</Badge>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">

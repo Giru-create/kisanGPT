@@ -4,7 +4,13 @@ import React, { useState } from "react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Grid } from "@/components/layout/Grid";
 import { Button } from "@/components/ui/Button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 import { Alert } from "@/components/ui/Alert";
@@ -13,7 +19,14 @@ import { Tooltip } from "@/components/ui/Tooltip";
 import { Spinner } from "@/components/ui/Spinner";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Dialog } from "@/components/ui/Dialog";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/Table";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/Table";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { VisuallyHidden } from "@/components/accessibility/VisuallyHidden";
 import { useTheme } from "@/store/themeStore";
@@ -58,7 +71,12 @@ export default function Home() {
         {/* Section 1: System Overview */}
         <section className="space-y-4">
           <Alert variant="info" title="Frontend Foundation Scope">
-            This workspace contains exclusively the UI foundation layer (Design tokens, Theme system, Typography, Color system, Spacing grid, Reusable UI components, Layout primitives, Navigation & Accessibility foundations). Business features (Chat, Weather, Market, Disease Detection) are intentionally separated according to project roadmap.
+            This workspace contains exclusively the UI foundation layer (Design
+            tokens, Theme system, Typography, Color system, Spacing grid,
+            Reusable UI components, Layout primitives, Navigation &
+            Accessibility foundations). Business features (Chat, Weather,
+            Market, Disease Detection) are intentionally separated according to
+            project roadmap.
           </Alert>
         </section>
 
@@ -69,32 +87,43 @@ export default function Home() {
               1. Typography System
             </h2>
             <p className="text-sm text-muted-foreground">
-              Scalable rem-based typographic hierarchy optimized for readability.
+              Scalable rem-based typographic hierarchy optimized for
+              readability.
             </p>
           </div>
 
           <Card>
             <CardContent className="space-y-6 pt-6">
               <div>
-                <h1 className="text-4xl font-extrabold tracking-tight">Heading 1 — 36px / 2.25rem</h1>
+                <h1 className="text-4xl font-extrabold tracking-tight">
+                  Heading 1 — 36px / 2.25rem
+                </h1>
               </div>
               <div>
-                <h2 className="text-3xl font-bold tracking-tight">Heading 2 — 30px / 1.875rem</h2>
+                <h2 className="text-3xl font-bold tracking-tight">
+                  Heading 2 — 30px / 1.875rem
+                </h2>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold tracking-tight">Heading 3 — 24px / 1.5rem</h3>
+                <h3 className="text-2xl font-semibold tracking-tight">
+                  Heading 3 — 24px / 1.5rem
+                </h3>
               </div>
               <div>
-                <h4 className="text-xl font-medium tracking-tight">Heading 4 — 20px / 1.25rem</h4>
+                <h4 className="text-xl font-medium tracking-tight">
+                  Heading 4 — 20px / 1.25rem
+                </h4>
               </div>
               <div>
                 <p className="text-base text-foreground leading-relaxed">
-                  Body Text (Base) — 16px / 1rem. High contrast ratio text designed for extreme readability across light and dark modes.
+                  Body Text (Base) — 16px / 1rem. High contrast ratio text
+                  designed for extreme readability across light and dark modes.
                 </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">
-                  Muted Text (Small) — 14px / 0.875rem. Secondary metadata and helper descriptive copy.
+                  Muted Text (Small) — 14px / 0.875rem. Secondary metadata and
+                  helper descriptive copy.
                 </p>
               </div>
             </CardContent>
@@ -108,7 +137,8 @@ export default function Home() {
               2. Color System Tokens (Active Mode: {resolvedTheme})
             </h2>
             <p className="text-sm text-muted-foreground">
-              Tailored KisanGPT Agricultural Emerald, Harvest Amber, and Slate base colors.
+              Tailored KisanGPT Agricultural Emerald, Harvest Amber, and Slate
+              base colors.
             </p>
           </div>
 
@@ -119,7 +149,9 @@ export default function Home() {
               </div>
               <CardContent className="p-3 text-xs">
                 <span className="font-semibold block">Brand Primary</span>
-                <span className="text-muted-foreground">Nature, Growth, Trust</span>
+                <span className="text-muted-foreground">
+                  Nature, Growth, Trust
+                </span>
               </CardContent>
             </Card>
 
@@ -129,7 +161,9 @@ export default function Home() {
               </div>
               <CardContent className="p-3 text-xs">
                 <span className="font-semibold block">Harvest Accent</span>
-                <span className="text-muted-foreground">Sunlight, Crops, Yield</span>
+                <span className="text-muted-foreground">
+                  Sunlight, Crops, Yield
+                </span>
               </CardContent>
             </Card>
 
@@ -139,7 +173,9 @@ export default function Home() {
               </div>
               <CardContent className="p-3 text-xs">
                 <span className="font-semibold block">Subtle Surface</span>
-                <span className="text-muted-foreground">Contextual highlights</span>
+                <span className="text-muted-foreground">
+                  Contextual highlights
+                </span>
               </CardContent>
             </Card>
 
@@ -149,7 +185,9 @@ export default function Home() {
               </div>
               <CardContent className="p-3 text-xs">
                 <span className="font-semibold block">Error / Danger</span>
-                <span className="text-muted-foreground">WCAG High-contrast red</span>
+                <span className="text-muted-foreground">
+                  WCAG High-contrast red
+                </span>
               </CardContent>
             </Card>
           </Grid>
@@ -162,7 +200,8 @@ export default function Home() {
               3. Reusable UI Components
             </h2>
             <p className="text-sm text-muted-foreground">
-              Atomic components with full keyboard focus and screen reader accessibility.
+              Atomic components with full keyboard focus and screen reader
+              accessibility.
             </p>
           </div>
 
@@ -171,7 +210,9 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>Button Variants & States</CardTitle>
-                <CardDescription>Primary, Secondary, Outline, Ghost, and Danger buttons.</CardDescription>
+                <CardDescription>
+                  Primary, Secondary, Outline, Ghost, and Danger buttons.
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-3">
                 <Button variant="primary">Primary</Button>
@@ -179,8 +220,12 @@ export default function Home() {
                 <Button variant="outline">Outline</Button>
                 <Button variant="ghost">Ghost</Button>
                 <Button variant="danger">Danger</Button>
-                <Button variant="primary" isLoading>Loading</Button>
-                <Button variant="outline" disabled>Disabled</Button>
+                <Button variant="primary" isLoading>
+                  Loading
+                </Button>
+                <Button variant="outline" disabled>
+                  Disabled
+                </Button>
               </CardContent>
             </Card>
 
@@ -188,7 +233,9 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>Input Fields</CardTitle>
-                <CardDescription>Accessible inputs with validation and label binding.</CardDescription>
+                <CardDescription>
+                  Accessible inputs with validation and label binding.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Input
@@ -197,7 +244,11 @@ export default function Home() {
                   value={inputVal}
                   onChange={handleInputValidation}
                   errorMessage={inputError}
-                  helperText={!inputError ? "Type at least 3 characters to validate" : undefined}
+                  helperText={
+                    !inputError
+                      ? "Type at least 3 characters to validate"
+                      : undefined
+                  }
                 />
               </CardContent>
             </Card>
@@ -224,7 +275,9 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>Avatars, Spinners & Skeletons</CardTitle>
-                <CardDescription>Loaders, tooltips, and fallback avatars.</CardDescription>
+                <CardDescription>
+                  Loaders, tooltips, and fallback avatars.
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center space-x-6">
                 <Avatar fallback="KG" alt="KisanGPT User" size="md" />
@@ -250,11 +303,14 @@ export default function Home() {
             <CardHeader>
               <CardTitle>Modal Dialog & Focus Trap</CardTitle>
               <CardDescription>
-                Accessible overlay dialog with focus trapping and keyboard shortcuts (ESC key).
+                Accessible overlay dialog with focus trapping and keyboard
+                shortcuts (ESC key).
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button onClick={() => setIsDialogOpen(true)}>Open Modal Dialog</Button>
+              <Button onClick={() => setIsDialogOpen(true)}>
+                Open Modal Dialog
+              </Button>
             </CardContent>
           </Card>
 
@@ -262,7 +318,9 @@ export default function Home() {
           <Card>
             <CardHeader>
               <CardTitle>Accessible Data Table Primitive</CardTitle>
-              <CardDescription>Structured tabbed layout for tabular data.</CardDescription>
+              <CardDescription>
+                Structured tabbed layout for tabular data.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -279,19 +337,25 @@ export default function Home() {
                     <TableCell className="font-semibold">Button</TableCell>
                     <TableCell>UI Atomic</TableCell>
                     <TableCell>ARIA busy, focus ring, role=button</TableCell>
-                    <TableCell><Badge variant="success">Verified</Badge></TableCell>
+                    <TableCell>
+                      <Badge variant="success">Verified</Badge>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">Dialog</TableCell>
                     <TableCell>UI Overlay</TableCell>
                     <TableCell>FocusTrap, ESC close, aria-modal</TableCell>
-                    <TableCell><Badge variant="success">Verified</Badge></TableCell>
+                    <TableCell>
+                      <Badge variant="success">Verified</Badge>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="font-semibold">Input</TableCell>
                     <TableCell>Form Control</TableCell>
                     <TableCell>aria-invalid, label id binding</TableCell>
-                    <TableCell><Badge variant="success">Verified</Badge></TableCell>
+                    <TableCell>
+                      <Badge variant="success">Verified</Badge>
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -312,15 +376,23 @@ export default function Home() {
 
           <Grid cols={3} gap={4}>
             <Alert variant="success" title="Keyboard Navigation">
-              Full focus rings (`ring-2 ring-ring ring-offset-2`), logical TAB navigation order, and ESC modal dismissal.
+              Full focus rings (`ring-2 ring-ring ring-offset-2`), logical TAB
+              navigation order, and ESC modal dismissal.
             </Alert>
 
             <Alert variant="success" title="Screen Reader Support">
-              Skip to main content link, dynamic live-region announcer (`a11y-live-region`), and `sr-only` utilities.
+              Skip to main content link, dynamic live-region announcer
+              (`a11y-live-region`), and `sr-only` utilities.
             </Alert>
 
             <Alert variant="success" title="Reduced Motion Preference">
-              System preference detected: <strong>{prefersReducedMotion ? "Reduced Motion Active" : "Standard Animations"}</strong>.
+              System preference detected:{" "}
+              <strong>
+                {prefersReducedMotion
+                  ? "Reduced Motion Active"
+                  : "Standard Animations"}
+              </strong>
+              .
             </Alert>
           </Grid>
         </section>
@@ -345,13 +417,22 @@ export default function Home() {
       >
         <div className="space-y-4">
           <p className="text-sm text-foreground">
-            Keyboard focus is trapped inside this modal while open. Pressing <kbd className="px-1.5 py-0.5 text-xs bg-muted rounded border">ESC</kbd> or clicking outside will dismiss it safely.
+            Keyboard focus is trapped inside this modal while open. Pressing{" "}
+            <kbd className="px-1.5 py-0.5 text-xs bg-muted rounded border">
+              ESC
+            </kbd>{" "}
+            or clicking outside will dismiss it safely.
           </p>
-          <Input label="Modal Input Test" placeholder="Focus will cycle between controls" />
+          <Input
+            label="Modal Input Test"
+            placeholder="Focus will cycle between controls"
+          />
         </div>
       </Dialog>
 
-      <VisuallyHidden>KisanGPT Accessible Screen Reader Announcement Region</VisuallyHidden>
+      <VisuallyHidden>
+        KisanGPT Accessible Screen Reader Announcement Region
+      </VisuallyHidden>
     </PageContainer>
   );
 }

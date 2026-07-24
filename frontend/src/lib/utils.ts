@@ -1,4 +1,11 @@
-export type ClassValue = string | number | boolean | undefined | null | Record<string, unknown> | ClassValue[];
+export type ClassValue =
+  | string
+  | number
+  | boolean
+  | undefined
+  | null
+  | Record<string, unknown>
+  | ClassValue[];
 
 /**
  * Utility function to conditionally join CSS class names without external dependencies.

@@ -27,13 +27,17 @@ export const Avatar: React.FC<AvatarProps> = ({
       className={cn(
         "relative flex shrink-0 overflow-hidden rounded-full bg-muted select-none items-center justify-center font-medium text-muted-foreground",
         sizeClasses[size],
-        className
+        className,
       )}
       {...props}
     >
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} className="aspect-square h-full w-full object-cover" />
+        <img
+          src={src}
+          alt={alt}
+          className="aspect-square h-full w-full object-cover"
+        />
       ) : (
         <span aria-label={alt}>{fallback.toUpperCase().slice(0, 2)}</span>
       )}

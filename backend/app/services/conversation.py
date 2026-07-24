@@ -64,9 +64,7 @@ class ConversationService:
 
     def cleanup_expired(self) -> int:
         expired = [
-            cid
-            for cid, conv in self._conversations.items()
-            if self._is_expired(conv)
+            cid for cid, conv in self._conversations.items() if self._is_expired(conv)
         ]
         for cid in expired:
             self.delete(cid)

@@ -5,7 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-export interface NavLinkProps extends React.ComponentPropsWithoutRef<typeof Link> {
+export interface NavLinkProps extends React.ComponentPropsWithoutRef<
+  typeof Link
+> {
   activeClassName?: string;
   exact?: boolean;
 }
@@ -32,7 +34,7 @@ export const NavLink: React.FC<NavLinkProps> = ({
       className={cn(
         "inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors hover:bg-accent/50 hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring select-none",
         isActive ? activeClassName : "text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     >

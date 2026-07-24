@@ -28,7 +28,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
       <div
         className={cn(
           "animate-spin rounded-full border-solid border-current border-t-transparent text-primary",
-          sizeClasses[size]
+          sizeClasses[size],
         )}
       />
       <span className="sr-only">{label}</span>

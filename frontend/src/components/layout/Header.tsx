@@ -42,7 +42,10 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
             </Button>
           )}
 
-          <Link href="/" className="flex items-center space-x-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md p-1">
+          <Link
+            href="/"
+            className="flex items-center space-x-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md p-1"
+          >
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-base shadow-sm group-hover:scale-105 transition-transform">
               🌾
             </div>
@@ -58,7 +61,10 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
         </div>
 
         {/* Center: Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center space-x-1" aria-label="Main Navigation">
+        <nav
+          className="hidden lg:flex items-center space-x-1"
+          aria-label="Main Navigation"
+        >
           {MAIN_NAV_ITEMS.map((item) => (
             <NavLink key={item.id} href={item.href}>
               {item.label}
@@ -73,7 +79,10 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
       </div>
 
       {/* Mobile Navigation Drawer */}
-      <MobileNav isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileNav
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
     </header>
   );
 };
