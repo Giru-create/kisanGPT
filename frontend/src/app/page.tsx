@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Grid } from "@/components/layout/Grid";
 import { Button } from "@/components/ui/Button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/Card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 import { Alert } from "@/components/ui/Alert";

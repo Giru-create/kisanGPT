@@ -1,15 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.health import router as health_router
+from app.api import v1_router
 from app.core.config import settings
+from app.core.exceptions import register_exception_handlers
+from app.core.lifespan import lifespan
+from app.core.middleware import register_middleware
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
+    lifespan=lifespan,
     docs_url="/docs" if settings.DEBUG else None,
     redoc_url="/redoc" if settings.DEBUG else None,
 )
+
+register_exception_handlers(app)
+register_middleware(app)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,7 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(health_router, prefix="/api/v1", tags=["health"])
+app.include_router(v1_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["root"])

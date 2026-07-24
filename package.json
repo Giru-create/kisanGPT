@@ -1,0 +1,17 @@
+{
+  "name": "kisangpt",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter kisangpt-frontend dev",
+    "build": "pnpm --filter kisangpt-frontend build",
+    "start": "pnpm --filter kisangpt-frontend start",
+    "lint": "pnpm --filter kisangpt-frontend lint",
+    "lint:fix": "pnpm --filter kisangpt-frontend lint:fix",
+    "typecheck": "pnpm --filter kisangpt-frontend typecheck",
+    "test": "pnpm --filter kisangpt-frontend test",
+    "test:watch": "pnpm --filter kisangpt-frontend test:watch",
+    "format": "pnpm --filter kisangpt-frontend format",
+    "format:check": "pnpm --filter kisangpt-frontend format:check"
+  }
+}
