@@ -15,7 +15,9 @@ interface MandiPricesWidgetProps {
   prices: MandiPriceItem[];
 }
 
-export const MandiPricesWidget: React.FC<MandiPricesWidgetProps> = ({ prices }) => {
+export const MandiPricesWidget: React.FC<MandiPricesWidgetProps> = ({
+  prices,
+}) => {
   return (
     <section
       role="region"
@@ -57,7 +59,10 @@ export const MandiPricesWidget: React.FC<MandiPricesWidgetProps> = ({ prices }) 
             <div className="flex flex-col items-end gap-0.5">
               <span className="font-bold text-base text-foreground tabular-nums">
                 ₹{item.pricePerQuintal.toLocaleString("en-IN")}
-                <span className="text-[10px] text-muted-foreground font-normal"> /qnt</span>
+                <span className="text-[10px] text-muted-foreground font-normal">
+                  {" "}
+                  /qnt
+                </span>
               </span>
 
               <div className="flex items-center gap-1.5 text-xs">
@@ -73,8 +78,8 @@ export const MandiPricesWidget: React.FC<MandiPricesWidgetProps> = ({ prices }) 
                   ) : (
                     <TrendingDown size={12} className="mr-0.5" />
                   )}
-                  {item.isRise ? "+" : ""}
-                  ₹{Math.abs(item.changeAmount)} ({item.changePercent.toFixed(1)}%)
+                  {item.isRise ? "+" : ""}₹{Math.abs(item.changeAmount)} (
+                  {item.changePercent.toFixed(1)}%)
                 </span>
 
                 <Badge variant="outline" className="text-[10px] px-1.5 py-0">

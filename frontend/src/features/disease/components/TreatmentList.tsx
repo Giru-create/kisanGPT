@@ -30,7 +30,10 @@ const TYPE_LABELS: Record<string, string> = {
   mechanical: "Mechanical",
 };
 
-const URGENCY_VARIANT: Record<string, "error" | "warning" | "info" | "default"> = {
+const URGENCY_VARIANT: Record<
+  string,
+  "error" | "warning" | "info" | "default"
+> = {
   immediate: "error",
   within_days: "warning",
   preventive: "info",

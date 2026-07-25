@@ -17,7 +17,9 @@ export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
   onVoiceTrigger,
 }) => {
   const [isListening, setIsListening] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<"Hindi" | "Punjabi" | "English">("Hindi");
+  const [selectedLanguage, setSelectedLanguage] = useState<
+    "Hindi" | "Punjabi" | "English"
+  >("Hindi");
 
   const toggleListening = () => {
     setIsListening((prev) => !prev);
@@ -51,7 +53,10 @@ export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
               }`}
             >
               {isListening ? (
-                <MicOff size={24} className="text-white motion-safe:animate-pulse" />
+                <MicOff
+                  size={24}
+                  className="text-white motion-safe:animate-pulse"
+                />
               ) : (
                 <Mic size={24} className="text-white" />
               )}
@@ -69,7 +74,11 @@ export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
 
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
-              <Sparkles size={14} className="text-amber-500" aria-hidden="true" />
+              <Sparkles
+                size={14}
+                className="text-amber-500"
+                aria-hidden="true"
+              />
               <h2 className="font-bold text-base text-foreground leading-tight">
                 KisanGPT Voice Assistant
               </h2>
@@ -84,7 +93,10 @@ export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
 
         {/* Right Language Controls */}
         <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl w-full sm:w-auto justify-center">
-          <Volume2 size={14} className="text-muted-foreground ml-2 hidden sm:inline" />
+          <Volume2
+            size={14}
+            className="text-muted-foreground ml-2 hidden sm:inline"
+          />
           {(["Hindi", "Punjabi", "English"] as const).map((lang) => (
             <button
               key={lang}

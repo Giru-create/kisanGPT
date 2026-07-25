@@ -7,7 +7,13 @@
 
 import React from "react";
 import Link from "next/link";
-import { History, Camera, MessageSquare, TrendingUp, Landmark } from "lucide-react";
+import {
+  History,
+  Camera,
+  MessageSquare,
+  TrendingUp,
+  Landmark,
+} from "lucide-react";
 import type { ActivityItem, ActivityType } from "../types/dashboard.types";
 import { relativeTime } from "@/features/weather/hooks/useWeather";
 
@@ -52,7 +58,10 @@ export const RecentActivityWidget: React.FC<RecentActivityWidgetProps> = ({
               href={act.targetHref ?? "#"}
               className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-muted/50 transition-colors"
             >
-              <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0 mt-0.5" aria-hidden="true">
+              <div
+                className="p-2 rounded-lg bg-primary/10 text-primary shrink-0 mt-0.5"
+                aria-hidden="true"
+              >
                 <Icon size={16} />
               </div>
               <div className="flex flex-col flex-1">

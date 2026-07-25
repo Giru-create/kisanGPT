@@ -10,7 +10,10 @@ import { motion } from "framer-motion";
 import { AlertTriangle, X, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { EmergencyAlert } from "../types/dashboard.types";
-import { useDashboardStore, selectDismissedAlertId } from "../store/dashboardStore";
+import {
+  useDashboardStore,
+  selectDismissedAlertId,
+} from "../store/dashboardStore";
 
 interface EmergencyAlertBannerProps {
   alert?: EmergencyAlert;

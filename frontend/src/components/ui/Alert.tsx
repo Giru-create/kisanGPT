@@ -19,7 +19,8 @@ export const Alert: React.FC<AlertProps> = ({
       "bg-emerald-500/10 text-emerald-950 dark:text-emerald-200 border-emerald-500/30 border-l-emerald-500",
     warning:
       "bg-amber-500/10 text-amber-950 dark:text-amber-200 border-amber-500/30 border-l-amber-500",
-    error: "bg-red-500/10 text-red-950 dark:text-red-200 border-red-500/30 border-l-red-500",
+    error:
+      "bg-red-500/10 text-red-950 dark:text-red-200 border-red-500/30 border-l-red-500",
   };
 
   return (

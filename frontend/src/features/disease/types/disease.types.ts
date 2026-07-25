@@ -10,10 +10,7 @@
 export type DiseaseSeverity = "low" | "medium" | "high" | "critical";
 
 export type TreatmentType =
-  | "chemical"
-  | "cultural"
-  | "biological"
-  | "mechanical";
+  "chemical" | "cultural" | "biological" | "mechanical";
 
 export type TreatmentUrgency = "immediate" | "within_days" | "preventive";
 

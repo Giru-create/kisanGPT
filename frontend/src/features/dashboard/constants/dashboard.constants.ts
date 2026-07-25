@@ -27,8 +27,10 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
     id: "alert-001",
     severity: "warning",
     title: "Heatwave Warning: 38°C Expected Tomorrow",
-    message: "High temperature alert for Karnal district. Soil moisture loss will be rapid.",
-    actionAdvice: "Irrigate Wheat fields early morning (5:30 AM – 7:30 AM). Avoid field work from 11 AM to 4 PM.",
+    message:
+      "High temperature alert for Karnal district. Soil moisture loss will be rapid.",
+    actionAdvice:
+      "Irrigate Wheat fields early morning (5:30 AM – 7:30 AM). Avoid field work from 11 AM to 4 PM.",
     issuedAt: new Date(Date.now() - 30 * 60 * 1000), // 30 mins ago
     dismissible: true,
   },
@@ -38,7 +40,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
     condition: "partly-cloudy",
     humidity: 74,
     windSpeedKmh: 12,
-    advisory: "Wind speed is low (12 km/h). Safe for pesticide spraying until 11:00 AM.",
+    advisory:
+      "Wind speed is low (12 km/h). Safe for pesticide spraying until 11:00 AM.",
     advisorySafe: true,
   },
   cropFields: [
@@ -109,7 +112,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       benefitAmount: "₹2,000 Direct Credit",
       statusBadge: "Eligible",
       deadline: "Check e-KYC status by 15 Aug",
-      summary: "Annual financial support of ₹6,000 in three equal installments to farmer families.",
+      summary:
+        "Annual financial support of ₹6,000 in three equal installments to farmer families.",
     },
     {
       id: "scheme-2",
@@ -118,7 +122,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       benefitAmount: "85% Subsidy",
       statusBadge: "Action Needed",
       deadline: "Applications close 31 Aug",
-      summary: "Government scheme providing 85% subsidy on micro-irrigation equipment for small farmers.",
+      summary:
+        "Government scheme providing 85% subsidy on micro-irrigation equipment for small farmers.",
     },
   ],
   recentActivities: [
@@ -126,7 +131,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       id: "act-1",
       type: "scan",
       title: "Scanned Mustard Field #2 Leaf",
-      description: "Identified early aphid presence. Recommended 5% Neem oil spray.",
+      description:
+        "Identified early aphid presence. Recommended 5% Neem oil spray.",
       timestamp: new Date(Date.now() - 12 * 3600 * 1000),
       targetHref: "/disease",
     },
@@ -152,7 +158,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       id: "notif-1",
       category: "reminder",
       title: "Irrigation Reminder",
-      message: "Tomorrow 6:00 AM is the ideal irrigation window for Wheat Field #1.",
+      message:
+        "Tomorrow 6:00 AM is the ideal irrigation window for Wheat Field #1.",
       timestamp: new Date(Date.now() - 1 * 3600 * 1000),
       read: false,
     },
@@ -160,7 +167,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       id: "notif-2",
       category: "alert",
       title: "Weather Shift Alert",
-      message: "Humidity expected to rise to 85% on Thursday. High fungal disease risk.",
+      message:
+        "Humidity expected to rise to 85% on Thursday. High fungal disease risk.",
       timestamp: new Date(Date.now() - 4 * 3600 * 1000),
       read: false,
     },
@@ -168,7 +176,8 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       id: "notif-3",
       category: "update",
       title: "PM-KISAN e-KYC Portal Active",
-      message: "Verify your Aadhaar link to receive the 17th installment without delay.",
+      message:
+        "Verify your Aadhaar link to receive the 17th installment without delay.",
       timestamp: new Date(Date.now() - 18 * 3600 * 1000),
       read: true,
     },

@@ -40,8 +40,8 @@ export const DetectionEmpty: React.FC<DetectionEmptyProps> = ({
           Detect Crop Diseases
         </h3>
         <p className="text-sm text-muted-foreground max-w-sm">
-          Take a photo or upload an image of your crop to identify
-          diseases and get treatment recommendations.
+          Take a photo or upload an image of your crop to identify diseases and
+          get treatment recommendations.
         </p>
       </div>
     </div>

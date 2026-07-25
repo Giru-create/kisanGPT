@@ -75,7 +75,9 @@ export const QuickActionsGrid: React.FC = () => {
                 <Icon className={`h-6 w-6 ${action.iconColor}`} />
               </div>
               <div className="flex flex-col">
-                <span className={`font-bold text-sm sm:text-base ${action.textColor}`}>
+                <span
+                  className={`font-bold text-sm sm:text-base ${action.textColor}`}
+                >
                   {action.title}
                 </span>
                 <span className="text-[11px] sm:text-xs text-muted-foreground font-medium line-clamp-1">

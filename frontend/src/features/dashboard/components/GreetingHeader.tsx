@@ -28,13 +28,18 @@ export const GreetingHeader: React.FC<GreetingHeaderProps> = ({
       {/* Greeting Title */}
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
-          <Sun size={20} className="text-amber-500 shrink-0" aria-hidden="true" />
+          <Sun
+            size={20}
+            className="text-amber-500 shrink-0"
+            aria-hidden="true"
+          />
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
             {profile.greetingPrefix}, {profile.name}!
           </h1>
         </div>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          {profile.activeCrop} · {profile.farmSizeAcres} Acres ({profile.cropSeason})
+          {profile.activeCrop} · {profile.farmSizeAcres} Acres (
+          {profile.cropSeason})
         </p>
       </div>
 
@@ -45,7 +50,11 @@ export const GreetingHeader: React.FC<GreetingHeaderProps> = ({
           aria-label={`Active farm location: ${profile.village}, ${profile.district}. Tap to change location.`}
           className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
         >
-          <MapPin size={14} className="text-primary shrink-0" aria-hidden="true" />
+          <MapPin
+            size={14}
+            className="text-primary shrink-0"
+            aria-hidden="true"
+          />
           <span>
             {profile.village}, {profile.district}
           </span>

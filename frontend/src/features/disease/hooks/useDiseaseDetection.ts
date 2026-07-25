@@ -27,9 +27,7 @@ async function detectDisease(file: File): Promise<DiagnosisResult> {
 
   if (!response.ok) {
     const error = await response.json().catch(() => null);
-    throw new Error(
-      error?.detail ?? `Detection failed (${response.status})`,
-    );
+    throw new Error(error?.detail ?? `Detection failed (${response.status})`);
   }
 
   return response.json() as Promise<DiagnosisResult>;

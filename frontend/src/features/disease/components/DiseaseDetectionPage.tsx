@@ -54,17 +54,12 @@ export const DiseaseDetectionPage: React.FC = () => {
         )}
 
         {/* Uploading */}
-        {uiState.status === "uploading" && (
-          <DetectionSkeleton />
-        )}
+        {uiState.status === "uploading" && <DetectionSkeleton />}
 
         {/* Analyzing */}
         {uiState.status === "analyzing" && (
           <>
-            <ImagePreview
-              src={uiState.previewUrl}
-              onRemove={handleRetry}
-            />
+            <ImagePreview src={uiState.previewUrl} onRemove={handleRetry} />
             <DetectionSkeleton />
           </>
         )}
@@ -78,11 +73,7 @@ export const DiseaseDetectionPage: React.FC = () => {
               onRemove={handleRetry}
             />
             <DetectionResultCard result={uiState.data} />
-            <Button
-              variant="outline"
-              onClick={handleRetry}
-              className="mt-2"
-            >
+            <Button variant="outline" onClick={handleRetry} className="mt-2">
               Scan Another Plant
             </Button>
           </>
@@ -92,15 +83,9 @@ export const DiseaseDetectionPage: React.FC = () => {
         {uiState.status === "error" && (
           <>
             {uiState.previewUrl && (
-              <ImagePreview
-                src={uiState.previewUrl}
-                onRemove={handleRetry}
-              />
+              <ImagePreview src={uiState.previewUrl} onRemove={handleRetry} />
             )}
-            <DetectionError
-              message={uiState.message}
-              onRetry={handleRetry}
-            />
+            <DetectionError message={uiState.message} onRetry={handleRetry} />
           </>
         )}
       </div>

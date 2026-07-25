@@ -24,18 +24,15 @@ import { NotificationsWidget } from "./NotificationsWidget";
 import { DashboardSkeleton } from "./DashboardSkeleton";
 
 export const FarmerDashboard: React.FC = () => {
-  const {
-    dashboardState,
-    refresh,
-    markNotificationRead,
-  } = useDashboard();
+  const { dashboardState, refresh, markNotificationRead } = useDashboard();
 
   return (
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 flex flex-col gap-5">
         <AnimatePresence mode="wait">
           {/* ── Loading State ── */}
-          {(dashboardState.status === "idle" || dashboardState.status === "loading") && (
+          {(dashboardState.status === "idle" ||
+            dashboardState.status === "loading") && (
             <motion.div
               key="skeleton"
               initial={{ opacity: 0 }}
@@ -87,7 +84,9 @@ export const FarmerDashboard: React.FC = () => {
               className="flex flex-col gap-5"
             >
               {/* Section 11: Emergency Alert Banner (Conditional) */}
-              <EmergencyAlertBanner alert={dashboardState.data.emergencyAlert} />
+              <EmergencyAlertBanner
+                alert={dashboardState.data.emergencyAlert}
+              />
 
               {/* Section 1: Greeting & Farm Context */}
               <GreetingHeader profile={dashboardState.data.profile} />
@@ -122,7 +121,9 @@ export const FarmerDashboard: React.FC = () => {
               <GovtSchemesWidget schemes={dashboardState.data.schemes} />
 
               {/* Section 9: Recent Activity Log */}
-              <RecentActivityWidget activities={dashboardState.data.recentActivities} />
+              <RecentActivityWidget
+                activities={dashboardState.data.recentActivities}
+              />
 
               {/* Section 10: Notifications & Reminders */}
               <NotificationsWidget

@@ -6,7 +6,10 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
-import { useDashboardStore, selectDashboardState } from "../store/dashboardStore";
+import {
+  useDashboardStore,
+  selectDashboardState,
+} from "../store/dashboardStore";
 import { MOCK_DASHBOARD_DATA } from "../constants/dashboard.constants";
 import type { DashboardData } from "../types/dashboard.types";
 

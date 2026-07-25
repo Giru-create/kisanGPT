@@ -27,7 +27,11 @@ export const GovtSchemesWidget: React.FC<GovtSchemesWidgetProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Landmark size={18} className="text-blue-600 dark:text-blue-400" aria-hidden="true" />
+          <Landmark
+            size={18}
+            className="text-blue-600 dark:text-blue-400"
+            aria-hidden="true"
+          />
           <h2 className="font-semibold text-sm sm:text-base text-foreground">
             Government Schemes & Financial Aid
           </h2>
@@ -53,7 +57,9 @@ export const GovtSchemesWidget: React.FC<GovtSchemesWidgetProps> = ({
                   {scheme.title}
                 </span>
                 <Badge
-                  variant={scheme.statusBadge === "Eligible" ? "success" : "warning"}
+                  variant={
+                    scheme.statusBadge === "Eligible" ? "success" : "warning"
+                  }
                   className="text-[10px] shrink-0 px-2 py-0.5"
                 >
                   {scheme.statusBadge}

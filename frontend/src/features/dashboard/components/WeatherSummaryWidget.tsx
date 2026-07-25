@@ -8,7 +8,13 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Droplets, Wind, ShieldCheck, AlertCircle } from "lucide-react";
+import {
+  ArrowUpRight,
+  Droplets,
+  Wind,
+  ShieldCheck,
+  AlertCircle,
+} from "lucide-react";
 import { WeatherIcon } from "@/features/weather/components/WeatherIcon";
 import { Badge } from "@/components/ui/Badge";
 import type { WeatherCondition } from "@/features/weather/types/weather.types";
@@ -75,10 +81,12 @@ export const WeatherSummaryWidget: React.FC<WeatherSummaryWidgetProps> = ({
         {/* Quick Weather Metrics */}
         <div className="flex flex-col gap-1.5 text-xs text-muted-foreground text-right border-l border-border/60 pl-3">
           <span className="flex items-center justify-end gap-1 font-medium">
-            <Droplets size={13} className="text-blue-500" /> {humidity}% Humidity
+            <Droplets size={13} className="text-blue-500" /> {humidity}%
+            Humidity
           </span>
           <span className="flex items-center justify-end gap-1 font-medium">
-            <Wind size={13} className="text-teal-500" /> {windSpeedKmh} km/h Wind
+            <Wind size={13} className="text-teal-500" /> {windSpeedKmh} km/h
+            Wind
           </span>
         </div>
       </div>
@@ -93,15 +101,24 @@ export const WeatherSummaryWidget: React.FC<WeatherSummaryWidgetProps> = ({
       >
         <div className="shrink-0 mt-0.5">
           {advisorySafe ? (
-            <ShieldCheck size={16} className="text-emerald-600 dark:text-emerald-400" />
+            <ShieldCheck
+              size={16}
+              className="text-emerald-600 dark:text-emerald-400"
+            />
           ) : (
-            <AlertCircle size={16} className="text-amber-600 dark:text-amber-400" />
+            <AlertCircle
+              size={16}
+              className="text-amber-600 dark:text-amber-400"
+            />
           )}
         </div>
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-2">
             <span className="font-semibold">Farming Advisory:</span>
-            <Badge variant={advisorySafe ? "success" : "warning"} className="text-[10px]">
+            <Badge
+              variant={advisorySafe ? "success" : "warning"}
+              className="text-[10px]"
+            >
               {advisorySafe ? "Safe to Spray" : "Caution"}
             </Badge>
           </div>

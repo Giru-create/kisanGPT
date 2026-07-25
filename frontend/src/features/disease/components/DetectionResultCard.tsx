@@ -37,7 +37,11 @@ function confidenceColor(c: number): string {
 
 const SEVERITY_CONFIG: Record<
   DiseaseSeverity,
-  { icon: React.ElementType; variant: "error" | "warning" | "info" | "default"; label: string }
+  {
+    icon: React.ElementType;
+    variant: "error" | "warning" | "info" | "default";
+    label: string;
+  }
 > = {
   critical: {
     icon: AlertTriangle,
@@ -86,9 +90,7 @@ export const DetectionResultCard: React.FC<DetectionResultCardProps> = ({
           <h2 className="text-lg font-bold text-foreground">
             {result.is_healthy ? "Healthy Plant" : result.disease_name}
           </h2>
-          <p className="text-sm text-muted-foreground">
-            Crop: {result.crop}
-          </p>
+          <p className="text-sm text-muted-foreground">Crop: {result.crop}</p>
         </div>
 
         <Badge variant={sev.variant} className="flex items-center gap-1">
@@ -101,7 +103,10 @@ export const DetectionResultCard: React.FC<DetectionResultCardProps> = ({
       <div className="flex items-center gap-2">
         <span className="text-xs text-muted-foreground">Confidence:</span>
         <span
-          className={cn("text-sm font-semibold", confidenceColor(result.confidence))}
+          className={cn(
+            "text-sm font-semibold",
+            confidenceColor(result.confidence),
+          )}
           aria-label={`Confidence: ${confidencePercent(result.confidence)}`}
         >
           {confidencePercent(result.confidence)}
@@ -116,9 +121,7 @@ export const DetectionResultCard: React.FC<DetectionResultCardProps> = ({
       {/* Similar diseases */}
       {result.similar_diseases.length > 0 && (
         <div>
-          <span className="text-xs text-muted-foreground">
-            Could also be:
-          </span>{" "}
+          <span className="text-xs text-muted-foreground">Could also be:</span>{" "}
           <span className="text-xs text-foreground">
             {result.similar_diseases.join(", ")}
           </span>

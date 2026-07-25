@@ -37,19 +37,13 @@ export const DetectionError: React.FC<DetectionErrorProps> = ({
       )}
       role="alert"
     >
-      <AlertCircle
-        size={48}
-        className="text-destructive"
-        aria-hidden="true"
-      />
+      <AlertCircle size={48} className="text-destructive" aria-hidden="true" />
 
       <div className="space-y-1">
         <h3 className="text-lg font-semibold text-foreground">
           Analysis Failed
         </h3>
-        <p className="text-sm text-muted-foreground max-w-sm">
-          {message}
-        </p>
+        <p className="text-sm text-muted-foreground max-w-sm">{message}</p>
       </div>
 
       {onRetry && (

@@ -7,7 +7,13 @@
 
 import React from "react";
 import Link from "next/link";
-import { Sprout, Camera, AlertTriangle, CheckCircle2, ChevronRight } from "lucide-react";
+import {
+  Sprout,
+  Camera,
+  AlertTriangle,
+  CheckCircle2,
+  ChevronRight,
+} from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type { CropFieldStatus } from "../types/dashboard.types";
@@ -16,7 +22,9 @@ interface CropHealthWidgetProps {
   fields: CropFieldStatus[];
 }
 
-export const CropHealthWidget: React.FC<CropHealthWidgetProps> = ({ fields }) => {
+export const CropHealthWidget: React.FC<CropHealthWidgetProps> = ({
+  fields,
+}) => {
   if (!fields || fields.length === 0) {
     return (
       <section
@@ -31,7 +39,8 @@ export const CropHealthWidget: React.FC<CropHealthWidgetProps> = ({ fields }) =>
           No crop fields added yet
         </h2>
         <p className="text-xs text-muted-foreground max-w-xs">
-          Add your crop field details to receive tailored disease alerts and irrigation recommendations.
+          Add your crop field details to receive tailored disease alerts and
+          irrigation recommendations.
         </p>
         <Button variant="primary" size="md" leftIcon={<Sprout size={16} />}>
           + Add Crop Field
@@ -65,7 +74,8 @@ export const CropHealthWidget: React.FC<CropHealthWidgetProps> = ({ fields }) =>
       {/* Field Cards List */}
       <div className="flex flex-col gap-3">
         {fields.map((field) => {
-          const isAtRisk = field.status === "at_risk" || field.status === "action_required";
+          const isAtRisk =
+            field.status === "at_risk" || field.status === "action_required";
 
           return (
             <div
@@ -98,7 +108,13 @@ export const CropHealthWidget: React.FC<CropHealthWidgetProps> = ({ fields }) =>
                   {field.lastScanResult && (
                     <p className="text-xs text-muted-foreground">
                       Scan Result:{" "}
-                      <span className={isAtRisk ? "font-semibold text-amber-700 dark:text-amber-300" : "font-medium"}>
+                      <span
+                        className={
+                          isAtRisk
+                            ? "font-semibold text-amber-700 dark:text-amber-300"
+                            : "font-medium"
+                        }
+                      >
                         {field.lastScanResult}
                       </span>
                     </p>
