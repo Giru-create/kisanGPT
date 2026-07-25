@@ -3,7 +3,10 @@
 // KisanGPT — Weather Intelligence feature constants
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { WeatherCondition, RecommendationSeverity } from "../types/weather.types";
+import type {
+  WeatherCondition,
+  RecommendationSeverity,
+} from "../types/weather.types";
 
 // ---------------------------------------------------------------------------
 // Condition → display label
@@ -85,12 +88,22 @@ export const UV_LABELS: Array<{ max: number; label: string; color: string }> = [
   { max: 5, label: "Moderate", color: "text-amber-600 dark:text-amber-400" },
   { max: 7, label: "High", color: "text-orange-600 dark:text-orange-400" },
   { max: 10, label: "Very High", color: "text-red-600 dark:text-red-400" },
-  { max: Infinity, label: "Extreme", color: "text-purple-600 dark:text-purple-400" },
+  {
+    max: Infinity,
+    label: "Extreme",
+    color: "text-purple-600 dark:text-purple-400",
+  },
 ];
 
 export function getUVLabel(uvIndex: number): { label: string; color: string } {
   const match = UV_LABELS.find((r) => uvIndex <= r.max);
-  return match ?? UV_LABELS[UV_LABELS.length - 1] ?? { label: "Unknown", color: "text-muted-foreground" };
+  return (
+    match ??
+    UV_LABELS[UV_LABELS.length - 1] ?? {
+      label: "Unknown",
+      color: "text-muted-foreground",
+    }
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -126,13 +139,55 @@ export const MOCK_WEATHER_DATA: WeatherData = {
     updatedAt: new Date(Date.now() - 2 * 60 * 1000), // 2 min ago
   },
   forecast: [
-    { date: makeDate(0), condition: "partly-cloudy", highC: 33, lowC: 24, rainChancePercent: 10 },
-    { date: makeDate(1), condition: "cloudy", highC: 30, lowC: 23, rainChancePercent: 35 },
-    { date: makeDate(2), condition: "rain", highC: 27, lowC: 21, rainChancePercent: 70 },
-    { date: makeDate(3), condition: "heavy-rain", highC: 25, lowC: 20, rainChancePercent: 85 },
-    { date: makeDate(4), condition: "rain", highC: 26, lowC: 21, rainChancePercent: 60 },
-    { date: makeDate(5), condition: "cloudy", highC: 29, lowC: 22, rainChancePercent: 25 },
-    { date: makeDate(6), condition: "sunny", highC: 34, lowC: 24, rainChancePercent: 5 },
+    {
+      date: makeDate(0),
+      condition: "partly-cloudy",
+      highC: 33,
+      lowC: 24,
+      rainChancePercent: 10,
+    },
+    {
+      date: makeDate(1),
+      condition: "cloudy",
+      highC: 30,
+      lowC: 23,
+      rainChancePercent: 35,
+    },
+    {
+      date: makeDate(2),
+      condition: "rain",
+      highC: 27,
+      lowC: 21,
+      rainChancePercent: 70,
+    },
+    {
+      date: makeDate(3),
+      condition: "heavy-rain",
+      highC: 25,
+      lowC: 20,
+      rainChancePercent: 85,
+    },
+    {
+      date: makeDate(4),
+      condition: "rain",
+      highC: 26,
+      lowC: 21,
+      rainChancePercent: 60,
+    },
+    {
+      date: makeDate(5),
+      condition: "cloudy",
+      highC: 29,
+      lowC: 22,
+      rainChancePercent: 25,
+    },
+    {
+      date: makeDate(6),
+      condition: "sunny",
+      highC: 34,
+      lowC: 24,
+      rainChancePercent: 5,
+    },
   ],
   recommendation: {
     severity: "high",

@@ -49,12 +49,16 @@ interface FarmingRecommendationCardProps {
 // Component
 // ---------------------------------------------------------------------------
 
-export const FarmingRecommendationCard: React.FC<FarmingRecommendationCardProps> = ({
-  recommendation,
-  onChatRedirect,
-}) => {
-  const { severity, alertMessage, irrigationWindow, cropTip, chatContextPayload } =
-    recommendation;
+export const FarmingRecommendationCard: React.FC<
+  FarmingRecommendationCardProps
+> = ({ recommendation, onChatRedirect }) => {
+  const {
+    severity,
+    alertMessage,
+    irrigationWindow,
+    cropTip,
+    chatContextPayload,
+  } = recommendation;
 
   const isAlert = severity === "high" || severity === "extreme";
 
@@ -93,7 +97,10 @@ export const FarmingRecommendationCard: React.FC<FarmingRecommendationCardProps>
           </div>
 
           {severity !== "none" && (
-            <Badge variant={SEVERITY_BADGE_VARIANT[severity]} className="shrink-0">
+            <Badge
+              variant={SEVERITY_BADGE_VARIANT[severity]}
+              className="shrink-0"
+            >
               {SEVERITY_LABEL[severity]}
             </Badge>
           )}

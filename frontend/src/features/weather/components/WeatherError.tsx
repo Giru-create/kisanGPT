@@ -25,11 +25,7 @@ export const WeatherError: React.FC<WeatherErrorProps> = ({
     >
       {/* Icon */}
       <div className="rounded-full bg-destructive/10 p-4">
-        <CloudOff
-          size={40}
-          className="text-destructive"
-          aria-hidden="true"
-        />
+        <CloudOff size={40} className="text-destructive" aria-hidden="true" />
       </div>
 
       {/* Heading */}

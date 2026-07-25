@@ -9,7 +9,11 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
-import { useWeatherStore, selectWeatherState, selectUnit } from "../store/weatherStore";
+import {
+  useWeatherStore,
+  selectWeatherState,
+  selectUnit,
+} from "../store/weatherStore";
 import { MOCK_WEATHER_DATA } from "../constants/weather.constants";
 import type { WeatherData, TemperatureUnit } from "../types/weather.types";
 

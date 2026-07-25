@@ -7,13 +7,25 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { MapPin, RefreshCcw, Sunrise, Sunset, Droplets, Wind, Thermometer } from "lucide-react";
+import {
+  MapPin,
+  RefreshCcw,
+  Sunrise,
+  Sunset,
+  Droplets,
+  Wind,
+  Thermometer,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { WeatherIcon } from "./WeatherIcon";
 import { WeatherStatBadge } from "./WeatherStatBadge";
 import { WEATHER_LABELS, getUVLabel } from "../constants/weather.constants";
-import type { CurrentWeather, FarmLocation, TemperatureUnit } from "../types/weather.types";
+import type {
+  CurrentWeather,
+  FarmLocation,
+  TemperatureUnit,
+} from "../types/weather.types";
 
 // ---------------------------------------------------------------------------
 // Props
@@ -90,10 +102,7 @@ export const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
         {/* ── Row 2: Icon + Temperature + Condition ── */}
         <div className="flex items-center gap-5 mb-6">
           {/* Floating icon */}
-          <motion.div
-            className="motion-safe:animate-float"
-            aria-hidden="true"
-          >
+          <motion.div className="motion-safe:animate-float" aria-hidden="true">
             <WeatherIcon condition={current.condition} size="xl" />
           </motion.div>
 

@@ -55,7 +55,10 @@ export const WeatherSkeleton: React.FC = () => {
         <Skeleton className="h-4 w-28 mb-4" />
         <div className="flex gap-3 overflow-hidden">
           {Array.from({ length: 7 }).map((_, i) => (
-            <div key={i} className="flex flex-col gap-2 items-center min-w-[72px]">
+            <div
+              key={i}
+              className="flex flex-col gap-2 items-center min-w-[72px]"
+            >
               <Skeleton className="h-3 w-8" />
               <Skeleton className="h-3 w-10" />
               <Skeleton className="h-6 w-6 rounded-full" />

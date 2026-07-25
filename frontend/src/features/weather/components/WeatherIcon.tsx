@@ -21,9 +21,7 @@ import {
   Flame,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  WEATHER_ICON_COLORS,
-} from "../constants/weather.constants";
+import { WEATHER_ICON_COLORS } from "../constants/weather.constants";
 import type { WeatherCondition } from "../types/weather.types";
 
 // ---------------------------------------------------------------------------

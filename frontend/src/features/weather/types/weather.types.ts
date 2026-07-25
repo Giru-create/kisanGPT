@@ -20,11 +20,7 @@ export type WeatherCondition =
   | "heatwave";
 
 export type RecommendationSeverity =
-  | "none"
-  | "low"
-  | "moderate"
-  | "high"
-  | "extreme";
+  "none" | "low" | "moderate" | "high" | "extreme";
 
 export type TemperatureUnit = "celsius" | "fahrenheit";
 

@@ -56,7 +56,8 @@ export const WeatherPage: React.FC = () => {
     <WeatherPageShell unit={unit} toggleUnit={toggleUnit}>
       <AnimatePresence mode="wait">
         {/* Loading */}
-        {(weatherState.status === "idle" || weatherState.status === "loading") && (
+        {(weatherState.status === "idle" ||
+          weatherState.status === "loading") && (
           <motion.div
             key="skeleton"
             initial={{ opacity: 0 }}

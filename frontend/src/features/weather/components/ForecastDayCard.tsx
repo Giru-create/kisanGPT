@@ -19,8 +19,18 @@ import type { ForecastDay } from "../types/weather.types";
 
 const SHORT_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const SHORT_MONTHS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 function formatDay(date: Date, isToday: boolean): string {
@@ -60,7 +70,11 @@ export const ForecastDayCard: React.FC<ForecastDayCardProps> = ({
     <motion.article
       initial={{ opacity: 0, x: 12 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.35, delay: animationIndex * 0.06, ease: "easeOut" }}
+      transition={{
+        duration: 0.35,
+        delay: animationIndex * 0.06,
+        ease: "easeOut",
+      }}
       aria-label={`${formatDay(day.date, isToday)}: ${day.condition}, high ${convertTemp(day.highC)}${unitSymbol}, low ${convertTemp(day.lowC)}${unitSymbol}, ${day.rainChancePercent}% rain`}
       className={cn(
         "flex flex-col items-center gap-1.5",
@@ -92,10 +106,12 @@ export const ForecastDayCard: React.FC<ForecastDayCardProps> = ({
       {/* High / Low temps */}
       <div className="flex items-center gap-1 text-xs font-semibold">
         <span className="text-foreground">
-          {convertTemp(day.highC)}{unitSymbol}
+          {convertTemp(day.highC)}
+          {unitSymbol}
         </span>
         <span className="text-muted-foreground">
-          {convertTemp(day.lowC)}{unitSymbol}
+          {convertTemp(day.lowC)}
+          {unitSymbol}
         </span>
       </div>
 

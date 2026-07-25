@@ -20,11 +20,7 @@ export const WeatherEmpty: React.FC<WeatherEmptyProps> = ({
     <div className="flex flex-col items-center text-center gap-6 rounded-2xl border border-border bg-card px-6 py-12">
       {/* Illustration */}
       <div className="rounded-full bg-primary/10 p-5">
-        <MapPin
-          size={44}
-          className="text-primary"
-          aria-hidden="true"
-        />
+        <MapPin size={44} className="text-primary" aria-hidden="true" />
       </div>
 
       {/* Copy */}
