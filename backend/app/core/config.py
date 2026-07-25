@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     CHROMA_HOST: str = "localhost"
     CHROMA_PORT: int = 8000
 
+    OPENWEATHERMAP_API_KEY: str = ""
+    WEATHER_TIMEOUT: float = 10.0
+    WEATHER_CACHE_TTL: int = 600
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 

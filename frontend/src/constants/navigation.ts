@@ -21,6 +21,11 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     label: "Accessibility",
     href: "#accessibility-section",
   },
+  {
+    id: "weather",
+    label: "Weather Intelligence",
+    href: "/weather",
+  },
 ];
 
 export const NAV_SECTIONS: NavSection[] = [

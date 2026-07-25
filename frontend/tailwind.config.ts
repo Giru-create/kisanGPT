@@ -68,11 +68,17 @@ const config: Config = {
         spin: {
           to: { transform: "rotate(360deg)" },
         },
+        // Weather icon — gentle vertical float
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         spin: "spin 1s linear infinite",
+        float: "float 3s ease-in-out infinite",
       },
     },
   },
