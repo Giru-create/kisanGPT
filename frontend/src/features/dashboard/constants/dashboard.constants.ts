@@ -1,0 +1,176 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// dashboard.constants.ts
+// KisanGPT — Farmer Dashboard constants and mock data
+// ─────────────────────────────────────────────────────────────────────────────
+
+import type { DashboardData } from "../types/dashboard.types";
+
+export const QUICK_PROMPTS = [
+  " How much Urea per acre for Wheat?",
+  " Yellow rust symptoms on Wheat",
+  " Will it rain in Karnal tomorrow?",
+  " Current Mandi price of Mustard",
+];
+
+export const MOCK_DASHBOARD_DATA: DashboardData = {
+  profile: {
+    name: "Ramesh Singh",
+    greetingPrefix: "Ram Ram",
+    village: "Karnal",
+    district: "Karnal",
+    state: "Haryana",
+    activeCrop: "Wheat (PBW 550)",
+    cropSeason: "Rabi Season 2026",
+    farmSizeAcres: 4.5,
+  },
+  emergencyAlert: {
+    id: "alert-001",
+    severity: "warning",
+    title: "Heatwave Warning: 38°C Expected Tomorrow",
+    message: "High temperature alert for Karnal district. Soil moisture loss will be rapid.",
+    actionAdvice: "Irrigate Wheat fields early morning (5:30 AM – 7:30 AM). Avoid field work from 11 AM to 4 PM.",
+    issuedAt: new Date(Date.now() - 30 * 60 * 1000), // 30 mins ago
+    dismissible: true,
+  },
+  weatherSummary: {
+    temperatureC: 32,
+    feelsLikeC: 36,
+    condition: "partly-cloudy",
+    humidity: 74,
+    windSpeedKmh: 12,
+    advisory: "Wind speed is low (12 km/h). Safe for pesticide spraying until 11:00 AM.",
+    advisorySafe: true,
+  },
+  cropFields: [
+    {
+      id: "field-1",
+      fieldName: "Main Field (North)",
+      cropName: "Wheat (PBW 550)",
+      healthPercent: 94,
+      status: "healthy",
+      lastScanResult: "No diseases detected",
+      lastScanDate: new Date(Date.now() - 48 * 3600 * 1000),
+      nextAction: "Irrigate in 2 days",
+    },
+    {
+      id: "field-2",
+      fieldName: "Secondary Field (South)",
+      cropName: "Mustard (Pusa Bold)",
+      healthPercent: 78,
+      status: "at_risk",
+      lastScanResult: "Aphid infestation early signs",
+      lastScanDate: new Date(Date.now() - 12 * 3600 * 1000),
+      nextAction: "Spray Neem Oil solution",
+    },
+  ],
+  mandiPrices: [
+    {
+      id: "mandi-1",
+      commodity: "Wheat",
+      variety: "PBW 550 / FAQ",
+      mandiName: "Karnal APMC Mandi",
+      pricePerQuintal: 2275,
+      changeAmount: 45,
+      changePercent: 2.02,
+      isRise: true,
+      mspDifference: 25,
+      updatedAt: new Date(Date.now() - 2 * 3600 * 1000),
+    },
+    {
+      id: "mandi-2",
+      commodity: "Mustard (Sarson)",
+      variety: "Black Bold",
+      mandiName: "Karnal APMC Mandi",
+      pricePerQuintal: 5650,
+      changeAmount: -30,
+      changePercent: -0.53,
+      isRise: false,
+      mspDifference: 150,
+      updatedAt: new Date(Date.now() - 3 * 3600 * 1000),
+    },
+    {
+      id: "mandi-3",
+      commodity: "Paddy (Basmati)",
+      variety: "1121 Raw",
+      mandiName: "Taraori Mandi",
+      pricePerQuintal: 4320,
+      changeAmount: 80,
+      changePercent: 1.89,
+      isRise: true,
+      mspDifference: 420,
+      updatedAt: new Date(Date.now() - 5 * 3600 * 1000),
+    },
+  ],
+  schemes: [
+    {
+      id: "scheme-1",
+      title: "PM-KISAN 17th Installment",
+      category: "Direct Income Support",
+      benefitAmount: "₹2,000 Direct Credit",
+      statusBadge: "Eligible",
+      deadline: "Check e-KYC status by 15 Aug",
+      summary: "Annual financial support of ₹6,000 in three equal installments to farmer families.",
+    },
+    {
+      id: "scheme-2",
+      title: "Subsidized Drip Irrigation Scheme",
+      category: "Equipment & Water Subsidy",
+      benefitAmount: "85% Subsidy",
+      statusBadge: "Action Needed",
+      deadline: "Applications close 31 Aug",
+      summary: "Government scheme providing 85% subsidy on micro-irrigation equipment for small farmers.",
+    },
+  ],
+  recentActivities: [
+    {
+      id: "act-1",
+      type: "scan",
+      title: "Scanned Mustard Field #2 Leaf",
+      description: "Identified early aphid presence. Recommended 5% Neem oil spray.",
+      timestamp: new Date(Date.now() - 12 * 3600 * 1000),
+      targetHref: "/disease",
+    },
+    {
+      id: "act-2",
+      type: "chat",
+      title: "Asked about Urea Dosage",
+      description: "KisanGPT advised 45 kg/acre split application for Wheat.",
+      timestamp: new Date(Date.now() - 24 * 3600 * 1000),
+      targetHref: "/chat",
+    },
+    {
+      id: "act-3",
+      type: "mandi",
+      title: "Checked Karnal Mandi Rates",
+      description: "Wheat price rose by ₹45 to ₹2,275/qnt.",
+      timestamp: new Date(Date.now() - 36 * 3600 * 1000),
+      targetHref: "/market",
+    },
+  ],
+  notifications: [
+    {
+      id: "notif-1",
+      category: "reminder",
+      title: "Irrigation Reminder",
+      message: "Tomorrow 6:00 AM is the ideal irrigation window for Wheat Field #1.",
+      timestamp: new Date(Date.now() - 1 * 3600 * 1000),
+      read: false,
+    },
+    {
+      id: "notif-2",
+      category: "alert",
+      title: "Weather Shift Alert",
+      message: "Humidity expected to rise to 85% on Thursday. High fungal disease risk.",
+      timestamp: new Date(Date.now() - 4 * 3600 * 1000),
+      read: false,
+    },
+    {
+      id: "notif-3",
+      category: "update",
+      title: "PM-KISAN e-KYC Portal Active",
+      message: "Verify your Aadhaar link to receive the 17th installment without delay.",
+      timestamp: new Date(Date.now() - 18 * 3600 * 1000),
+      read: true,
+    },
+  ],
+};

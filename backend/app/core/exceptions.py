@@ -13,6 +13,16 @@ class UnauthorizedError(AppError):
         super().__init__(status_code=401, detail=detail)
 
 
+class ImageTooLargeError(AppError):
+    def __init__(self, detail: str = "Image too large") -> None:
+        super().__init__(status_code=400, detail=detail)
+
+
+class UnsupportedImageError(AppError):
+    def __init__(self, detail: str = "Unsupported image type") -> None:
+        super().__init__(status_code=400, detail=detail)
+
+
 async def app_error_handler(_request: Request, exc: AppError) -> JSONResponse:
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 

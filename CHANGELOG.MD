@@ -50,11 +50,61 @@ This project follows a milestone-based development workflow.
 - **Docker**: Multi-stage Dockerfile with development and production targets.
 - **Agents Package**: Empty `app/agents/` package per Clean Architecture spec.
 
+### Weather Intelligence (OpenCode)
+
+- **Weather Schemas**: `CurrentWeather`, `DailyForecast`, `ForecastResponse`, `FarmingAdvice`, `WeatherAdviceResponse`, `WeatherQuery` Pydantic models (`app/schemas/weather.py`).
+- **WeatherProvider ABC**: Abstract base class for weather data providers with `get_current`, `get_forecast`, `resolve_coordinates` methods (`app/agents/weather.py`).
+- **OpenWeatherMapProvider**: Concrete implementation using OpenWeatherMap free tier APIs (Current Weather + 5-day Forecast), metric units, httpx client with configurable timeout (`app/agents/weather.py`).
+- **WeatherService**: Orchestrator with in-memory TTL caching, provider-agnostic design, structured logging (`app/services/weather.py`).
+- **Farming Advice Engine**: Rule-based recommendations for temperature extremes, humidity, wind, and rain forecast — no AI dependency (`app/services/weather.py`).
+- **Weather Endpoints**: `GET /api/v1/weather/current`, `GET /api/v1/weather/forecast`, `GET /api/v1/weather/advice` — all authenticated, support lat/lon or city query params (`app/api/v1/weather.py`).
+- **TTLCache**: Generic in-memory cache with per-key TTL expiration, reusable across modules (`app/cache/memory.py`).
+- **Config**: Added `OPENWEATHERMAP_API_KEY`, `WEATHER_TIMEOUT`, `WEATHER_CACHE_TTL` settings (`app/core/config.py`).
+- **Dependencies**: Added `httpx>=0.28.0` to main dependencies (`pyproject.toml`).
+- **Tests**: TTLCache tests, weather service tests with MockWeatherProvider, farming advice rule tests, schema validation tests (`tests/test_weather.py`, `tests/test_weather_schemas.py`).
+
+### Crop Disease Detection (OpenCode)
+
+- **Disease Schemas**: `DiagnosisResult`, `TreatmentRecommendation`, `DiseaseDetectionResponse`, `DiagnosisHistoryItem` Pydantic models (`app/schemas/disease.py`).
+- **DiseaseDetectionProvider ABC**: Abstract base class for disease detection providers with `detect` method (`app/agents/disease.py`).
+- **GeminiVisionProvider**: Concrete implementation using Gemini 2.0 Flash vision capability, structured JSON prompt for disease identification, inline image bytes via `google-genai` SDK (`app/agents/disease.py`).
+- **DiagnosisService**: Orchestrator with image validation (type, size), in-memory TTL caching by image hash, provider-agnostic design (`app/services/diagnosis.py`).
+- **Image Validation**: Server-side enforcement of allowed types (JPEG, PNG, WebP) and max file size (10 MB) (`app/services/diagnosis.py`).
+- **Image Hashing**: SHA-256 based 16-char hash for cache keys and result identification (`app/agents/disease.py`).
+- **Disease Endpoint**: `POST /api/v1/disease/detect` — multipart file upload, authenticated, returns diagnosis with confidence, severity, treatments, prevention tips (`app/api/v1/disease.py`).
+- **Custom Exceptions**: `ImageTooLargeError` (400), `UnsupportedImageError` (400) for image validation failures (`app/core/exceptions.py`).
+- **Config**: Added `GEMINI_VISION_MODEL`, `MAX_IMAGE_SIZE_MB`, `DISEASE_TIMEOUT`, `DISEASE_CACHE_TTL` settings (`app/core/config.py`).
+- **Tests**: Schema validation tests, image hash tests, service validation tests, provider mock tests, result parsing tests (`tests/test_disease.py`, `tests/test_disease_schemas.py`).
+
+### Frontend — Weather Intelligence (Antigravity)
+
+- **Weather Types**: `WeatherCondition`, `CurrentWeather`, `ForecastDay`, `FarmingRecommendation`, `WeatherData`, `WeatherUIState` TypeScript interfaces (`src/features/weather/types/weather.types.ts`).
+- **Weather Page**: Full `/weather` route with `CurrentWeatherCard`, `ForecastStrip`, `ForecastDayCard`, `FarmingRecommendationCard`, `WeatherIcon`, `WeatherStatBadge` components (`src/features/weather/`).
+- **Weather Store**: Zustand store with temperature unit toggle, location state, discriminated-union UI state (`src/features/weather/store/weatherStore.ts`).
+- **Weather Hook**: `useWeather` hook with auto-load, temperature conversion, relative time formatting (`src/features/weather/hooks/useWeather.ts`).
+- **Weather Constants**: Mock data, UV label ranges, weather condition mappings (`src/features/weather/constants/weather.constants.ts`).
+
+### Frontend — Crop Disease Detection (Antigravity)
+
+- **Disease Types**: `DiagnosisResult`, `TreatmentRecommendation`, `DiseaseSeverity`, `DiseaseUIState` TypeScript interfaces (`src/features/disease/types/disease.types.ts`).
+- **Disease Detection Page**: Full `/disease` route with image upload, analysis, result display workflow (`src/features/disease/components/DiseaseDetectionPage.tsx`).
+- **ImageUploader**: Camera capture (mobile) + gallery upload (desktop) with file type/size constraints (`src/features/disease/components/ImageUploader.tsx`).
+- **ImagePreview**: Thumbnail preview with remove button before/after analysis (`src/features/disease/components/ImagePreview.tsx`).
+- **DetectionResultCard**: Full diagnosis display with severity badge, confidence percentage, crop name, disease description, similar diseases, disclaimer (`src/features/disease/components/DetectionResultCard.tsx`).
+- **TreatmentList**: Treatment recommendations with type (chemical/cultural/biological/mechanical) and urgency badges (`src/features/disease/components/TreatmentList.tsx`).
+- **DetectionSkeleton**: Loading state with pulse animation during analysis (`src/features/disease/components/DetectionSkeleton.tsx`).
+- **DetectionError**: Error state with retry button (`src/features/disease/components/DetectionError.tsx`).
+- **DetectionEmpty**: Empty state before first scan with instructions (`src/features/disease/components/DetectionEmpty.tsx`).
+- **Disease Store**: Zustand store with discriminated-union UI state (idle/uploading/analyzing/success/error) (`src/features/disease/store/diseaseStore.ts`).
+- **Disease Hook**: `useDiseaseDetection` hook with file selection → upload → analyze workflow (`src/features/disease/hooks/useDiseaseDetection.ts`).
+- **Navigation**: Added "Disease Detection" link to sidebar navigation (`src/constants/navigation.ts`).
+
 ## Planned
+
 - Backend foundation (complete)
-- AI chat
-- Disease detection
-- Weather intelligence
+- AI chat (complete)
+- Disease detection (complete)
+- Weather intelligence (complete)
 - Market intelligence
 - Voice assistant
 - Farm memory
@@ -122,6 +172,11 @@ Planned:
 - Linting
 - Testing
 - Environment configuration
+- Firebase Authentication
+- AI Chat with Gemini streaming
+- Weather Intelligence with OpenWeatherMap
+- Crop Disease Detection with Gemini Vision
+- Frontend design system & components
 
 ---
 

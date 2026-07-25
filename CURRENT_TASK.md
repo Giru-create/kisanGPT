@@ -14,19 +14,19 @@
 
 **Status:** 🟡 Active Development
 
-**Current Version:** 0.1.0
+**Current Version:** 0.2.0
 
 ---
 
 # Current Phase
 
-🟢 Phase 1 — Project Foundation
+🟢 Phase 7 — Market Intelligence
 
 ---
 
 # Current Milestone
 
-Milestone 1 — Repository & Development Environment
+Milestone 7 — Market Intelligence
 
 Status: **In Progress**
 
@@ -42,11 +42,9 @@ Status: **In Progress**
 
 # Objective
 
-Build the project foundation.
+Implement market intelligence features for farmers.
 
-Do **NOT** implement application features.
-
-The objective is to prepare a production-ready development environment.
+The objective is to provide real-time market prices, nearby markets, price trends, selling recommendations, and price notifications.
 
 ---
 
@@ -56,18 +54,12 @@ The objective is to prepare a production-ready development environment.
 
 Responsible for:
 
-- Project architecture
-- Next.js initialization
-- FastAPI initialization
-- Firebase configuration
-- Environment variables
-- GitHub setup
-- Development tooling
-- Linting
-- Formatting
-- Testing configuration
-- CI/CD
-- Backend folder structure
+- Market price data API
+- Nearby markets API
+- Price trends analysis
+- Selling recommendations
+- Price notifications
+- Backend infrastructure
 
 ---
 
@@ -75,14 +67,11 @@ Responsible for:
 
 Responsible for:
 
-- Frontend architecture
-- Design system
-- UI structure
-- Responsive layout
-- Accessibility standards
-- Component organization
-
-Do not build application screens yet.
+- Market prices UI
+- Nearby markets map
+- Price trends charts
+- Selling recommendations cards
+- Price notifications UI
 
 ---
 
@@ -90,17 +79,16 @@ Do not build application screens yet.
 
 The milestone is complete only when:
 
-- Repository structure exists
-- Frontend initializes successfully
-- Backend initializes successfully
-- Development server runs
-- Tests execute
-- Lint passes
-- Type checking passes
-- Formatting configured
+- Market prices API works
+- Nearby markets API works
+- Price trends API works
+- Selling recommendations work
+- Price notifications work
+- Frontend displays market data
+- Tests passing
+- Lint passing
+- Type checking passing
 - Documentation updated
-
-No application features should exist yet.
 
 ---
 
@@ -108,15 +96,10 @@ No application features should exist yet.
 
 Do NOT implement:
 
-- Authentication
-- Chat
-- Disease Detection
-- Weather
-- Market Intelligence
 - Voice Assistant
 - Farm Memory
 - Government Schemes
-- Notifications
+- Notifications (beyond price alerts)
 
 These belong to later milestones.
 
@@ -139,18 +122,22 @@ Never begin coding before reading them.
 
 OpenCode should deliver:
 
-- Clean project structure
-- Buildable application
-- Proper configuration
-- Passing lint
-- Passing tests
+- Market prices API
+- Nearby markets API
+- Price trends API
+- Selling recommendations API
+- Price notifications API
+- Backend tests
 - Updated documentation
 
 Antigravity should deliver:
 
-- Frontend structure
-- Component organization
-- Design foundation
+- Market prices UI
+- Nearby markets UI
+- Price trends UI
+- Selling recommendations UI
+- Price notifications UI
+- Frontend tests
 
 ---
 
@@ -160,9 +147,9 @@ When this milestone is finished:
 
 1. Update CHANGELOG.md
 2. Update ROADMAP.md
-3. Replace this file with the next milestone.
-4. Summarize completed work.
-5. Wait for approval.
+3. Replace this file with the next milestone
+4. Summarize completed work
+5. Wait for approval
 
 Never continue automatically.
 

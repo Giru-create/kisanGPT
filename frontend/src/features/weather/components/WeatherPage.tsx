@@ -111,9 +111,8 @@ export const WeatherPage: React.FC = () => {
 
             <FarmingRecommendationCard
               recommendation={weatherState.data.recommendation}
-              onChatRedirect={(payload) => {
-                // TODO: navigate to /chat with payload pre-filled in a later milestone
-                console.info("[WeatherPage] chat redirect payload:", payload);
+              onChatRedirect={() => {
+                // TODO: navigate to /chat with recommendation pre-filled
               }}
             />
           </motion.div>

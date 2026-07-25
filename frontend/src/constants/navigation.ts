@@ -2,6 +2,11 @@ import { NavItem, NavSection } from "@/types/navigation";
 
 export const MAIN_NAV_ITEMS: NavItem[] = [
   {
+    id: "dashboard",
+    label: "Dashboard",
+    href: "/dashboard",
+  },
+  {
     id: "home",
     label: "Foundation Overview",
     href: "/",
@@ -25,6 +30,11 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     id: "weather",
     label: "Weather Intelligence",
     href: "/weather",
+  },
+  {
+    id: "disease",
+    label: "Disease Detection",
+    href: "/disease",
   },
 ];
 

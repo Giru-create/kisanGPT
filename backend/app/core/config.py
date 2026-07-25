@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     WEATHER_TIMEOUT: float = 10.0
     WEATHER_CACHE_TTL: int = 600
 
+    GEMINI_VISION_MODEL: str = "gemini-2.0-flash"
+    MAX_IMAGE_SIZE_MB: int = 10
+    DISEASE_TIMEOUT: float = 60.0
+    DISEASE_CACHE_TTL: int = 3600
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 
