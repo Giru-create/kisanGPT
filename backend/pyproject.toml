@@ -8,6 +8,7 @@ dependencies = [
     "uvicorn[standard]>=0.34.0",
     "pydantic>=2.10.0",
     "pydantic-settings>=2.7.0",
+    "python-multipart>=0.0.18",
     "firebase-admin>=7.5.0",
     "google-genai>=1.0.0",
     "httpx>=0.28.0",
