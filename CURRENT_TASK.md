@@ -14,19 +14,19 @@
 
 **Status:** 🟡 Active Development
 
-**Current Version:** 0.2.0
+**Current Version:** 0.3.0
 
 ---
 
 # Current Phase
 
-🟢 Phase 7 — Market Intelligence
+🟢 Phase 8 — Voice Assistant
 
 ---
 
 # Current Milestone
 
-Milestone 7 — Market Intelligence
+Milestone 8 — Voice Assistant
 
 Status: **In Progress**
 
@@ -42,9 +42,9 @@ Status: **In Progress**
 
 # Objective
 
-Implement market intelligence features for farmers.
+Implement voice interaction features for farmers.
 
-The objective is to provide real-time market prices, nearby markets, price trends, selling recommendations, and price notifications.
+The objective is to provide speech-to-text, text-to-speech, voice chat, and voice commands for hands-free farming assistance.
 
 ---
 
@@ -54,11 +54,10 @@ The objective is to provide real-time market prices, nearby markets, price trend
 
 Responsible for:
 
-- Market price data API
-- Nearby markets API
-- Price trends analysis
-- Selling recommendations
-- Price notifications
+- Speech-to-text API integration
+- Text-to-speech API integration
+- Voice chat endpoint
+- Voice command parsing
 - Backend infrastructure
 
 ---
@@ -67,11 +66,10 @@ Responsible for:
 
 Responsible for:
 
-- Market prices UI
-- Nearby markets map
-- Price trends charts
-- Selling recommendations cards
-- Price notifications UI
+- Voice assistant UI components
+- Audio recording interface
+- Voice feedback indicators
+- Voice command interface
 
 ---
 
@@ -79,12 +77,11 @@ Responsible for:
 
 The milestone is complete only when:
 
-- Market prices API works
-- Nearby markets API works
-- Price trends API works
-- Selling recommendations work
-- Price notifications work
-- Frontend displays market data
+- Speech-to-text API works
+- Text-to-speech API works
+- Voice chat endpoint works
+- Voice command parsing works
+- Frontend can record and process voice
 - Tests passing
 - Lint passing
 - Type checking passing
@@ -96,10 +93,9 @@ The milestone is complete only when:
 
 Do NOT implement:
 
-- Voice Assistant
 - Farm Memory
 - Government Schemes
-- Notifications (beyond price alerts)
+- Market Intelligence (already complete)
 
 These belong to later milestones.
 
@@ -122,21 +118,18 @@ Never begin coding before reading them.
 
 OpenCode should deliver:
 
-- Market prices API
-- Nearby markets API
-- Price trends API
-- Selling recommendations API
-- Price notifications API
+- Speech-to-text API
+- Text-to-speech API
+- Voice chat endpoint
+- Voice command parser
 - Backend tests
 - Updated documentation
 
 Antigravity should deliver:
 
-- Market prices UI
-- Nearby markets UI
-- Price trends UI
-- Selling recommendations UI
-- Price notifications UI
+- Voice assistant UI
+- Audio recording components
+- Voice feedback indicators
 - Frontend tests
 
 ---

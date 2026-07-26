@@ -36,6 +36,11 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     label: "Disease Detection",
     href: "/disease",
   },
+  {
+    id: "market",
+    label: "Market Intelligence",
+    href: "/market",
+  },
 ];
 
 export const NAV_SECTIONS: NavSection[] = [

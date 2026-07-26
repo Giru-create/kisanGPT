@@ -10,6 +10,25 @@ This project follows a milestone-based development workflow.
 
 ## Added
 
+### Market Intelligence (Phase 6 — OpenCode)
+
+- **Market Provider Abstraction**: `MarketDataProvider` ABC + `MockMarketProvider` for development/testing (`app/agents/market.py`).
+- **Market Schemas**: `CommodityPrice`, `PriceTrend`, `MarketPriceResponse`, `MarketTrendResponse`, `PriceAlert`, `PriceAlertCreate`, `PriceAlertResponse`, `MarketOverview` Pydantic models (`app/schemas/market.py`).
+- **Market Service**: Orchestrates market data fetching, caching (TTLCache), and price alert management (`app/services/market.py`).
+- **Market Endpoints**: `GET /api/v1/market/prices`, `GET /api/v1/market/trend`, `GET /api/v1/market/overview`, `POST /api/v1/market/alerts`, `GET /api/v1/market/alerts`, `DELETE /api/v1/market/alerts/{id}` (`app/api/v1/market.py`).
+- **Market Config**: Added `MARKET_CACHE_TTL` and `MARKET_TIMEOUT` settings (`app/core/config.py`).
+- **Market Tests**: 19 tests for provider, service, and schemas (`tests/test_market.py`, `tests/test_market_schemas.py`).
+
+### Market Intelligence (Phase 6 — Antigravity)
+
+- **Market Types**: `CommodityPrice`, `PriceTrend`, `PriceAlert`, `MarketOverview`, UI state types (`features/market/types/market.types.ts`).
+- **Market Store**: Zustand slice with overview, price list, trend state, and commodity selection (`features/market/store/marketStore.ts`).
+- **useMarket Hook**: Wires store to mock data with commodity selection, overview, prices, and trend loading (`features/market/hooks/useMarket.ts`).
+- **Market Components**: `MarketOverviewCard`, `CommoditySelector`, `PriceListTable`, `TrendChart` (SVG sparkline), `MarketSkeleton`, `MarketError`, `MarketEmpty` (`features/market/components/`).
+- **Market Page**: `/market` route with animated state transitions (`app/market/page.tsx`).
+- **Dashboard Integration**: `MandiPricesWidget` now fetches live data from market store instead of hardcoded props.
+- **Navigation**: Added "Market Intelligence" link to sidebar navigation.
+
 ### Authentication & AI Chat (OpenCode)
 
 - **Firebase Authentication**: Firebase Admin SDK integration with token verification, `get_current_user` dependency for protected routes (`app/core/security.py`).

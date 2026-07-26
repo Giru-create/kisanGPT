@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     DISEASE_TIMEOUT: float = 60.0
     DISEASE_CACHE_TTL: int = 3600
 
+    MARKET_CACHE_TTL: int = 300
+    MARKET_TIMEOUT: float = 10.0
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 

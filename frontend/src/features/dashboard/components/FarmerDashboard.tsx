@@ -114,8 +114,8 @@ export const FarmerDashboard: React.FC = () => {
               {/* Section 4: Crop Health Diagnostics */}
               <CropHealthWidget fields={dashboardState.data.cropFields} />
 
-              {/* Section 5: APMC Mandi Market Prices */}
-              <MandiPricesWidget prices={dashboardState.data.mandiPrices} />
+              {/* Section 5: APMC Mandi Market Prices (live data from market store) */}
+              <MandiPricesWidget />
 
               {/* Section 6: Government Schemes & Subsidies */}
               <GovtSchemesWidget schemes={dashboardState.data.schemes} />

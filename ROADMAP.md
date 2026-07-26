@@ -14,11 +14,11 @@
 
 **Project Name:** KisanGPT
 
-**Current Phase:** 🟢 Phase 6 — Market Intelligence
+**Current Phase:** 🟢 Phase 8 — Voice Assistant
 
-**Current Milestone:** Milestone 7
+**Current Milestone:** Milestone 8
 
-**Overall Progress:** 50%
+**Overall Progress:** 58%
 
 **Status:** 🟡 In Progress
 
@@ -181,23 +181,23 @@ Tasks
 
 # Phase 7 — Market Intelligence
 
-Status: 🟡 In Progress
+Status: ✅ Complete
 
 ## Milestone 7
 
 Tasks
 
-- [ ] Market Prices
-- [ ] Nearby Markets
-- [ ] Price Trends
-- [ ] Selling Recommendations
-- [ ] Price Notifications
+- [x] Market Prices
+- [x] Nearby Markets
+- [x] Price Trends
+- [x] Selling Recommendations
+- [x] Price Notifications
 
 ---
 
 # Phase 8 — Voice Assistant
 
-Status: ⏳ Pending
+Status: 🟡 In Progress
 
 ## Milestone 8
 
@@ -311,15 +311,15 @@ Responsible for:
 
 🎯 Active Phase
 
-Phase 7 — Market Intelligence
+Phase 8 — Voice Assistant
 
 🎯 Active Milestone
 
-Milestone 7
+Milestone 8
 
 🎯 Current Task
 
-Implement market price data, nearby markets, price trends, selling recommendations, and price notifications.
+Implement speech-to-text, text-to-speech, voice chat, and voice commands.
 
 Do not begin feature implementation until approved.
 
@@ -349,7 +349,8 @@ Before marking any milestone complete:
 | 2026-07-22 | Phase 3 — Frontend Foundation | ✅ |
 | 2026-07-23 | Phase 5 — Crop Disease Detection | ✅ |
 | 2026-07-24 | Phase 6 — Weather Intelligence | ✅ |
-| 2026-07-25 | Phase 7 — Market Intelligence | 🟡 |
+| 2026-07-25 | Phase 7 — Market Intelligence | ✅ |
+| 2026-07-26 | Phase 8 — Voice Assistant | 🟡 |
 
 ---
 
