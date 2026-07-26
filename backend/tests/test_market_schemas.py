@@ -5,12 +5,16 @@ from pydantic import ValidationError
 
 from app.schemas.market import (
     CommodityPrice,
+    MarketAdvice,
+    MarketAdviceResponse,
+    MarketHistoryResponse,
     MarketOverview,
     MarketPriceResponse,
     MarketTrendResponse,
     PriceAlert,
     PriceAlertCreate,
     PriceAlertResponse,
+    PriceHistoryItem,
     PriceTrend,
 )
 
@@ -155,3 +159,69 @@ class TestMarketOverview:
             generated_at="2026-01-01T00:00:00Z",
         )
         assert o.generated_at == "2026-01-01T00:00:00Z"
+
+
+class TestPriceHistoryItem:
+    def test_valid(self) -> None:
+        h = PriceHistoryItem(
+            date="2026-01-01",
+            price=2275.0,
+            mandi_name="Karnal Mandi",
+        )
+        assert h.price == 2275.0
+        assert h.mandi_name == "Karnal Mandi"
+
+
+class TestMarketHistoryResponse:
+    def test_valid(self) -> None:
+        r = MarketHistoryResponse(
+            commodity="Wheat",
+            mandi="Karnal Mandi",
+            history=[],
+            total_count=0,
+        )
+        assert r.commodity == "Wheat"
+        assert r.total_count == 0
+
+
+class TestMarketAdvice:
+    def test_valid_info(self) -> None:
+        a = MarketAdvice(
+            category="price",
+            title="Price Above MSP",
+            message="Good time to sell",
+            severity="info",
+        )
+        assert a.severity == "info"
+
+    def test_valid_warning(self) -> None:
+        a = MarketAdvice(
+            category="trend",
+            title="Price Falling",
+            message="Sell quickly",
+            severity="warning",
+        )
+        assert a.severity == "warning"
+
+    def test_invalid_severity(self) -> None:
+        with pytest.raises(ValidationError):
+            MarketAdvice(
+                category="price",
+                title="Test",
+                message="Test",
+                severity="invalid",
+            )
+
+
+class TestMarketAdviceResponse:
+    def test_valid(self) -> None:
+        r = MarketAdviceResponse(
+            commodity="Wheat",
+            current_price=2275.0,
+            msp=2250.0,
+            trend="rising",
+            advice=[],
+            generated_at="2026-01-01T00:00:00Z",
+        )
+        assert r.commodity == "Wheat"
+        assert r.current_price == 2275.0

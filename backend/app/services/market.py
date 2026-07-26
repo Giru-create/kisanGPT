@@ -9,11 +9,15 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.schemas.market import (
     CommodityPrice,
+    MarketAdvice,
+    MarketAdviceResponse,
+    MarketHistoryResponse,
     MarketOverview,
     MarketPriceResponse,
     MarketTrendResponse,
     PriceAlert,
     PriceAlertCreate,
+    PriceHistoryItem,
     PriceTrend,
 )
 
@@ -148,6 +152,186 @@ class MarketService:
                 alert.is_active = False
                 return True
         return False
+
+    async def get_history(
+        self, commodity: str, mandi: str, days: int = 30
+    ) -> dict[str, object]:
+        cache_key = f"history:{commodity}:{mandi}:{days}"
+        cached = self._cache.get(cache_key)
+        if cached is not None:
+            logger.info("Market history cache hit", extra={"key": cache_key})
+            return cached  # type: ignore[return-value]
+
+        try:
+            raw_trend = await self._provider.get_trend(commodity, days)
+        except Exception:
+            logger.exception("Failed to fetch market history")
+            raise
+
+        history = []
+        if raw_trend:
+            dates = raw_trend.get("dates", [])
+            prices = raw_trend.get("prices", [])
+            for date, price in zip(dates, prices, strict=False):
+                history.append(
+                    PriceHistoryItem(
+                        date=str(date),
+                        price=float(price),
+                        mandi_name=mandi,
+                    ).model_dump()
+                )
+
+        result = MarketHistoryResponse(
+            commodity=commodity,
+            mandi=mandi,
+            history=[PriceHistoryItem(**h) for h in history],
+            total_count=len(history),
+        ).model_dump(mode="json")
+
+        self._cache.set(cache_key, result)
+        return result
+
+    async def get_advice(self, commodity: str) -> dict[str, object]:
+        cache_key = f"advice:{commodity}"
+        cached = self._cache.get(cache_key)
+        if cached is not None:
+            logger.info("Market advice cache hit", extra={"key": cache_key})
+            return cached  # type: ignore[return-value]
+
+        try:
+            raw_prices = await self._provider.get_prices(commodity)
+            raw_trend = await self._provider.get_trend(commodity, 30)
+        except Exception:
+            logger.exception("Failed to generate market advice")
+            raise
+
+        if not raw_prices:
+            return MarketAdviceResponse(
+                commodity=commodity,
+                current_price=0,
+                msp=0,
+                trend="stable",
+                advice=[],
+                generated_at=datetime.now(UTC).isoformat(),
+            ).model_dump(mode="json")
+
+        first_price = raw_prices[0]
+        current_price = float(first_price["price_per_quintal"])
+        msp = float(first_price.get("msp", 0))
+        trend_direction = (
+            raw_trend.get("trend_direction", "stable") if raw_trend else "stable"
+        )
+
+        advice_items = _generate_market_advice(
+            commodity=commodity,
+            current_price=current_price,
+            msp=msp,
+            trend=trend_direction,
+        )
+
+        result = MarketAdviceResponse(
+            commodity=commodity,
+            current_price=current_price,
+            msp=msp,
+            trend=trend_direction,
+            advice=advice_items,
+            generated_at=datetime.now(UTC).isoformat(),
+        ).model_dump(mode="json")
+
+        self._cache.set(cache_key, result)
+        return result
+
+
+def _generate_market_advice(
+    commodity: str,
+    current_price: float,
+    msp: float,
+    trend: str,
+) -> list[MarketAdvice]:
+    advice: list[MarketAdvice] = []
+
+    if msp > 0:
+        diff = current_price - msp
+        diff_pct = (diff / msp) * 100
+
+        if diff_pct > 10:
+            advice.append(
+                MarketAdvice(
+                    category="price",
+                    title=f"{commodity} Price Above MSP",
+                    message=(
+                        f"Current price ₹{current_price:.0f}/qnt is "
+                        f"{diff_pct:.1f}% above MSP (₹{msp:.0f}/qnt). "
+                        f"Good time to sell."
+                    ),
+                    severity="info",
+                )
+            )
+        elif diff_pct < -5:
+            advice.append(
+                MarketAdvice(
+                    category="price",
+                    title=f"{commodity} Price Below MSP",
+                    message=(
+                        f"Current price ₹{current_price:.0f}/qnt is "
+                        f"{abs(diff_pct):.1f}% below MSP (₹{msp:.0f}/qnt). "
+                        f"Consider holding or checking government procurement."
+                    ),
+                    severity="warning",
+                )
+            )
+
+    if trend == "rising":
+        advice.append(
+            MarketAdvice(
+                category="trend",
+                title="Price Rising Trend",
+                message=(
+                    f"{commodity} prices are trending upward. "
+                    f"Consider selling soon to maximize returns."
+                ),
+                severity="info",
+            )
+        )
+    elif trend == "falling":
+        advice.append(
+            MarketAdvice(
+                category="trend",
+                title="Price Falling Trend",
+                message=(
+                    f"{commodity} prices are trending downward. "
+                    f"If you need to sell, do so quickly to avoid further losses."
+                ),
+                severity="warning",
+            )
+        )
+    elif trend == "volatile":
+        advice.append(
+            MarketAdvice(
+                category="trend",
+                title="Price Volatility",
+                message=(
+                    f"{commodity} prices are volatile. "
+                    f"Monitor closely and sell when prices stabilize."
+                ),
+                severity="warning",
+            )
+        )
+
+    if not advice:
+        advice.append(
+            MarketAdvice(
+                category="general",
+                title="Stable Market Conditions",
+                message=(
+                    f"{commodity} prices are stable. "
+                    f"Good conditions for planned selling."
+                ),
+                severity="info",
+            )
+        )
+
+    return advice
 
 
 market_service = MarketService()

@@ -180,3 +180,98 @@ export const MOCK_TREND_DATA = {
     price_range: 200,
   },
 };
+
+// ---------------------------------------------------------------------------
+// Mock AI recommendation data
+// ---------------------------------------------------------------------------
+
+export const MOCK_AI_RECOMMENDATION = {
+  type: "sell_now" as const,
+  commodity: "Wheat",
+  confidence: 91,
+  headline: "Sell Now — 30-Day Price Peak",
+  rationale:
+    "Karnal Mandi wheat prices are at a 30-day peak of ₹2,275/qtl. Expected high arrivals over the next 3–4 days may compress prices by 3–5%. Festival procurement demand is currently supporting prices — ideal window to sell.",
+  net_gain_per_quintal: undefined,
+  suggested_mandi: undefined,
+  sell_within_days: 2,
+  generated_at: new Date().toISOString(),
+};
+
+// ---------------------------------------------------------------------------
+// Mock nearby mandis
+// ---------------------------------------------------------------------------
+
+export const MOCK_NEARBY_MANDIS = [
+  {
+    name: "Karnal APMC Mandi",
+    district: "Karnal",
+    distance_km: 0,
+    modal_price: 2275,
+    has_cold_storage: false,
+    has_enam: true,
+  },
+  {
+    name: "Sonipat Mandi",
+    district: "Sonipat",
+    distance_km: 22,
+    modal_price: 2260,
+    has_cold_storage: false,
+    has_enam: true,
+  },
+  {
+    name: "Panipat Mandi",
+    district: "Panipat",
+    distance_km: 38,
+    modal_price: 2245,
+    has_cold_storage: true,
+    has_enam: false,
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Mock price history data
+// ---------------------------------------------------------------------------
+
+export const MOCK_HISTORY_DATA = {
+  commodity: "Wheat",
+  mandi: "Karnal Mandi",
+  history: Array.from({ length: 30 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - 29 + i);
+    return {
+      date: d.toISOString().split("T")[0] ?? "",
+      price: 2200 + Math.round(Math.sin(i / 5) * 50 + i * 2),
+      mandi_name: "Karnal Mandi",
+    };
+  }),
+  total_count: 30,
+};
+
+// ---------------------------------------------------------------------------
+// Mock market advice data
+// ---------------------------------------------------------------------------
+
+export const MOCK_ADVICE_DATA = {
+  commodity: "Wheat",
+  current_price: 2275,
+  msp: 2250,
+  trend: "rising" as const,
+  advice: [
+    {
+      category: "price",
+      title: "Wheat Price Above MSP",
+      message:
+        "Current price ₹2,275/qnt is 1.1% above MSP (₹2,250/qnt). Good time to sell.",
+      severity: "info" as const,
+    },
+    {
+      category: "trend",
+      title: "Price Rising Trend",
+      message:
+        "Wheat prices are trending upward. Consider selling soon to maximize returns.",
+      severity: "info" as const,
+    },
+  ],
+  generated_at: new Date().toISOString(),
+};

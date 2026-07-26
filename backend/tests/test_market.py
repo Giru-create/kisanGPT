@@ -74,3 +74,29 @@ class TestMockMarketProvider:
         assert "Wheat" in commodities
         assert "Mustard" in commodities
         assert len(commodities) >= 8
+
+
+class TestMarketService:
+    @pytest.mark.asyncio
+    async def test_get_history_returns_data(self) -> None:
+        from app.services.market import MarketService
+
+        service = MarketService()
+        result = await service.get_history("Wheat", "Karnal Mandi", days=30)
+        assert result["commodity"] == "Wheat"
+        assert result["mandi"] == "Karnal Mandi"
+        assert result["total_count"] == 30
+        assert len(result["history"]) == 30
+
+    @pytest.mark.asyncio
+    async def test_get_advice_returns_data(self) -> None:
+        from app.services.market import MarketService
+
+        service = MarketService()
+        result = await service.get_advice("Wheat")
+        assert result["commodity"] == "Wheat"
+        assert "current_price" in result
+        assert "msp" in result
+        assert "trend" in result
+        assert "advice" in result
+        assert len(result["advice"]) > 0

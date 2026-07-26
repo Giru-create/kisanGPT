@@ -60,6 +60,50 @@ export interface PriceAlert {
 }
 
 // ---------------------------------------------------------------------------
+// Alert notification channels
+// ---------------------------------------------------------------------------
+
+export type AlertChannel = "sms" | "whatsapp" | "push";
+
+export interface PriceAlertDraft {
+  commodity: string;
+  target_price: number;
+  condition: AlertCondition;
+  channels: AlertChannel[];
+}
+
+// ---------------------------------------------------------------------------
+// AI Selling Recommendation
+// ---------------------------------------------------------------------------
+
+export type RecommendationType = "sell_now" | "hold" | "alternative_mandi";
+
+export interface AIRecommendation {
+  type: RecommendationType;
+  commodity: string;
+  confidence: number; // 0-100
+  headline: string;
+  rationale: string;
+  net_gain_per_quintal?: number;
+  suggested_mandi?: string;
+  sell_within_days?: number;
+  generated_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Nearby mandi
+// ---------------------------------------------------------------------------
+
+export interface NearbyMandi {
+  name: string;
+  district: string;
+  distance_km: number;
+  modal_price: number;
+  has_cold_storage: boolean;
+  has_enam: boolean;
+}
+
+// ---------------------------------------------------------------------------
 // Market overview
 // ---------------------------------------------------------------------------
 
@@ -106,4 +150,69 @@ export type TrendUIState =
   | { status: "idle" }
   | { status: "loading" }
   | { status: "success"; data: MarketTrendResponse }
+  | { status: "error"; message: string };
+
+// ---------------------------------------------------------------------------
+// Price history
+// ---------------------------------------------------------------------------
+
+export interface PriceHistoryItem {
+  date: string;
+  price: number;
+  mandi_name: string;
+}
+
+export interface MarketHistoryResponse {
+  commodity: string;
+  mandi: string;
+  history: PriceHistoryItem[];
+  total_count: number;
+}
+
+// ---------------------------------------------------------------------------
+// Market advice
+// ---------------------------------------------------------------------------
+
+export type AdviceSeverity = "info" | "warning" | "danger";
+
+export interface MarketAdvice {
+  category: string;
+  title: string;
+  message: string;
+  severity: AdviceSeverity;
+}
+
+export interface MarketAdviceResponse {
+  commodity: string;
+  current_price: number;
+  msp: number;
+  trend: TrendDirection;
+  advice: MarketAdvice[];
+  generated_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Mandi (for selector)
+// ---------------------------------------------------------------------------
+
+export interface Mandi {
+  name: string;
+  district: string;
+  state: string;
+}
+
+// ---------------------------------------------------------------------------
+// UI state variants for new features
+// ---------------------------------------------------------------------------
+
+export type HistoryUIState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: MarketHistoryResponse }
+  | { status: "error"; message: string };
+
+export type AdviceUIState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: MarketAdviceResponse }
   | { status: "error"; message: string };

@@ -69,3 +69,32 @@ class MarketOverview(BaseModel):
     rising: list[CommodityPrice]
     falling: list[CommodityPrice]
     generated_at: str
+
+
+class PriceHistoryItem(BaseModel):
+    date: str
+    price: float
+    mandi_name: str
+
+
+class MarketHistoryResponse(BaseModel):
+    commodity: str
+    mandi: str
+    history: list[PriceHistoryItem]
+    total_count: int
+
+
+class MarketAdvice(BaseModel):
+    category: str
+    title: str
+    message: str
+    severity: str = Field(..., pattern=r"^(info|warning|danger)$")
+
+
+class MarketAdviceResponse(BaseModel):
+    commodity: str
+    current_price: float
+    msp: float
+    trend: str
+    advice: list[MarketAdvice]
+    generated_at: str
