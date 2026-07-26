@@ -350,7 +350,10 @@ export const MarketPage: React.FC = () => {
                       </p>
                     </div>
                   ) : (
-                    <ul className="space-y-2" aria-label="Your active price alerts">
+                    <ul
+                      className="space-y-2"
+                      aria-label="Your active price alerts"
+                    >
                       {activeAlerts.map((alert) => (
                         <li
                           key={alert.id}
@@ -371,7 +374,9 @@ export const MarketPage: React.FC = () => {
                             aria-label={`Remove price alert for ${alert.commodity}`}
                             className="flex items-center justify-center h-8 w-8 min-h-[44px] min-w-[44px] rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           >
-                            <span aria-hidden="true" className="text-sm">✕</span>
+                            <span aria-hidden="true" className="text-sm">
+                              ✕
+                            </span>
                           </button>
                         </li>
                       ))}

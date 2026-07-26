@@ -30,7 +30,11 @@ export const AVAILABLE_MANDIS: Mandi[] = [
   { name: "Patna Mandi", district: "Patna", state: "Bihar" },
 ];
 
-const DEFAULT_MANDI: Mandi = { name: "Karnal Mandi", district: "Karnal", state: "Haryana" };
+const DEFAULT_MANDI: Mandi = {
+  name: "Karnal Mandi",
+  district: "Karnal",
+  state: "Haryana",
+};
 
 // ---------------------------------------------------------------------------
 // Store shape
@@ -111,7 +115,7 @@ export const useMarketStore = create<MarketStore>((set) => ({
       historyState: { status: "idle" },
       adviceState: { status: "idle" },
       selectedCommodity: "Wheat",
-  selectedMandi: DEFAULT_MANDI,
+      selectedMandi: DEFAULT_MANDI,
       allPrices: [],
       activeAlerts: [],
       isAlertDialogOpen: false,

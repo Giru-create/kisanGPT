@@ -111,9 +111,7 @@ class DashboardService:
                         commodity=str(c.get("commodity", "")),
                         variety=str(c.get("variety", "")),
                         mandi_name=str(c.get("mandi_name", "")),
-                        price_per_quintal=float(
-                            c.get("price_per_quintal", 0)
-                        ),
+                        price_per_quintal=float(c.get("price_per_quintal", 0)),
                         change_amount=float(c.get("change_amount", 0)),
                         change_percent=float(c.get("change_percent", 0)),
                         is_rise=bool(c.get("is_rise", True)),
