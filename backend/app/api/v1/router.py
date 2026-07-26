@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.api.v1.auth import router as auth_router
 from app.api.v1.chat import router as chat_router
+from app.api.v1.dashboard import router as dashboard_router
 from app.api.v1.disease import router as disease_router
 from app.api.v1.health import router as health_router
 from app.api.v1.market import router as market_router
@@ -17,3 +18,4 @@ router.include_router(weather_router, prefix="/weather", tags=["weather"])
 router.include_router(disease_router, prefix="/disease", tags=["disease"])
 router.include_router(market_router, prefix="/market", tags=["market"])
 router.include_router(voice_router, prefix="/voice", tags=["voice"])
+router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])

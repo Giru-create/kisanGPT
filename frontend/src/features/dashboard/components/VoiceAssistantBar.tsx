@@ -34,11 +34,11 @@ export const VoiceAssistantBar: React.FC = () => {
     <section
       role="region"
       aria-label="Hands-free Voice Assistant"
-      className="relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-4 shadow-md"
+      className="relative overflow-hidden rounded-2xl border border-primary/30 bg-card p-4 sm:p-5 shadow-md"
     >
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Left Info Column */}
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-3.5 w-full sm:w-auto">
           <div className="relative shrink-0">
             <Button
               variant="primary"
@@ -49,11 +49,11 @@ export const VoiceAssistantBar: React.FC = () => {
                 isListening
                   ? "Stop voice assistant listening"
                   : isProcessing
-                    ? "Processing voice..."
+                    ? "Processing voice query..."
                     : "Start voice assistant listening in " + langLabel
               }
               aria-pressed={isListening}
-              className={`h-14 w-14 rounded-full p-0 flex items-center justify-center transition-all ${
+              className={`h-14 w-14 min-h-[56px] min-w-[56px] rounded-full p-0 flex items-center justify-center transition-all focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 isListening
                   ? "bg-red-600 hover:bg-red-700 ring-4 ring-red-500/30 scale-105"
                   : isProcessing
@@ -65,15 +65,16 @@ export const VoiceAssistantBar: React.FC = () => {
                 <MicOff
                   size={24}
                   className="text-white motion-safe:animate-pulse"
+                  aria-hidden="true"
                 />
               ) : (
-                <Mic size={24} className="text-white" />
+                <Mic size={24} className="text-white" aria-hidden="true" />
               )}
             </Button>
             {isListening && (
               <span
                 aria-hidden="true"
-                className="absolute -top-1 -right-1 flex h-4 w-4"
+                className="absolute -top-1 -right-1 flex h-4 w-4 pointer-events-none"
               >
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500" />
@@ -84,38 +85,44 @@ export const VoiceAssistantBar: React.FC = () => {
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <Sparkles
-                size={14}
-                className="text-amber-500"
+                size={16}
+                className="text-amber-500 shrink-0"
                 aria-hidden="true"
               />
-              <h2 className="font-bold text-base text-foreground leading-tight">
+              <h2 className="font-extrabold text-base text-foreground leading-tight">
                 KisanGPT Voice Assistant
               </h2>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium">
               {isListening
-                ? "Listening... Speak your query clearly"
+                ? "Listening... Speak your crop query clearly"
                 : isProcessing
-                  ? "Processing..."
+                  ? "Processing query..."
                   : "Tap microphone to speak in " + langLabel}
             </p>
           </div>
         </div>
 
         {/* Right Controls */}
-        <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-          <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-border/40">
+          <div
+            role="group"
+            aria-label="Select voice language"
+            className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl"
+          >
             <Volume2
-              size={14}
-              className="text-muted-foreground ml-2 hidden sm:inline"
+              size={16}
+              className="text-muted-foreground ml-2 hidden sm:inline shrink-0"
               aria-hidden="true"
             />
             {VOICE_LANGUAGES.map((lang) => (
               <button
                 key={lang.code}
+                type="button"
                 onClick={() => setLanguage(lang.code)}
                 aria-label={`Select ${lang.label} language for voice interaction`}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all min-h-[36px] ${
+                aria-pressed={language === lang.code}
+                className={`px-3.5 py-2.5 text-xs font-bold rounded-lg transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   language === lang.code
                     ? "bg-card text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -128,9 +135,10 @@ export const VoiceAssistantBar: React.FC = () => {
 
           <Link
             href="/voice"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+            aria-label="Open full Voice Assistant screen"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl px-3 py-2.5 min-h-[48px] shrink-0"
           >
-            Full View <ArrowUpRight size={12} />
+            Full View <ArrowUpRight size={14} aria-hidden="true" />
           </Link>
         </div>
       </div>

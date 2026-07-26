@@ -31,16 +31,16 @@ export const AIChatShortcutWidget: React.FC = () => {
     <section
       role="region"
       aria-label="AI Farming Assistant Search"
-      className="rounded-2xl border border-border bg-card p-4 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Bot size={18} className="text-primary" aria-hidden="true" />
-          <h2 className="font-semibold text-sm text-foreground">
+          <Bot size={20} className="text-primary shrink-0" aria-hidden="true" />
+          <h2 className="font-extrabold text-sm sm:text-base text-foreground">
             Ask KisanGPT AI Assistant
           </h2>
         </div>
-        <span className="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
+        <span className="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full">
           24/7 Active
         </span>
       </div>
@@ -57,35 +57,42 @@ export const AIChatShortcutWidget: React.FC = () => {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask about crops, diseases, fertilizers, or prices..."
+            placeholder="Ask about crops, diseases, fertilizers, or mandi prices..."
             aria-label="Ask KisanGPT AI assistant a question"
-            className="flex h-12 min-h-[48px] w-full rounded-xl border border-input bg-background pl-10 pr-12 text-base font-normal text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
+            className="flex h-12 min-h-[48px] w-full rounded-xl border border-input bg-background pl-10 pr-14 text-sm sm:text-base font-normal text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
           />
           <button
             type="submit"
             aria-label="Send search query to KisanGPT Chat"
-            className="absolute right-2 h-9 w-9 rounded-lg bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="absolute right-1.5 h-10 w-10 min-h-[48px] min-w-[48px] rounded-lg bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <ArrowRight size={18} />
+            <ArrowRight size={18} aria-hidden="true" />
           </button>
         </div>
       </form>
 
       {/* Suggested Quick Prompt Chips */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-        <span className="text-muted-foreground shrink-0 font-medium text-[11px]">
+        <span className="text-muted-foreground shrink-0 font-semibold text-xs">
           Try asking:
         </span>
-        {QUICK_PROMPTS.map((prompt, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleChipClick(prompt)}
-            aria-label={`Ask AI: ${prompt}`}
-            className="shrink-0 rounded-full border border-border bg-muted/50 px-3 py-1.5 font-medium text-foreground hover:bg-accent hover:border-primary/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[36px]"
-          >
-            {prompt}
-          </button>
-        ))}
+        <div
+          role="group"
+          aria-label="Suggested quick questions"
+          className="flex items-center gap-2"
+        >
+          {QUICK_PROMPTS.map((prompt, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => handleChipClick(prompt)}
+              aria-label={`Ask AI: ${prompt}`}
+              className="shrink-0 rounded-full border border-border bg-muted/50 px-3.5 py-2.5 font-semibold text-xs text-foreground hover:bg-accent hover:border-primary/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[48px]"
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );

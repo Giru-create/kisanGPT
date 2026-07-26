@@ -29,29 +29,30 @@ export const GreetingHeader: React.FC<GreetingHeaderProps> = ({
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
           <Sun
-            size={20}
+            size={22}
             className="text-amber-500 shrink-0"
             aria-hidden="true"
           />
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">
             {profile.greetingPrefix}, {profile.name}!
           </h1>
         </div>
-        <p className="text-xs sm:text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm font-medium text-muted-foreground">
           {profile.activeCrop} · {profile.farmSizeAcres} Acres (
           {profile.cropSeason})
         </p>
       </div>
 
-      {/* Farm Location Pill */}
+      {/* Farm Location Pill & Status */}
       <div className="flex items-center gap-2 shrink-0">
         <button
+          type="button"
           onClick={onSelectLocation}
-          aria-label={`Active farm location: ${profile.village}, ${profile.district}. Tap to change location.`}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+          aria-label={`Active farm location: ${profile.village}, ${profile.district}. Click to change location.`}
+          className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-foreground shadow-sm hover:bg-accent hover:border-primary/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[48px]"
         >
           <MapPin
-            size={14}
+            size={16}
             className="text-primary shrink-0"
             aria-hidden="true"
           />
@@ -60,8 +61,15 @@ export const GreetingHeader: React.FC<GreetingHeaderProps> = ({
           </span>
         </button>
 
-        <Badge variant="success" className="text-xs py-1.5 px-3">
-          <Sprout size={12} className="mr-1 inline" aria-hidden="true" />
+        <Badge
+          variant="success"
+          className="text-xs py-2 px-3 min-h-[48px] inline-flex items-center"
+        >
+          <Sprout
+            size={14}
+            className="mr-1 inline shrink-0"
+            aria-hidden="true"
+          />
           Active
         </Badge>
       </div>

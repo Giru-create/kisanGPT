@@ -32,14 +32,14 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     href: "/weather",
   },
   {
-    id: "disease",
-    label: "Disease Detection",
-    href: "/disease",
-  },
-  {
     id: "market",
     label: "Market Intelligence",
     href: "/market",
+  },
+  {
+    id: "disease",
+    label: "Disease Detection",
+    href: "/disease",
   },
   {
     id: "voice",

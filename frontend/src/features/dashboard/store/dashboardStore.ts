@@ -13,6 +13,8 @@ interface DashboardStore {
   setDashboardState: (state: DashboardUIState) => void;
   dismissEmergencyAlert: (alertId: string) => void;
   markNotificationRead: (id: string) => void;
+  markAllNotificationsRead: () => void;
+  updateProfileLocation: (village: string, district: string) => void;
   reset: () => void;
 }
 
@@ -39,6 +41,47 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
           data: {
             ...state.dashboardState.data,
             notifications: updatedNotifs,
+          },
+        },
+      };
+    }),
+
+  markAllNotificationsRead: () =>
+    set((state) => {
+      if (state.dashboardState.status !== "success") return state;
+
+      const updatedNotifs = state.dashboardState.data.notifications.map(
+        (n) => ({
+          ...n,
+          read: true,
+        }),
+      );
+
+      return {
+        dashboardState: {
+          status: "success",
+          data: {
+            ...state.dashboardState.data,
+            notifications: updatedNotifs,
+          },
+        },
+      };
+    }),
+
+  updateProfileLocation: (village, district) =>
+    set((state) => {
+      if (state.dashboardState.status !== "success") return state;
+
+      return {
+        dashboardState: {
+          status: "success",
+          data: {
+            ...state.dashboardState.data,
+            profile: {
+              ...state.dashboardState.data.profile,
+              village,
+              district,
+            },
           },
         },
       };
