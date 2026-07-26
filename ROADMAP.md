@@ -14,11 +14,11 @@
 
 **Project Name:** KisanGPT
 
-**Current Phase:** 🟢 Phase 8 — Voice Assistant
+**Current Phase:** 🟢 Phase 9 — Farm Memory
 
-**Current Milestone:** Milestone 8
+**Current Milestone:** Milestone 9
 
-**Overall Progress:** 58%
+**Overall Progress:** 67%
 
 **Status:** 🟡 In Progress
 
@@ -197,22 +197,22 @@ Tasks
 
 # Phase 8 — Voice Assistant
 
-Status: 🟡 In Progress
+Status: ✅ Complete
 
 ## Milestone 8
 
 Tasks
 
-- [ ] Speech to Text
-- [ ] Text to Speech
-- [ ] Voice Chat
-- [ ] Voice Commands
+- [x] Speech to Text
+- [x] Text to Speech
+- [x] Voice Chat
+- [x] Voice Commands
 
 ---
 
 # Phase 9 — Farm Memory
 
-Status: ⏳ Pending
+Status: 🟡 In Progress
 
 ## Milestone 9
 
@@ -311,15 +311,15 @@ Responsible for:
 
 🎯 Active Phase
 
-Phase 8 — Voice Assistant
+Phase 9 — Farm Memory
 
 🎯 Active Milestone
 
-Milestone 8
+Milestone 9
 
 🎯 Current Task
 
-Implement speech-to-text, text-to-speech, voice chat, and voice commands.
+Implement ChromaDB integration, long-term memory, personalized context, and recommendation engine.
 
 Do not begin feature implementation until approved.
 
@@ -350,7 +350,8 @@ Before marking any milestone complete:
 | 2026-07-23 | Phase 5 — Crop Disease Detection | ✅ |
 | 2026-07-24 | Phase 6 — Weather Intelligence | ✅ |
 | 2026-07-25 | Phase 7 — Market Intelligence | ✅ |
-| 2026-07-26 | Phase 8 — Voice Assistant | 🟡 |
+| 2026-07-26 | Phase 8 — Voice Assistant | ✅ |
+| 2026-07-27 | Phase 9 — Farm Memory | 🟡 |
 
 ---
 

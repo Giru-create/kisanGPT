@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     MARKET_CACHE_TTL: int = 300
     MARKET_TIMEOUT: float = 10.0
 
+    VOICE_STT_TIMEOUT: float = 30.0
+    VOICE_TTS_TIMEOUT: float = 30.0
+    VOICE_SUPPORTED_LANGUAGES: list[str] = ["hi-IN", "pa-IN", "en-US"]
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 

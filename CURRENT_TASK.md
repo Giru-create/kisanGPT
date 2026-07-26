@@ -14,19 +14,19 @@
 
 **Status:** 🟡 Active Development
 
-**Current Version:** 0.3.0
+**Current Version:** 0.4.0
 
 ---
 
 # Current Phase
 
-🟢 Phase 8 — Voice Assistant
+🟢 Phase 9 — Farm Memory
 
 ---
 
 # Current Milestone
 
-Milestone 8 — Voice Assistant
+Milestone 9 — Farm Memory
 
 Status: **In Progress**
 
@@ -42,9 +42,9 @@ Status: **In Progress**
 
 # Objective
 
-Implement voice interaction features for farmers.
+Implement farm memory features for personalized farming assistance.
 
-The objective is to provide speech-to-text, text-to-speech, voice chat, and voice commands for hands-free farming assistance.
+The objective is to provide ChromaDB integration, long-term memory, personalized context, and a recommendation engine.
 
 ---
 
@@ -54,10 +54,11 @@ The objective is to provide speech-to-text, text-to-speech, voice chat, and voic
 
 Responsible for:
 
-- Speech-to-text API integration
-- Text-to-speech API integration
-- Voice chat endpoint
-- Voice command parsing
+- ChromaDB integration
+- Vector embeddings
+- Long-term memory storage
+- Personalized context retrieval
+- Recommendation engine
 - Backend infrastructure
 
 ---
@@ -66,10 +67,9 @@ Responsible for:
 
 Responsible for:
 
-- Voice assistant UI components
-- Audio recording interface
-- Voice feedback indicators
-- Voice command interface
+- Farm memory UI components
+- History visualization
+- Personalized recommendations display
 
 ---
 
@@ -77,11 +77,11 @@ Responsible for:
 
 The milestone is complete only when:
 
-- Speech-to-text API works
-- Text-to-speech API works
-- Voice chat endpoint works
-- Voice command parsing works
-- Frontend can record and process voice
+- ChromaDB integration works
+- Vector embeddings are stored
+- Long-term memory retrieval works
+- Personalized context is provided to chat
+- Recommendation engine generates suggestions
 - Tests passing
 - Lint passing
 - Type checking passing
@@ -93,11 +93,11 @@ The milestone is complete only when:
 
 Do NOT implement:
 
-- Farm Memory
 - Government Schemes
 - Market Intelligence (already complete)
+- Voice Assistant (already complete)
 
-These belong to later milestones.
+These belong to other milestones.
 
 ---
 
@@ -118,18 +118,19 @@ Never begin coding before reading them.
 
 OpenCode should deliver:
 
-- Speech-to-text API
-- Text-to-speech API
-- Voice chat endpoint
-- Voice command parser
+- ChromaDB integration
+- Vector embedding service
+- Memory storage service
+- Context retrieval service
+- Recommendation engine
 - Backend tests
 - Updated documentation
 
 Antigravity should deliver:
 
-- Voice assistant UI
-- Audio recording components
-- Voice feedback indicators
+- Farm memory UI
+- History display components
+- Recommendation cards
 - Frontend tests
 
 ---

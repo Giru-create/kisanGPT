@@ -10,6 +10,25 @@ This project follows a milestone-based development workflow.
 
 ## Added
 
+### Voice Assistant (Phase 8 — OpenCode)
+
+- **Voice Provider Abstraction**: `SpeechToTextProvider` ABC + `MockSpeechToTextProvider`, `TextToSpeechProvider` ABC + `MockTextToSpeechProvider` for development/testing (`app/agents/voice.py`).
+- **Voice Schemas**: `SpeechToTextResponse`, `TextToSpeechRequest`, `TextToSpeechResponse`, `VoiceCommand`, `VoiceCommandResponse`, `VoiceChatRequest`, `VoiceChatResponse`, `VoiceSession`, `VoiceHealthResponse` Pydantic models (`app/schemas/voice.py`).
+- **Voice Service**: Orchestrates STT/TTS, intent detection, voice chat, and session management (`app/services/voice.py`).
+- **Voice Endpoints**: `POST /api/v1/voice/stt`, `POST /api/v1/voice/tts`, `POST /api/v1/voice/command`, `POST /api/v1/voice/chat`, `POST /api/v1/voice/session`, `DELETE /api/v1/voice/session/{id}`, `GET /api/v1/voice/health` (`app/api/v1/voice.py`).
+- **Voice Config**: Added `VOICE_STT_TIMEOUT`, `VOICE_TTS_TIMEOUT`, `VOICE_SUPPORTED_LANGUAGES` settings (`app/core/config.py`).
+- **Voice Tests**: 15 tests for provider, service, and schemas (`tests/test_voice.py`, `tests/test_voice_schemas.py`).
+
+### Voice Assistant (Phase 8 — Antigravity)
+
+- **Voice Types**: `STTResult`, `TTSResult`, `VoiceCommandResult`, `VoiceChatResult`, `VoiceMessage`, `VoiceUIState` types (`features/voice/types/voice.types.ts`).
+- **Voice Store**: Zustand slice with voice state, language, messages, conversation management (`features/voice/store/voiceStore.ts`).
+- **useVoice Hook**: Wires store to mock data with recording, text input, and conversation management (`features/voice/hooks/useVoice.ts`).
+- **Voice Components**: `VoiceLanguageSelector`, `VoiceMessageBubble`, `VoiceInputBar`, `VoiceRecordButton`, `VoiceSkeleton`, `VoiceError`, `VoiceEmpty` (`features/voice/components/`).
+- **Voice Page**: `/voice` route with animated state transitions and scroll-to-bottom (`app/voice/page.tsx`).
+- **VoiceAssistantBar Integration**: Updated dashboard bar to use voice store with full-view link.
+- **Navigation**: Added "Voice Assistant" link to sidebar navigation.
+
 ### Market Intelligence (Phase 6 — OpenCode)
 
 - **Market Provider Abstraction**: `MarketDataProvider` ABC + `MockMarketProvider` for development/testing (`app/agents/market.py`).

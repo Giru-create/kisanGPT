@@ -41,6 +41,11 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     label: "Market Intelligence",
     href: "/market",
   },
+  {
+    id: "voice",
+    label: "Voice Assistant",
+    href: "/voice",
+  },
 ];
 
 export const NAV_SECTIONS: NavSection[] = [

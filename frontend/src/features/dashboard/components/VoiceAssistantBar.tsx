@@ -5,26 +5,30 @@
 // KisanGPT — Section 8: Multilingual Hands-Free Voice Assistant Floating Bar
 // ─────────────────────────────────────────────────────────────────────────────
 
-import React, { useState } from "react";
-import { Mic, MicOff, Volume2, Sparkles } from "lucide-react";
+import React from "react";
+import Link from "next/link";
+import { Mic, MicOff, Volume2, Sparkles, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useVoice } from "@/features/voice/hooks/useVoice";
+import { VOICE_LANGUAGES } from "@/features/voice/constants/voice.constants";
 
-interface VoiceAssistantBarProps {
-  onVoiceTrigger?: () => void;
-}
+export const VoiceAssistantBar: React.FC = () => {
+  const { voiceState, language, setLanguage, startListening, stopListening } =
+    useVoice();
 
-export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
-  onVoiceTrigger,
-}) => {
-  const [isListening, setIsListening] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<
-    "Hindi" | "Punjabi" | "English"
-  >("Hindi");
+  const isListening = voiceState.status === "listening";
+  const isProcessing = voiceState.status === "processing";
 
   const toggleListening = () => {
-    setIsListening((prev) => !prev);
-    if (onVoiceTrigger) onVoiceTrigger();
+    if (isListening) {
+      stopListening();
+    } else if (!isProcessing) {
+      startListening();
+    }
   };
+
+  const langLabel =
+    VOICE_LANGUAGES.find((l) => l.code === language)?.label ?? "Hindi";
 
   return (
     <section
@@ -40,16 +44,21 @@ export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
               variant="primary"
               size="lg"
               onClick={toggleListening}
+              disabled={isProcessing}
               aria-label={
                 isListening
                   ? "Stop voice assistant listening"
-                  : "Start voice assistant listening in " + selectedLanguage
+                  : isProcessing
+                    ? "Processing voice..."
+                    : "Start voice assistant listening in " + langLabel
               }
               aria-pressed={isListening}
               className={`h-14 w-14 rounded-full p-0 flex items-center justify-center transition-all ${
                 isListening
                   ? "bg-red-600 hover:bg-red-700 ring-4 ring-red-500/30 scale-105"
-                  : "bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
+                  : isProcessing
+                    ? "bg-amber-500 hover:bg-amber-600"
+                    : "bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
               }`}
             >
               {isListening ? (
@@ -86,31 +95,43 @@ export const VoiceAssistantBar: React.FC<VoiceAssistantBarProps> = ({
             <p className="text-xs text-muted-foreground">
               {isListening
                 ? "Listening... Speak your query clearly"
-                : "Tap microphone to speak in " + selectedLanguage}
+                : isProcessing
+                  ? "Processing..."
+                  : "Tap microphone to speak in " + langLabel}
             </p>
           </div>
         </div>
 
-        {/* Right Language Controls */}
-        <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl w-full sm:w-auto justify-center">
-          <Volume2
-            size={14}
-            className="text-muted-foreground ml-2 hidden sm:inline"
-          />
-          {(["Hindi", "Punjabi", "English"] as const).map((lang) => (
-            <button
-              key={lang}
-              onClick={() => setSelectedLanguage(lang)}
-              aria-label={`Select ${lang} language for voice interaction`}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all min-h-[36px] ${
-                selectedLanguage === lang
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {lang}
-            </button>
-          ))}
+        {/* Right Controls */}
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
+          <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-xl">
+            <Volume2
+              size={14}
+              className="text-muted-foreground ml-2 hidden sm:inline"
+              aria-hidden="true"
+            />
+            {VOICE_LANGUAGES.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => setLanguage(lang.code)}
+                aria-label={`Select ${lang.label} language for voice interaction`}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all min-h-[36px] ${
+                  language === lang.code
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {lang.label}
+              </button>
+            ))}
+          </div>
+
+          <Link
+            href="/voice"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+          >
+            Full View <ArrowUpRight size={12} />
+          </Link>
         </div>
       </div>
     </section>
