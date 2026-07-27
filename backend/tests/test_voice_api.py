@@ -287,8 +287,21 @@ class TestVoiceSessionEndpoint:
 
 class TestVoiceEndpointsCount:
     def test_all_expected_routes_exist(self, client: TestClient) -> None:
-        routes = [r.path for r in app.routes if hasattr(r, "path")]
-        voice_routes = [r for r in routes if "/voice" in r]
+        from fastapi.routing import APIRoute
+
+        def _collect_paths(routes: list[Any]) -> list[str]:
+            paths: list[str] = []
+            for route in routes:
+                if isinstance(route, APIRoute):
+                    paths.append(route.path)
+                elif hasattr(route, "original_router"):
+                    paths.extend(_collect_paths(route.original_router.routes))
+                elif hasattr(route, "routes"):
+                    paths.extend(_collect_paths(route.routes))
+            return paths
+
+        all_paths = _collect_paths(app.routes)
+        voice_routes = [p for p in all_paths if "/voice" in p]
         assert "/api/v1/voice/stt" in voice_routes
         assert "/api/v1/voice/tts" in voice_routes
         assert "/api/v1/voice/command" in voice_routes
