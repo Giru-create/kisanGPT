@@ -98,3 +98,71 @@ class MarketAdviceResponse(BaseModel):
     trend: str
     advice: list[MarketAdvice]
     generated_at: str
+
+
+# ---------------------------------------------------------------------------
+# Forecast (7-day price prediction)
+# ---------------------------------------------------------------------------
+
+
+class ForecastPoint(BaseModel):
+    date: str
+    predicted_price: float
+    confidence_low: float
+    confidence_high: float
+    factors: list[str]
+
+
+class MarketForecast(BaseModel):
+    commodity: str
+    current_price: float
+    msp: float
+    forecast: list[ForecastPoint]
+    summary: str
+    generated_at: str
+
+
+class MarketForecastResponse(BaseModel):
+    commodity: str
+    current_price: float
+    msp: float
+    forecast: list[ForecastPoint]
+    summary: str
+    generated_at: str
+
+
+# ---------------------------------------------------------------------------
+# AI Market Recommendation
+# ---------------------------------------------------------------------------
+
+
+class Recommendation(BaseModel):
+    type: str = Field(..., pattern=r"^(sell_now|hold|wait|switch_mandi)$")
+    commodity: str
+    confidence: int = Field(..., ge=0, le=100)
+    headline: str
+    rationale: str
+    potential_gain: float
+    risk_level: str = Field(..., pattern=r"^(low|medium|high)$")
+    suggested_action: str
+    generated_at: str
+
+
+class MarketRecommendationResponse(BaseModel):
+    commodity: str
+    current_price: float
+    msp: float
+    recommendation: Recommendation
+    generated_at: str
+
+
+# ---------------------------------------------------------------------------
+# Aggregated Market Response
+# ---------------------------------------------------------------------------
+
+
+class MarketResponse(BaseModel):
+    overview: MarketOverview
+    forecast: MarketForecast | None = None
+    recommendation: Recommendation | None = None
+    generated_at: str

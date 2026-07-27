@@ -9,16 +9,20 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.schemas.market import (
     CommodityPrice,
+    ForecastPoint,
     MarketAdvice,
     MarketAdviceResponse,
+    MarketForecastResponse,
     MarketHistoryResponse,
     MarketOverview,
     MarketPriceResponse,
+    MarketRecommendationResponse,
     MarketTrendResponse,
     PriceAlert,
     PriceAlertCreate,
     PriceHistoryItem,
     PriceTrend,
+    Recommendation,
 )
 
 
@@ -235,6 +239,99 @@ class MarketService:
             msp=msp,
             trend=trend_direction,
             advice=advice_items,
+            generated_at=datetime.now(UTC).isoformat(),
+        ).model_dump(mode="json")
+
+        self._cache.set(cache_key, result)
+        return result
+
+    async def get_forecast(self, commodity: str, days: int = 7) -> dict[str, object]:
+        cache_key = f"forecast:{commodity}:{days}"
+        cached = self._cache.get(cache_key)
+        if cached is not None:
+            logger.info("Market forecast cache hit", extra={"key": cache_key})
+            return cached  # type: ignore[return-value]
+
+        try:
+            raw_forecast = await self._provider.get_forecast(commodity, days)
+        except Exception:
+            logger.exception("Failed to fetch market forecast")
+            raise
+
+        if not raw_forecast:
+            return MarketForecastResponse(
+                commodity=commodity,
+                current_price=0,
+                msp=0,
+                forecast=[],
+                summary="No forecast data available.",
+                generated_at=datetime.now(UTC).isoformat(),
+            ).model_dump(mode="json")
+
+        forecast_points = [ForecastPoint(**p) for p in raw_forecast.get("forecast", [])]
+        result = MarketForecastResponse(
+            commodity=commodity,
+            current_price=float(raw_forecast.get("current_price", 0)),
+            msp=float(raw_forecast.get("msp", 0)),
+            forecast=forecast_points,
+            summary=str(raw_forecast.get("summary", "")),
+            generated_at=datetime.now(UTC).isoformat(),
+        ).model_dump(mode="json")
+
+        self._cache.set(cache_key, result)
+        return result
+
+    async def get_recommendation(self, commodity: str) -> dict[str, object]:
+        cache_key = f"recommendation:{commodity}"
+        cached = self._cache.get(cache_key)
+        if cached is not None:
+            logger.info("Market recommendation cache hit", extra={"key": cache_key})
+            return cached  # type: ignore[return-value]
+
+        try:
+            raw_rec = await self._provider.get_recommendation(commodity)
+        except Exception:
+            logger.exception("Failed to generate market recommendation")
+            raise
+
+        if not raw_rec:
+            return MarketRecommendationResponse(
+                commodity=commodity,
+                current_price=0,
+                msp=0,
+                recommendation=Recommendation(
+                    type="hold",
+                    commodity=commodity,
+                    confidence=0,
+                    headline="No data available",
+                    rationale="Insufficient data for recommendation.",
+                    potential_gain=0,
+                    risk_level="high",
+                    suggested_action="Gather more market data.",
+                    generated_at=datetime.now(UTC).isoformat(),
+                ),
+                generated_at=datetime.now(UTC).isoformat(),
+            ).model_dump(mode="json")
+
+        recommendation = Recommendation(
+            type=str(raw_rec.get("type", "hold")),
+            commodity=commodity,
+            confidence=int(raw_rec.get("confidence", 0)),
+            headline=str(raw_rec.get("headline", "")),
+            rationale=str(raw_rec.get("rationale", "")),
+            potential_gain=float(raw_rec.get("potential_gain", 0)),
+            risk_level=str(raw_rec.get("risk_level", "medium")),
+            suggested_action=str(raw_rec.get("suggested_action", "")),
+            generated_at=datetime.now(UTC).isoformat(),
+        )
+
+        result = MarketRecommendationResponse(
+            commodity=commodity,
+            current_price=float(raw_rec.get("current_price", 0))
+            if "current_price" in raw_rec
+            else 0,
+            msp=float(raw_rec.get("msp", 0)) if "msp" in raw_rec else 0,
+            recommendation=recommendation,
             generated_at=datetime.now(UTC).isoformat(),
         ).model_dump(mode="json")
 

@@ -26,6 +26,31 @@ async def get_market_prices(
     return await market_service.get_prices(commodity, state)
 
 
+@router.get("/overview")
+async def get_market_overview(
+    current_user: CurrentUserDependency,
+    state: str | None = Query(None, max_length=100),
+) -> dict[str, object]:
+    return await market_service.get_overview(state)
+
+
+@router.get("/forecast")
+async def get_market_forecast(
+    current_user: CurrentUserDependency,
+    commodity: str = Query(..., min_length=1, max_length=100),
+    days: int = Query(7, ge=1, le=14),
+) -> dict[str, object]:
+    return await market_service.get_forecast(commodity, days)
+
+
+@router.get("/recommendation")
+async def get_market_recommendation(
+    current_user: CurrentUserDependency,
+    commodity: str = Query(..., min_length=1, max_length=100),
+) -> dict[str, object]:
+    return await market_service.get_recommendation(commodity)
+
+
 @router.get("/history")
 async def get_market_history(
     current_user: CurrentUserDependency,
@@ -34,14 +59,6 @@ async def get_market_history(
     days: int = Query(30, ge=7, le=90),
 ) -> dict[str, object]:
     return await market_service.get_history(commodity, mandi, days)
-
-
-@router.get("/advice")
-async def get_market_advice(
-    current_user: CurrentUserDependency,
-    commodity: str = Query(..., min_length=1, max_length=100),
-) -> dict[str, object]:
-    return await market_service.get_advice(commodity)
 
 
 @router.get("/trend")
@@ -53,12 +70,12 @@ async def get_market_trend(
     return await market_service.get_trend(commodity, days)
 
 
-@router.get("/overview")
-async def get_market_overview(
+@router.get("/advice")
+async def get_market_advice(
     current_user: CurrentUserDependency,
-    state: str | None = Query(None, max_length=100),
+    commodity: str = Query(..., min_length=1, max_length=100),
 ) -> dict[str, object]:
-    return await market_service.get_overview(state)
+    return await market_service.get_advice(commodity)
 
 
 @router.post("/alerts", response_model=PriceAlert)

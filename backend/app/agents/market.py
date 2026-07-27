@@ -6,7 +6,11 @@ from datetime import UTC, datetime, timedelta
 
 
 class MarketDataProvider(abc.ABC):
-    """Abstract base class for market price data providers."""
+    """Abstract base class for market price data providers.
+
+    Architecture allows future Agmarknet or e-NAM integration by implementing
+    this interface with real API calls.
+    """
 
     @abc.abstractmethod
     async def get_prices(
@@ -19,9 +23,21 @@ class MarketDataProvider(abc.ABC):
     @abc.abstractmethod
     async def get_commodities(self) -> list[str]: ...
 
+    @abc.abstractmethod
+    async def get_forecast(
+        self, commodity: str, days: int = 7
+    ) -> dict[str, object]: ...
+
+    @abc.abstractmethod
+    async def get_recommendation(self, commodity: str) -> dict[str, object]: ...
+
 
 class MockMarketProvider(MarketDataProvider):
-    """Mock market data provider for development and testing."""
+    """Mock market data provider for development and testing.
+
+    Generates realistic deterministic data using seeded random generators.
+    Future implementations: AgmarknetProvider, ENAMProvider.
+    """
 
     COMMODITIES: dict[str, dict[str, object]] = {
         "Wheat": {"base_price": 2275.0, "msp": 2250.0, "variety": "PBW 550 / FAQ"},
@@ -138,3 +154,186 @@ class MockMarketProvider(MarketDataProvider):
 
     async def get_commodities(self) -> list[str]:
         return list(self.COMMODITIES.keys())
+
+    async def get_forecast(self, commodity: str, days: int = 7) -> dict[str, object]:
+        info = self.COMMODITIES.get(commodity)
+        if info is None:
+            return {}
+
+        base_price = float(info["base_price"])
+        msp = float(info["msp"])
+        now = datetime.now(UTC)
+        rng = random.Random(hash(f"forecast:{commodity}"))
+
+        forecast_points: list[dict[str, object]] = []
+        running_price = base_price
+
+        for i in range(days):
+            d = now + timedelta(days=i + 1)
+            drift = rng.uniform(-0.015, 0.02)
+            volatility = rng.uniform(0.01, 0.04)
+            predicted = round(running_price * (1 + drift), 0)
+            confidence_range = round(predicted * volatility, 0)
+
+            factors: list[str] = []
+            if predicted > msp * 1.05:
+                factors.append("above_msp")
+            if drift > 0.01:
+                factors.append("rising_demand")
+            elif drift < -0.01:
+                factors.append("increasing_supply")
+            if i >= 4:
+                factors.append("weekend_effect")
+            if not factors:
+                factors.append("stable_market")
+
+            forecast_points.append(
+                {
+                    "date": d.strftime("%Y-%m-%d"),
+                    "predicted_price": predicted,
+                    "confidence_low": round(predicted - confidence_range, 0),
+                    "confidence_high": round(predicted + confidence_range, 0),
+                    "factors": factors,
+                }
+            )
+            running_price = predicted
+
+        summary = _build_forecast_summary(
+            commodity=commodity,
+            current_price=base_price,
+            msp=msp,
+            points=forecast_points,
+        )
+
+        return {
+            "commodity": commodity,
+            "current_price": base_price,
+            "msp": msp,
+            "forecast": forecast_points,
+            "summary": summary,
+        }
+
+    async def get_recommendation(self, commodity: str) -> dict[str, object]:
+        info = self.COMMODITIES.get(commodity)
+        if info is None:
+            return {}
+
+        base_price = float(info["base_price"])
+        msp = float(info["msp"])
+        now = datetime.now(UTC)
+        rng = random.Random(hash(f"rec:{commodity}:{now.strftime('%Y-%m-%d')}"))
+
+        trend_data = await self.get_trend(commodity, 30)
+        trend_direction = trend_data.get("trend_direction", "stable")
+
+        msp_ratio = base_price / msp if msp > 0 else 1.0
+
+        if trend_direction == "rising" and msp_ratio > 1.03:
+            rec_type = "sell_now"
+            confidence = min(95, int(70 + (msp_ratio - 1) * 200 + rng.uniform(0, 10)))
+            headline = f"Sell {commodity} Now — Price Above MSP"
+            rationale = (
+                f"{commodity} is trading at ₹{base_price:.0f}/qnt, "
+                f"{((msp_ratio - 1) * 100):.1f}% above MSP (₹{msp:.0f}/qnt). "
+                f"Rising trend suggests this is a good selling window."
+            )
+            potential_gain = round(base_price - msp, 0)
+            risk_level = "low"
+            suggested_action = (
+                "Sell at your nearest APMC mandi within 2-3 days "
+                "to lock in current prices."
+            )
+        elif trend_direction == "falling" or msp_ratio < 0.95:
+            rec_type = "hold"
+            confidence = min(90, int(60 + rng.uniform(0, 15)))
+            headline = f"Hold {commodity} — Wait for Better Prices"
+            msp_pct = (msp_ratio - 1) * 100
+            msp_note = f" ({msp_pct:.1f}% below MSP)" if msp < base_price else ""
+            rationale = (
+                f"{commodity} is trading at ₹{base_price:.0f}/qnt"
+                f"{msp_note}. "
+                f"Prices are"
+                f"{' falling' if trend_direction == 'falling' else ' below MSP'}. "
+                f"Holding may yield better returns."
+            )
+            potential_gain = round(msp - base_price, 0) if msp > base_price else 0.0
+            risk_level = "medium"
+            suggested_action = (
+                "Hold your stock and monitor prices daily. "
+                "Consider government procurement if available."
+            )
+        elif trend_direction == "volatile":
+            rec_type = "wait"
+            confidence = min(85, int(55 + rng.uniform(0, 10)))
+            headline = f"Wait — {commodity} Market Volatile"
+            rationale = (
+                f"{commodity} prices are volatile (₹{base_price:.0f}/qnt). "
+                f"Wait for stabilization before making a decision."
+            )
+            potential_gain = 0.0
+            risk_level = "high"
+            suggested_action = (
+                "Monitor prices closely for 3-5 days. "
+                "Sell when volatility reduces and trend becomes clear."
+            )
+        else:
+            rec_type = "sell_now"
+            confidence = min(80, int(60 + rng.uniform(0, 10)))
+            headline = f"{commodity} — Stable Market, Consider Selling"
+            rationale = (
+                f"{commodity} is stable at ₹{base_price:.0f}/qnt "
+                f"near MSP (₹{msp:.0f}/qnt). Good conditions for planned selling."
+            )
+            potential_gain = round(base_price - msp, 0) if msp > 0 else 0.0
+            risk_level = "low"
+            suggested_action = (
+                "Good time to sell if you need liquidity. "
+                "Prices are expected to remain stable."
+            )
+
+        return {
+            "type": rec_type,
+            "commodity": commodity,
+            "confidence": confidence,
+            "headline": headline,
+            "rationale": rationale,
+            "potential_gain": potential_gain,
+            "risk_level": risk_level,
+            "suggested_action": suggested_action,
+        }
+
+
+def _build_forecast_summary(
+    commodity: str,
+    current_price: float,
+    msp: float,
+    points: list[dict[str, object]],
+) -> str:
+    if not points:
+        return f"No forecast data available for {commodity}."
+
+    last_price = float(points[-1].get("predicted_price", 0))
+    change_pct = (
+        ((last_price - current_price) / current_price * 100) if current_price else 0
+    )
+
+    if change_pct > 3:
+        trend_word = "rise"
+    elif change_pct < -3:
+        trend_word = "fall"
+    else:
+        trend_word = "remain stable"
+
+    msp_note = ""
+    if msp > 0:
+        msp_ratio = last_price / msp
+        if msp_ratio < 0.95:
+            msp_note = " Prices may drop below MSP. Consider government procurement."
+        elif msp_ratio > 1.1:
+            msp_note = " Strong performance above MSP."
+
+    return (
+        f"{commodity} is expected to {trend_word} over the next 7 days, "
+        f"moving from ₹{current_price:.0f}/qnt to ₹{last_price:.0f}/qnt "
+        f"({change_pct:+.1f}%).{msp_note}"
+    )
