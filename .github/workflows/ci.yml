@@ -61,7 +61,6 @@ jobs:
           pip install .
           pip install ".[dev]"
 
-      # ---------------- DEBUG STEP 1 ----------------
       - name: Show Python package versions
         run: |
           python --version
@@ -70,10 +69,9 @@ jobs:
           pip freeze | grep starlette || true
           pip freeze | grep pydantic || true
 
-      # ---------------- DEBUG STEP 2 ----------------
       - name: Show registered routes
         run: |
-          python -c "from app.main import app; print('FASTAPI ROUTES'); [print(type(r).__name__, getattr(r,'path',None)) for r in app.routes]"
+          python -c "from app.main import app; print('===== REGISTERED ROUTES ====='); [print(type(r).__name__, getattr(r, 'path', None)) for r in app.routes]"
 
       - name: Lint
         run: ruff check .
