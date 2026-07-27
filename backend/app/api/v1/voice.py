@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from fastapi import APIRouter, UploadFile
 
+from app.core.security import (  # noqa: TC001 — needed at runtime by FastAPI
+    CurrentUserDependency,
+)
 from app.schemas.voice import (
     TextToSpeechRequest,  # noqa: TC001 — needed at runtime by FastAPI
     VoiceChatRequest,  # noqa: TC001 — needed at runtime by FastAPI
 )
 from app.services.voice import voice_service
-
-if TYPE_CHECKING:
-    from app.core.security import CurrentUserDependency
 
 router = APIRouter()
 

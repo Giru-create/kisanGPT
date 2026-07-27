@@ -3,14 +3,21 @@
 // KisanGPT — Voice Assistant feature types
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ---------------------------------------------------------------------------
-// Primitives
-// ---------------------------------------------------------------------------
-
 export type VoiceLanguage = "hi-IN" | "pa-IN" | "en-US";
 
 export type VoiceStatus =
-  "idle" | "listening" | "processing" | "speaking" | "error";
+  | "idle"
+  | "listening"
+  | "processing"
+  | "speaking"
+  | "error";
+
+export type VoiceErrorCode =
+  | "PERMISSION_DENIED"
+  | "NETWORK_ERROR"
+  | "NO_SPEECH"
+  | "TIMEOUT"
+  | "UNKNOWN";
 
 // ---------------------------------------------------------------------------
 // Speech-to-text
@@ -68,6 +75,8 @@ export interface VoiceMessage {
   text: string;
   timestamp: Date;
   audio_base64?: string;
+  intent?: string;
+  suggested_actions?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -76,7 +85,7 @@ export interface VoiceMessage {
 
 export type VoiceUIState =
   | { status: "idle" }
-  | { status: "listening" }
+  | { status: "listening"; volumeLevel?: number }
   | { status: "processing" }
-  | { status: "speaking"; audioBase64: string; mimeType: string }
-  | { status: "error"; message: string };
+  | { status: "speaking"; audioBase64?: string; mimeType?: string; durationSeconds?: number }
+  | { status: "error"; message: string; code?: VoiceErrorCode };

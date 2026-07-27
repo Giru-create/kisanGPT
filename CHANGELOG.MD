@@ -17,7 +17,8 @@ This project follows a milestone-based development workflow.
 - **Voice Service**: Orchestrates STT/TTS, intent detection, voice chat, and session management (`app/services/voice.py`).
 - **Voice Endpoints**: `POST /api/v1/voice/stt`, `POST /api/v1/voice/tts`, `POST /api/v1/voice/command`, `POST /api/v1/voice/chat`, `POST /api/v1/voice/session`, `DELETE /api/v1/voice/session/{id}`, `GET /api/v1/voice/health` (`app/api/v1/voice.py`).
 - **Voice Config**: Added `VOICE_STT_TIMEOUT`, `VOICE_TTS_TIMEOUT`, `VOICE_SUPPORTED_LANGUAGES` settings (`app/core/config.py`).
-- **Voice Tests**: 15 tests for provider, service, and schemas (`tests/test_voice.py`, `tests/test_voice_schemas.py`).
+- **Voice Tests**: Expanded from 15 to 99 tests covering providers, service, schemas, endpoint integration, intent detection, session management, and auth validation (`tests/test_voice.py`, `tests/test_voice_schemas.py`, `tests/test_voice_api.py`).
+- **Voice Foundation Bug Fix**: Moved `CurrentUserDependency` import out of `TYPE_CHECKING` block so FastAPI dependency injection works at runtime (`app/api/v1/voice.py`).
 
 ### Voice Assistant (Phase 8 — Antigravity)
 

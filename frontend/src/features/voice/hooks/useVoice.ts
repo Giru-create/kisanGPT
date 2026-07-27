@@ -1,216 +1,225 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // useVoice.ts
-// KisanGPT — Voice Assistant hook
+// KisanGPT — Master Voice Assistant Hook
+// Wires Zustand store, Web Audio recording, voiceService API, and a11y live regions
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import {
   useVoiceStore,
   selectVoiceState,
   selectLanguage,
   selectMessages,
   selectConversationId,
+  selectIsFloatingOpen,
 } from "../store/voiceStore";
-import { MOCK_VOICE_MESSAGES } from "../constants/voice.constants";
-import type { VoiceMessage } from "../types/voice.types";
-
-// ---------------------------------------------------------------------------
-// Simulated fetch — replace with real API calls in a later milestone
-// ---------------------------------------------------------------------------
-
-async function sendVoiceText(
-  text: string,
-  language: string,
-): Promise<{ response_text: string; audio_base64: string | null }> {
-  await new Promise((resolve) => setTimeout(resolve, 1200));
-
-  // TODO: Use language parameter when implementing real API
-  void language;
-
-  const responses: Record<string, string> = {
-    disease_detection:
-      "Please take a photo of your crop leaf using the Disease Detection feature, and I will analyze it.",
-    weather_query:
-      "Let me check the weather for your area. Please share your location or district name.",
-    market_price:
-      "Which commodity would you like to check the price for? You can say Wheat, Mustard, Paddy, or others.",
-    msp_query:
-      "The current MSP for Wheat is ₹2,250 per quintal and for Mustard is ₹5,500 per quintal.",
-    irrigation_advice:
-      "For irrigation advice, I recommend checking the Weather Intelligence page for the best irrigation windows.",
-    govt_scheme:
-      "You can check available government schemes on the Dashboard. PM-KISAN offers ₹6,000 per year.",
-    help: "I can help you with: crop diseases, weather, market prices, irrigation, and government schemes. What would you like to know?",
-    general_query:
-      "I am not sure I understand. You can ask about crop diseases, weather, market prices, irrigation, or government schemes.",
-  };
-
-  const text_lower = text.toLowerCase();
-  let intent = "general_query";
-
-  const intentKeywords: Record<string, string[]> = {
-    disease_detection: ["disease", "bimari", "rog", "leaf", "yellow", "pest"],
-    weather_query: ["weather", "mausam", "rain", "temperature", "cold", "heat"],
-    market_price: ["price", "daam", "mandi", "market", "sell", "rate"],
-    msp_query: ["msp", "samarthan", "minimum support"],
-    irrigation_advice: ["irrigation", "sinchai", "water", "drip"],
-    govt_scheme: ["scheme", "yojana", "government", "subsidy"],
-    help: ["help", "madad", "what", "how"],
-  };
-
-  for (const [key, words] of Object.entries(intentKeywords)) {
-    if (words.some((w) => text_lower.includes(w))) {
-      intent = key;
-      break;
-    }
-  }
-
-  return {
-    response_text: (responses[intent] ?? responses.general_query) as string,
-    audio_base64: null,
-  };
-}
-
-// ---------------------------------------------------------------------------
-// Hook
-// ---------------------------------------------------------------------------
+import { useAudioRecorder } from "./useAudioRecorder";
+import { useAudioPlayer } from "./useAudioPlayer";
+import { voiceService } from "../services/voiceService";
+import { STATUS_LABELS } from "../constants/voice.constants";
+import type { VoiceLanguage, VoiceMessage } from "../types/voice.types";
+import { announceToScreenReader } from "@/utils/a11y";
 
 export function useVoice() {
   const voiceState = useVoiceStore(selectVoiceState);
   const language = useVoiceStore(selectLanguage);
   const messages = useVoiceStore(selectMessages);
   const conversationId = useVoiceStore(selectConversationId);
+  const isFloatingOpen = useVoiceStore(selectIsFloatingOpen);
 
-  const { setVoiceState, setLanguage, addMessage, setConversationId } =
-    useVoiceStore();
+  const {
+    setVoiceState,
+    setLanguage: storeSetLanguage,
+    addMessage,
+    setConversationId,
+    setFloatingOpen,
+    clearMessages,
+  } = useVoiceStore();
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
+  const {
+    isRecording,
+    volumeLevel,
+    permissionDenied,
+    startRecording,
+    stopRecording,
+  } = useAudioRecorder();
 
-  const startListening = useCallback(async () => {
-    setVoiceState({ status: "listening" });
+  const { isPlaying, currentTime, duration, playbackRate, playAudio, togglePlayPause, changeSpeed } =
+    useAudioPlayer();
 
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
+  const setLanguage = useCallback(
+    (lang: VoiceLanguage) => {
+      storeSetLanguage(lang);
+      const labels = STATUS_LABELS[lang] || STATUS_LABELS["hi-IN"];
+      announceToScreenReader(`Language changed to ${lang === "hi-IN" ? "Hindi" : lang === "pa-IN" ? "Punjabi" : "English"}`);
+    },
+    [storeSetLanguage],
+  );
 
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        stream.getTracks().forEach((track) => track.stop());
-      };
-
-      mediaRecorder.start();
-    } catch {
+  const handleStartListening = useCallback(async () => {
+    const success = await startRecording();
+    if (success) {
+      setVoiceState({ status: "listening", volumeLevel: 0.5 });
+      announceToScreenReader(STATUS_LABELS[language]?.listening || "Listening... Speak now");
+    } else {
       setVoiceState({
         status: "error",
-        message:
-          "Microphone access denied. Please allow microphone access in your browser settings.",
+        code: "PERMISSION_DENIED",
+        message: "Microphone access denied. Please grant permission in browser settings.",
       });
+      announceToScreenReader("Microphone permission denied.");
     }
-  }, [setVoiceState]);
+  }, [startRecording, setVoiceState, language]);
 
-  const stopListening = useCallback(async () => {
-    const mediaRecorder = mediaRecorderRef.current;
-    if (mediaRecorder && mediaRecorder.state === "recording") {
-      mediaRecorder.stop();
-    }
-
+  const handleStopListening = useCallback(async () => {
     setVoiceState({ status: "processing" });
-
-    const userMessage: VoiceMessage = {
-      id: `msg-${Date.now()}`,
-      role: "user",
-      text: "Voice message",
-      timestamp: new Date(),
-    };
-    addMessage(userMessage);
+    announceToScreenReader(STATUS_LABELS[language]?.processing || "Analyzing query...");
 
     try {
-      const result = await sendVoiceText("voice message", language);
+      const blob = await stopRecording();
 
-      const assistantMessage: VoiceMessage = {
-        id: `msg-${Date.now() + 1}`,
-        role: "assistant",
-        text: result.response_text,
-        timestamp: new Date(),
-        audio_base64: result.audio_base64 ?? undefined,
-      };
-      addMessage(assistantMessage);
-
-      if (!conversationId) {
-        setConversationId(`conv-${Date.now()}`);
+      if (!blob || blob.size === 0) {
+        setVoiceState({
+          status: "error",
+          code: "NO_SPEECH",
+          message: "No speech detected. Please try speaking again.",
+        });
+        announceToScreenReader("No speech detected.");
+        return;
       }
 
-      setVoiceState({ status: "idle" });
-    } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Unable to process voice. Please try again.";
-      setVoiceState({ status: "error", message });
-    }
-  }, [language, conversationId, setVoiceState, addMessage, setConversationId]);
+      // Step 1: STT
+      const stt = await voiceService.speechToText(blob, language);
 
-  const sendText = useCallback(
+      const userMsg: VoiceMessage = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        text: stt.text,
+        timestamp: new Date(),
+      };
+      addMessage(userMsg);
+
+      // Step 2: Chat AI Query
+      const chatResult = await voiceService.voiceChat(
+        stt.text,
+        language,
+        conversationId,
+      );
+
+      if (chatResult.conversation_id) {
+        setConversationId(chatResult.conversation_id);
+      }
+
+      const assistantMsg: VoiceMessage = {
+        id: `asst-${Date.now()}`,
+        role: "assistant",
+        text: chatResult.response_text,
+        timestamp: new Date(),
+        audio_base64: chatResult.audio_base64 || undefined,
+      };
+      addMessage(assistantMsg);
+
+      // Step 3: Speak Response if audio available
+      if (chatResult.audio_base64) {
+        setVoiceState({
+          status: "speaking",
+          audioBase64: chatResult.audio_base64,
+          mimeType: chatResult.mime_type,
+        });
+        playAudio(chatResult.audio_base64, chatResult.mime_type);
+        announceToScreenReader(STATUS_LABELS[language]?.speaking || "KisanGPT is responding.");
+      } else {
+        setVoiceState({ status: "idle" });
+      }
+    } catch (err) {
+      console.error("Voice pipeline error:", err);
+      setVoiceState({
+        status: "error",
+        code: "NETWORK_ERROR",
+        message: "Unable to process voice request. Please try again.",
+      });
+      announceToScreenReader("Error processing voice request.");
+    }
+  }, [
+    stopRecording,
+    language,
+    conversationId,
+    setVoiceState,
+    addMessage,
+    setConversationId,
+    playAudio,
+  ]);
+
+  const sendTextQuery = useCallback(
     async (text: string) => {
-      const userMessage: VoiceMessage = {
-        id: `msg-${Date.now()}`,
+      if (!text.trim()) return;
+
+      const userMsg: VoiceMessage = {
+        id: `user-${Date.now()}`,
         role: "user",
         text,
         timestamp: new Date(),
       };
-      addMessage(userMessage);
+      addMessage(userMsg);
 
       setVoiceState({ status: "processing" });
+      announceToScreenReader("Processing question...");
 
       try {
-        const result = await sendVoiceText(text, language);
+        const chatResult = await voiceService.voiceChat(
+          text,
+          language,
+          conversationId,
+        );
 
-        const assistantMessage: VoiceMessage = {
-          id: `msg-${Date.now() + 1}`,
-          role: "assistant",
-          text: result.response_text,
-          timestamp: new Date(),
-          audio_base64: result.audio_base64 ?? undefined,
-        };
-        addMessage(assistantMessage);
-
-        if (!conversationId) {
-          setConversationId(`conv-${Date.now()}`);
+        if (chatResult.conversation_id) {
+          setConversationId(chatResult.conversation_id);
         }
+
+        const assistantMsg: VoiceMessage = {
+          id: `asst-${Date.now()}`,
+          role: "assistant",
+          text: chatResult.response_text,
+          timestamp: new Date(),
+          audio_base64: chatResult.audio_base64 || undefined,
+        };
+        addMessage(assistantMsg);
 
         setVoiceState({ status: "idle" });
       } catch (err) {
-        const message =
-          err instanceof Error
-            ? err.message
-            : "Unable to process message. Please try again.";
-        setVoiceState({ status: "error", message });
+        setVoiceState({
+          status: "error",
+          code: "NETWORK_ERROR",
+          message: "Failed to load response.",
+        });
       }
     },
-    [language, conversationId, setVoiceState, addMessage, setConversationId],
+    [addMessage, setVoiceState, language, conversationId, setConversationId],
   );
-
-  const loadDemo = useCallback(() => {
-    MOCK_VOICE_MESSAGES.forEach((msg) => addMessage(msg));
-  }, [addMessage]);
 
   return {
     voiceState,
     language,
     messages,
     conversationId,
+    isFloatingOpen,
+    isRecording,
+    volumeLevel,
+    permissionDenied,
+    isPlaying,
+    currentTime,
+    duration,
+    playbackRate,
     setLanguage,
-    startListening,
-    stopListening,
-    sendText,
-    loadDemo,
+    setFloatingOpen,
+    handleStartListening,
+    handleStopListening,
+    sendTextQuery,
+    playAudio,
+    togglePlayPause,
+    changeSpeed,
+    clearMessages,
   };
 }

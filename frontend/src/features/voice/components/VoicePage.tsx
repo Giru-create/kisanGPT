@@ -1,20 +1,22 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // VoicePage.tsx
-// KisanGPT — Voice Assistant top-level page assembly
+// KisanGPT — Voice Assistant Main Page Component
+// Multilingual mobile-first voice assistant page
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import React, { useEffect } from "react";
+import { Mic, Trash2, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useVoice } from "../hooks/useVoice";
 import { VoiceLanguageSelector } from "./VoiceLanguageSelector";
 import { VoiceMessageBubble } from "./VoiceMessageBubble";
 import { VoiceInputBar } from "./VoiceInputBar";
-import { VoiceRecordButton } from "./VoiceRecordButton";
-import { VoiceError } from "./VoiceError";
 import { VoiceEmpty } from "./VoiceEmpty";
+import { VoiceError } from "./VoiceError";
+import { VoiceSkeleton } from "./VoiceSkeleton";
+import { LiveRegion } from "@/components/accessibility/LiveRegion";
 
 export const VoicePage: React.FC = () => {
   const {
@@ -22,121 +24,113 @@ export const VoicePage: React.FC = () => {
     language,
     messages,
     setLanguage,
-    startListening,
-    stopListening,
-    sendText,
+    handleStartListening,
+    handleStopListening,
+    sendTextQuery,
+    clearMessages,
   } = useVoice();
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  // Scroll to bottom when messages update
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const statusText = () => {
-    switch (voiceState.status) {
-      case "listening":
-        return "Listening... Speak your query clearly";
-      case "processing":
-        return "Processing your request...";
-      case "speaking":
-        return "Playing response...";
-      default:
-        return "Tap microphone to speak or type below";
-    }
-  };
+  const liveAnnouncement =
+    voiceState.status === "listening"
+      ? "Listening... Speak now"
+      : voiceState.status === "processing"
+        ? "Analyzing query..."
+        : voiceState.status === "speaking"
+          ? "KisanGPT is responding"
+          : "";
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6 flex flex-col gap-4">
-        {/* Page header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-1.5">
-              <Sparkles
-                size={16}
-                className="text-amber-500"
-                aria-hidden="true"
-              />
-              <h1 className="text-xl font-bold text-foreground">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground">
+      <LiveRegion>{liveAnnouncement}</LiveRegion>
+
+      {/* Header Bar */}
+      <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/60 px-4 py-3 flex items-center justify-between gap-3 shadow-xs">
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            aria-label="Back to Dashboard"
+            className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+          >
+            <ArrowLeft size={20} />
+          </Link>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Mic size={18} />
+            </div>
+            <div>
+              <h1 className="text-base font-bold tracking-tight leading-none">
                 Voice Assistant
               </h1>
+              <p className="text-[11px] font-medium text-muted-foreground mt-0.5">
+                KisanGPT Multilingual AI
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {statusText()}
-            </p>
           </div>
+        </div>
 
+        {/* Right Controls: Language Selector & Clear Chat */}
+        <div className="flex items-center gap-2">
           <VoiceLanguageSelector selected={language} onSelect={setLanguage} />
-        </div>
-
-        <AnimatePresence mode="wait">
-          {/* Loading */}
-          {voiceState.status === "idle" && messages.length === 0 && (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <VoiceEmpty />
-            </motion.div>
-          )}
-
-          {/* Error */}
-          {voiceState.status === "error" && (
-            <motion.div
-              key="error"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              <VoiceError
-                message={voiceState.message}
-                onRetry={() => setLanguage(language)}
-              />
-            </motion.div>
-          )}
-
-          {/* Messages */}
           {messages.length > 0 && (
-            <motion.div
-              key="messages"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col gap-3"
-              role="log"
-              aria-label="Conversation messages"
+            <button
+              type="button"
+              onClick={clearMessages}
+              aria-label="Clear chat history"
+              className="p-2 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
-              {messages.map((msg) => (
-                <VoiceMessageBubble key={msg.id} message={msg} />
-              ))}
-              <div ref={messagesEndRef} />
-            </motion.div>
+              <Trash2 size={18} />
+            </button>
           )}
-        </AnimatePresence>
-
-        {/* Input area */}
-        <div className="flex flex-col items-center gap-4 mt-auto">
-          <VoiceRecordButton
-            status={voiceState.status}
-            onStart={startListening}
-            onStop={stopListening}
-          />
-          <VoiceInputBar
-            onSend={sendText}
-            disabled={
-              voiceState.status === "listening" ||
-              voiceState.status === "processing"
-            }
-          />
         </div>
-      </div>
-    </main>
+      </header>
+
+      {/* Main Conversation Feed */}
+      <main className="flex-1 overflow-y-auto p-4 space-y-4 max-w-3xl mx-auto w-full">
+        {voiceState.status === "error" && (
+          <VoiceError
+            code={voiceState.code}
+            message={voiceState.message}
+            onRetry={handleStartListening}
+          />
+        )}
+
+        {messages.length === 0 ? (
+          <VoiceEmpty
+            language={language}
+            onSelectPrompt={(promptText) => sendTextQuery(promptText)}
+          />
+        ) : (
+          messages.map((msg) => (
+            <VoiceMessageBubble
+              key={msg.id}
+              message={msg}
+              onSelectAction={(action) => sendTextQuery(action)}
+            />
+          ))
+        )}
+
+        {voiceState.status === "processing" && <VoiceSkeleton />}
+
+        <div ref={messagesEndRef} />
+      </main>
+
+      {/* Sticky Bottom Voice Input Bar */}
+      <footer className="sticky bottom-0 z-30">
+        <VoiceInputBar
+          voiceState={voiceState}
+          language={language}
+          onStartListening={handleStartListening}
+          onStopListening={handleStopListening}
+          onSendText={sendTextQuery}
+        />
+      </footer>
+    </div>
   );
 };
 

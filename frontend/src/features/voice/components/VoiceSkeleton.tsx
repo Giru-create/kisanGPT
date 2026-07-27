@@ -1,45 +1,36 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // VoiceSkeleton.tsx
-// KisanGPT — Voice Assistant loading skeleton
+// KisanGPT — Voice Assistant Loading Skeleton Shimmer
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
 import React from "react";
-import { Skeleton } from "@/components/ui/Skeleton";
 
 export const VoiceSkeleton: React.FC = () => {
   return (
     <div
-      className="flex flex-col gap-4"
+      aria-label="Loading voice conversation..."
       role="status"
-      aria-label="Loading voice assistant"
+      className="space-y-4 max-w-lg mx-auto w-full p-4"
     >
-      <span className="sr-only">Loading...</span>
-
-      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm">
-        <Skeleton className="h-5 w-48 mb-4" />
-        <div className="flex flex-col gap-3">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`flex ${i % 2 === 0 ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`rounded-2xl px-4 py-2.5 ${
-                  i % 2 === 0 ? "w-48" : "w-56"
-                }`}
-              >
-                <Skeleton className="h-4 w-full mb-1" />
-                <Skeleton className="h-3 w-16" />
-              </div>
-            </div>
-          ))}
+      {/* User message skeleton */}
+      <div className="flex gap-3 max-w-[75%] ml-auto flex-row-reverse animate-pulse">
+        <div className="w-9 h-9 rounded-full bg-muted shrink-0" />
+        <div className="p-4 rounded-2xl bg-muted/80 rounded-tr-none w-full space-y-2">
+          <div className="h-4 bg-muted-foreground/20 rounded-md w-3/4" />
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <Skeleton className="h-16 w-16 rounded-full" />
+      {/* Assistant message skeleton */}
+      <div className="flex gap-3 max-w-[80%] mr-auto animate-pulse">
+        <div className="w-9 h-9 rounded-full bg-muted shrink-0" />
+        <div className="p-4 rounded-2xl bg-card border border-border/50 rounded-tl-none w-full space-y-3">
+          <div className="h-3 bg-emerald-500/20 rounded-md w-1/3" />
+          <div className="h-4 bg-muted-foreground/20 rounded-md w-full" />
+          <div className="h-4 bg-muted-foreground/20 rounded-md w-5/6" />
+          <div className="h-10 bg-muted/60 rounded-xl w-full" />
+        </div>
       </div>
     </div>
   );

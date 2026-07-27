@@ -1,76 +1,95 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // VoiceRecordButton.tsx
-// KisanGPT — Microphone record/stop toggle button
+// KisanGPT — Large Accessible Microphone Recording Button
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
 import React from "react";
-import { Mic, MicOff } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import type { VoiceStatus } from "../types/voice.types";
+import { Mic, MicOff, Square, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import type { VoiceUIState } from "../types/voice.types";
 
 interface VoiceRecordButtonProps {
-  status: VoiceStatus;
+  voiceState: VoiceUIState;
   onStart: () => void;
   onStop: () => void;
+  disabled?: boolean;
 }
 
 export const VoiceRecordButton: React.FC<VoiceRecordButtonProps> = ({
-  status,
+  voiceState,
   onStart,
   onStop,
+  disabled = false,
 }) => {
-  const isListening = status === "listening";
-  const isProcessing = status === "processing";
+  const isListening = voiceState.status === "listening";
+  const isProcessing = voiceState.status === "processing";
+  const isSpeaking = voiceState.status === "speaking";
+
+  const getAriaLabel = () => {
+    if (isListening) return "Stop recording audio";
+    if (isProcessing) return "Processing voice query...";
+    if (isSpeaking) return "Stop playback";
+    return "Start voice recording";
+  };
 
   const handleClick = () => {
+    if (disabled || isProcessing) return;
     if (isListening) {
       onStop();
-    } else if (!isProcessing) {
+    } else {
       onStart();
     }
   };
 
   return (
-    <div className="relative">
-      <Button
-        variant="primary"
-        size="lg"
+    <div className="relative flex items-center justify-center">
+      {/* Outer Pulse Ring 1 */}
+      {isListening && (
+        <motion.span
+          className="absolute inset-0 rounded-full bg-emerald-500/20"
+          animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        />
+      )}
+
+      {/* Outer Pulse Ring 2 */}
+      {isListening && (
+        <motion.span
+          className="absolute inset-0 rounded-full bg-emerald-500/30"
+          animate={{ scale: [1, 1.25, 1], opacity: [0.8, 0.2, 0.8] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+        />
+      )}
+
+      {/* Hero 72px x 72px Button */}
+      <button
+        type="button"
         onClick={handleClick}
-        disabled={isProcessing}
-        aria-label={
-          isListening
-            ? "Stop recording"
-            : isProcessing
-              ? "Processing voice..."
-              : "Start recording"
-        }
+        disabled={disabled || isProcessing}
+        aria-label={getAriaLabel()}
         aria-pressed={isListening}
-        className={`h-16 w-16 rounded-full p-0 flex items-center justify-center transition-all ${
+        className={`relative z-10 flex items-center justify-center w-18 h-18 sm:w-20 sm:h-20 rounded-full shadow-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/40 focus:ring-offset-2 ${
           isListening
-            ? "bg-red-600 hover:bg-red-700 ring-4 ring-red-500/30 scale-105"
+            ? "bg-emerald-600 text-white shadow-emerald-500/30 scale-105"
             : isProcessing
-              ? "bg-amber-500 hover:bg-amber-600"
-              : "bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
-        }`}
+              ? "bg-amber-500 text-white cursor-wait"
+              : isSpeaking
+                ? "bg-primary text-primary-foreground animate-pulse"
+                : "bg-primary text-primary-foreground hover:scale-105 active:scale-95 hover:shadow-primary/25"
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         {isListening ? (
-          <MicOff size={28} className="text-white motion-safe:animate-pulse" />
+          <Square size={28} className="fill-current" />
+        ) : isProcessing ? (
+          <Loader2 size={32} className="animate-spin" />
+        ) : isSpeaking ? (
+          <MicOff size={30} />
         ) : (
-          <Mic size={28} className="text-white" />
+          <Mic size={32} />
         )}
-      </Button>
-
-      {isListening && (
-        <span
-          aria-hidden="true"
-          className="absolute -top-1 -right-1 flex h-4 w-4"
-        >
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500" />
-        </span>
-      )}
+      </button>
     </div>
   );
 };
