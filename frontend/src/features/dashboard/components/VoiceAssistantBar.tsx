@@ -13,17 +13,22 @@ import { useVoice } from "@/features/voice/hooks/useVoice";
 import { VOICE_LANGUAGES } from "@/features/voice/constants/voice.constants";
 
 export const VoiceAssistantBar: React.FC = () => {
-  const { voiceState, language, setLanguage, startListening, stopListening } =
-    useVoice();
+  const {
+    voiceState,
+    language,
+    setLanguage,
+    handleStartListening,
+    handleStopListening,
+  } = useVoice();
 
   const isListening = voiceState.status === "listening";
   const isProcessing = voiceState.status === "processing";
 
   const toggleListening = () => {
     if (isListening) {
-      stopListening();
+      handleStopListening();
     } else if (!isProcessing) {
-      startListening();
+      handleStartListening();
     }
   };
 

@@ -7,7 +7,7 @@
 "use client";
 
 import React from "react";
-import { Mic, X, MessageSquare, Globe } from "lucide-react";
+import { Mic, MessageSquare, Globe } from "lucide-react";
 import Link from "next/link";
 import { useVoice } from "../hooks/useVoice";
 import { VOICE_LANGUAGES, STATUS_LABELS } from "../constants/voice.constants";
@@ -16,8 +16,6 @@ export const FloatingVoiceBar: React.FC = () => {
   const {
     voiceState,
     language,
-    isFloatingOpen,
-    setFloatingOpen,
     handleStartListening,
     handleStopListening,
     setLanguage,

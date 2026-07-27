@@ -76,7 +76,7 @@ export const VoiceEmpty: React.FC<VoiceEmptyProps> = ({
                 {item.title}
               </span>
               <p className="text-xs font-medium text-foreground group-hover:text-primary transition-colors flex-1 leading-snug">
-                "{item.prompt}"
+                &quot;{item.prompt}&quot;
               </p>
             </button>
           ))}

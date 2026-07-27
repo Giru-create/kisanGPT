@@ -70,7 +70,7 @@ export const voiceMockService = {
       audio_base64: "",
       mime_type: "audio/mp3",
       duration_seconds: 4.2,
-      text,
+      text: `[${language}] ${text}`,
     };
   },
 
@@ -118,11 +118,11 @@ export const voiceMockService = {
 
   createSession: async (language: string = "hi-IN"): Promise<{ session_id: string }> => {
     await mockDelay(200);
-    return { session_id: `session-${Date.now()}` };
+    return { session_id: `session-${language}-${Date.now()}` };
   },
 
-  endSession: async (_sessionId: string): Promise<{ detail: string }> => {
+  endSession: async (sessionId: string): Promise<{ detail: string }> => {
     await mockDelay(200);
-    return { detail: "Session ended" };
+    return { detail: `Session ${sessionId} ended` };
   },
 };

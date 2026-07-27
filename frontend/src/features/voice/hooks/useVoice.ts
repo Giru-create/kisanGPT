@@ -52,7 +52,6 @@ export function useVoice() {
   const setLanguage = useCallback(
     (lang: VoiceLanguage) => {
       storeSetLanguage(lang);
-      const labels = STATUS_LABELS[lang] || STATUS_LABELS["hi-IN"];
       announceToScreenReader(`Language changed to ${lang === "hi-IN" ? "Hindi" : lang === "pa-IN" ? "Punjabi" : "English"}`);
     },
     [storeSetLanguage],
@@ -188,7 +187,7 @@ export function useVoice() {
         addMessage(assistantMsg);
 
         setVoiceState({ status: "idle" });
-      } catch (err) {
+      } catch {
         setVoiceState({
           status: "error",
           code: "NETWORK_ERROR",
