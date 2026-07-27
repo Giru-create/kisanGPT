@@ -20,51 +20,9 @@ import {
   selectIsAlertDialogOpen,
   selectAlertDialogCommodity,
 } from "../store/marketStore";
-import {
-  MOCK_MARKET_OVERVIEW,
-  MOCK_PRICE_LIST,
-  MOCK_TREND_DATA,
-  MOCK_HISTORY_DATA,
-  MOCK_ADVICE_DATA,
-} from "../constants/market.constants";
+import { marketService } from "../services/marketService";
 import type { PriceAlertDraft } from "../types/market.types";
 import { announceToScreenReader } from "@/utils/a11y";
-
-// ---------------------------------------------------------------------------
-// Simulated fetch — replace with real API calls in a later milestone
-// ---------------------------------------------------------------------------
-
-async function fetchOverview(): Promise<typeof MOCK_MARKET_OVERVIEW> {
-  await new Promise((resolve) => setTimeout(resolve, 1200));
-  return MOCK_MARKET_OVERVIEW;
-}
-
-async function fetchPrices(
-  _commodity: string,
-): Promise<typeof MOCK_PRICE_LIST> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return { ...MOCK_PRICE_LIST, commodity: _commodity };
-}
-
-async function fetchTrend(_commodity: string): Promise<typeof MOCK_TREND_DATA> {
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  return { ...MOCK_TREND_DATA, commodity: _commodity };
-}
-
-async function fetchHistory(
-  _commodity: string,
-  _mandi: string,
-): Promise<typeof MOCK_HISTORY_DATA> {
-  await new Promise((resolve) => setTimeout(resolve, 900));
-  return { ...MOCK_HISTORY_DATA, commodity: _commodity, mandi: _mandi };
-}
-
-async function fetchAdvice(
-  _commodity: string,
-): Promise<typeof MOCK_ADVICE_DATA> {
-  await new Promise((resolve) => setTimeout(resolve, 700));
-  return { ...MOCK_ADVICE_DATA, commodity: _commodity };
-}
 
 // ---------------------------------------------------------------------------
 // Hook
@@ -102,7 +60,7 @@ export function useMarket() {
   const loadOverview = useCallback(async () => {
     setMarketState({ status: "loading" });
     try {
-      const data = await fetchOverview();
+      const data = await marketService.getMarketOverview();
       setMarketState({ status: "success", data });
       setAllPrices(data.top_commodities);
     } catch (err) {
@@ -118,7 +76,7 @@ export function useMarket() {
     async (commodity: string) => {
       setPriceListState({ status: "loading" });
       try {
-        const data = await fetchPrices(commodity);
+        const data = await marketService.getMarketPrices(commodity);
         setPriceListState({ status: "success", data });
       } catch (err) {
         const message =
@@ -135,7 +93,7 @@ export function useMarket() {
     async (commodity: string) => {
       setTrendState({ status: "loading" });
       try {
-        const data = await fetchTrend(commodity);
+        const data = await marketService.getMarketTrend(commodity);
         setTrendState({ status: "success", data });
       } catch (err) {
         const message =
@@ -152,7 +110,7 @@ export function useMarket() {
     async (commodity: string, mandi: string) => {
       setHistoryState({ status: "loading" });
       try {
-        const data = await fetchHistory(commodity, mandi);
+        const data = await marketService.getMarketHistory(commodity, mandi);
         setHistoryState({ status: "success", data });
       } catch (err) {
         const message =
@@ -169,7 +127,7 @@ export function useMarket() {
     async (commodity: string) => {
       setAdviceState({ status: "loading" });
       try {
-        const data = await fetchAdvice(commodity);
+        const data = await marketService.getMarketAdvice(commodity);
         setAdviceState({ status: "success", data });
       } catch (err) {
         const message =
@@ -203,21 +161,17 @@ export function useMarket() {
   );
 
   const createAlert = useCallback(
-    (draft: PriceAlertDraft) => {
-      const alert = {
-        id: `alert-${Date.now()}`,
-        commodity: draft.commodity,
-        target_price: draft.target_price,
-        condition: draft.condition,
-        is_active: true,
-        created_at: new Date().toISOString(),
-        triggered_at: null,
-      };
-      addAlert(alert);
-      closeAlertDialog();
-      announceToScreenReader(
-        `Price alert set for ${draft.commodity} at ₹${draft.target_price.toLocaleString("en-IN")} per quintal.`,
-      );
+    async (draft: PriceAlertDraft) => {
+      try {
+        const alert = await marketService.createMarketAlert(draft);
+        addAlert(alert);
+        closeAlertDialog();
+        announceToScreenReader(
+          `Price alert set for ${draft.commodity} at ₹${draft.target_price.toLocaleString("en-IN")} per quintal.`,
+        );
+      } catch (err) {
+        console.error("Failed to create price alert:", err);
+      }
     },
     [addAlert, closeAlertDialog],
   );

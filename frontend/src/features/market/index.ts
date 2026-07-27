@@ -10,3 +10,6 @@ export { MarketError } from "./components/MarketError";
 export { MarketEmpty } from "./components/MarketEmpty";
 export { useMarket } from "./hooks/useMarket";
 export { useMarketStore } from "./store/marketStore";
+export { marketService } from "./services/marketService";
+export { marketApi } from "./services/marketApi";
+export { marketMockService } from "./services/marketMock";
