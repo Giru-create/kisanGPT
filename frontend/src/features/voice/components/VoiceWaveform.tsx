@@ -24,12 +24,22 @@ export const VoiceWaveform: React.FC<VoiceWaveformProps> = ({
 
   return (
     <div
-      aria-label={isListening ? "Recording audio..." : isSpeaking ? "Playing AI response..." : "Waveform indicator"}
+      aria-label={
+        isListening
+          ? "Recording audio..."
+          : isSpeaking
+            ? "Playing AI response..."
+            : "Waveform indicator"
+      }
       role="img"
       className="flex items-center justify-center gap-1.5 h-12 px-4 py-2 bg-muted/40 rounded-full border border-border/30 backdrop-blur-sm"
     >
       {bars.map((height, i) => {
-        const activeMultiplier = isListening ? Math.max(0.3, volumeLevel * 1.5) : isSpeaking ? 0.8 : 0.2;
+        const activeMultiplier = isListening
+          ? Math.max(0.3, volumeLevel * 1.5)
+          : isSpeaking
+            ? 0.8
+            : 0.2;
         const barHeight = Math.max(6, Math.min(44, height * activeMultiplier));
 
         return (

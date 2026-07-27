@@ -7,7 +7,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Camera, TrendingUp, Landmark, Droplet } from "lucide-react";
+import { Camera, TrendingUp, Landmark, Droplet, BookOpen } from "lucide-react";
 
 export const QuickActionsGrid: React.FC = () => {
   const actions = [
@@ -32,6 +32,17 @@ export const QuickActionsGrid: React.FC = () => {
       textColor: "text-amber-900 dark:text-amber-300",
       iconColor: "text-amber-600 dark:text-amber-400",
       borderColor: "border-amber-500/25",
+    },
+    {
+      id: "farm-memory",
+      title: "Farm Memory",
+      subtitle: "Soil & yield logbook",
+      href: "/memory",
+      icon: BookOpen,
+      bgColor: "bg-purple-500/10 dark:bg-purple-500/20",
+      textColor: "text-purple-900 dark:text-purple-300",
+      iconColor: "text-purple-600 dark:text-purple-400",
+      borderColor: "border-purple-500/25",
     },
     {
       id: "govt-schemes",

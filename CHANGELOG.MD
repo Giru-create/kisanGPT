@@ -10,6 +10,17 @@ This project follows a milestone-based development workflow.
 
 ## Added
 
+### Farm Memory (Phase 9 — Antigravity)
+
+- **Farm Memory Types**: `MemoryCategory`, `MemoryMetrics`, `FarmMemoryItem`, `PersonalizedRecommendation`, `AddMemoryInput` types (`features/memory/types/memory.types.ts`).
+- **Farm Memory Store**: Zustand slice for memory items, recommendations, category filter, modal state, and loading/error states (`features/memory/store/memoryStore.ts`).
+- **useMemory Hook**: Wires store to API/mock layer with live region announcements and CRUD actions (`features/memory/hooks/useMemory.ts`).
+- **Memory Service Abstraction**: Typed REST API client `memoryApi.ts` with seamless offline fallback `memoryMock.ts` (`features/memory/services/`).
+- **Farm Memory UI Components**: `MemoryPage`, `MemoryHeader`, `MemoryTimeline`, `MemoryCard`, `PersonalizedRecommendations`, `AddMemoryModal`, `MemoryCategoryFilter`, `MemoryEmpty`, `MemoryError`, `MemorySkeleton` (`features/memory/components/`).
+- **Farm Memory Route**: Added `/memory` route (`app/memory/page.tsx`).
+- **Dashboard Integration**: Added Farm Memory tile to `QuickActionsGrid` on farmer dashboard.
+- **Unit Tests**: `memoryService.test.ts` verifying service layer and store state mutations.
+
 ### Voice Assistant (Phase 8 — OpenCode)
 
 - **Voice Provider Abstraction**: `SpeechToTextProvider` ABC + `MockSpeechToTextProvider`, `TextToSpeechProvider` ABC + `MockTextToSpeechProvider` for development/testing (`app/agents/voice.py`).

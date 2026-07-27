@@ -49,7 +49,10 @@ export function useAudioRecorder() {
         if (animFrameRef.current) {
           cancelAnimationFrame(animFrameRef.current);
         }
-        if (audioContextRef.current && audioContextRef.current.state !== "closed") {
+        if (
+          audioContextRef.current &&
+          audioContextRef.current.state !== "closed"
+        ) {
           audioContextRef.current.close().catch(() => {});
         }
 
@@ -71,7 +74,8 @@ export function useAudioRecorder() {
       // Setup Web Audio API Analyzer for real-time waveform volume
       const AudioCtx =
         window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
       const audioCtx = new AudioCtx();
       audioContextRef.current = audioCtx;
 
@@ -102,7 +106,10 @@ export function useAudioRecorder() {
           ? "audio/mp4"
           : "";
 
-      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      const recorder = new MediaRecorder(
+        stream,
+        mimeType ? { mimeType } : undefined,
+      );
 
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
@@ -132,7 +139,10 @@ export function useAudioRecorder() {
       if (animFrameRef.current) {
         cancelAnimationFrame(animFrameRef.current);
       }
-      if (audioContextRef.current && audioContextRef.current.state !== "closed") {
+      if (
+        audioContextRef.current &&
+        audioContextRef.current.state !== "closed"
+      ) {
         audioContextRef.current.close().catch(() => {});
       }
     };

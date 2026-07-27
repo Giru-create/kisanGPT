@@ -65,7 +65,10 @@ export const VoiceInputBar: React.FC<VoiceInputBarProps> = ({
       </div>
 
       {/* Text fallback input */}
-      <form onSubmit={handleSend} className="flex items-center gap-2 max-w-lg mx-auto pt-1">
+      <form
+        onSubmit={handleSend}
+        className="flex items-center gap-2 max-w-lg mx-auto pt-1"
+      >
         <input
           type="text"
           value={text}

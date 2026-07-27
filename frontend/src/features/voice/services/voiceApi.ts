@@ -68,7 +68,9 @@ export const voiceApi = {
     });
   },
 
-  createSession: async (language: string = "hi-IN"): Promise<{ session_id: string }> => {
+  createSession: async (
+    language: string = "hi-IN",
+  ): Promise<{ session_id: string }> => {
     return apiClient.post<{ session_id: string }>("/voice/session", null, {
       params: { language },
     });

@@ -46,13 +46,22 @@ export function useVoice() {
     stopRecording,
   } = useAudioRecorder();
 
-  const { isPlaying, currentTime, duration, playbackRate, playAudio, togglePlayPause, changeSpeed } =
-    useAudioPlayer();
+  const {
+    isPlaying,
+    currentTime,
+    duration,
+    playbackRate,
+    playAudio,
+    togglePlayPause,
+    changeSpeed,
+  } = useAudioPlayer();
 
   const setLanguage = useCallback(
     (lang: VoiceLanguage) => {
       storeSetLanguage(lang);
-      announceToScreenReader(`Language changed to ${lang === "hi-IN" ? "Hindi" : lang === "pa-IN" ? "Punjabi" : "English"}`);
+      announceToScreenReader(
+        `Language changed to ${lang === "hi-IN" ? "Hindi" : lang === "pa-IN" ? "Punjabi" : "English"}`,
+      );
     },
     [storeSetLanguage],
   );
@@ -61,12 +70,15 @@ export function useVoice() {
     const success = await startRecording();
     if (success) {
       setVoiceState({ status: "listening", volumeLevel: 0.5 });
-      announceToScreenReader(STATUS_LABELS[language]?.listening || "Listening... Speak now");
+      announceToScreenReader(
+        STATUS_LABELS[language]?.listening || "Listening... Speak now",
+      );
     } else {
       setVoiceState({
         status: "error",
         code: "PERMISSION_DENIED",
-        message: "Microphone access denied. Please grant permission in browser settings.",
+        message:
+          "Microphone access denied. Please grant permission in browser settings.",
       });
       announceToScreenReader("Microphone permission denied.");
     }
@@ -74,7 +86,9 @@ export function useVoice() {
 
   const handleStopListening = useCallback(async () => {
     setVoiceState({ status: "processing" });
-    announceToScreenReader(STATUS_LABELS[language]?.processing || "Analyzing query...");
+    announceToScreenReader(
+      STATUS_LABELS[language]?.processing || "Analyzing query...",
+    );
 
     try {
       const blob = await stopRecording();
@@ -128,7 +142,9 @@ export function useVoice() {
           mimeType: chatResult.mime_type,
         });
         playAudio(chatResult.audio_base64, chatResult.mime_type);
-        announceToScreenReader(STATUS_LABELS[language]?.speaking || "KisanGPT is responding.");
+        announceToScreenReader(
+          STATUS_LABELS[language]?.speaking || "KisanGPT is responding.",
+        );
       } else {
         setVoiceState({ status: "idle" });
       }
@@ -187,7 +203,8 @@ export function useVoice() {
         addMessage(assistantMsg);
 
         setVoiceState({ status: "idle" });
-      } catch {
+      } catch (err) {
+        console.error("Failed to load text response:", err);
         setVoiceState({
           status: "error",
           code: "NETWORK_ERROR",

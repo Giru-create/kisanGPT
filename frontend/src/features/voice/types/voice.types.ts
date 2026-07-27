@@ -6,18 +6,10 @@
 export type VoiceLanguage = "hi-IN" | "pa-IN" | "en-US";
 
 export type VoiceStatus =
-  | "idle"
-  | "listening"
-  | "processing"
-  | "speaking"
-  | "error";
+  "idle" | "listening" | "processing" | "speaking" | "error";
 
 export type VoiceErrorCode =
-  | "PERMISSION_DENIED"
-  | "NETWORK_ERROR"
-  | "NO_SPEECH"
-  | "TIMEOUT"
-  | "UNKNOWN";
+  "PERMISSION_DENIED" | "NETWORK_ERROR" | "NO_SPEECH" | "TIMEOUT" | "UNKNOWN";
 
 // ---------------------------------------------------------------------------
 // Speech-to-text
@@ -87,5 +79,10 @@ export type VoiceUIState =
   | { status: "idle" }
   | { status: "listening"; volumeLevel?: number }
   | { status: "processing" }
-  | { status: "speaking"; audioBase64?: string; mimeType?: string; durationSeconds?: number }
+  | {
+      status: "speaking";
+      audioBase64?: string;
+      mimeType?: string;
+      durationSeconds?: number;
+    }
   | { status: "error"; message: string; code?: VoiceErrorCode };

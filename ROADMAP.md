@@ -212,16 +212,16 @@ Tasks
 
 # Phase 9 — Farm Memory
 
-Status: 🟡 In Progress
+Status: 🟡 In Progress (Frontend Complete)
 
 ## Milestone 9
 
 Tasks
 
-- [ ] ChromaDB
-- [ ] Long-Term Memory
-- [ ] Personalized Context
-- [ ] Recommendation Engine
+- [ ] ChromaDB (Backend)
+- [x] Long-Term Memory UI Logbook & Timeline (Frontend)
+- [x] Personalized Context & AI Recommendations Cards (Frontend)
+- [ ] Recommendation Engine (Backend)
 
 ---
 

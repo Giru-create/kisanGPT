@@ -25,7 +25,10 @@ export const VoiceLanguageSelector: React.FC<VoiceLanguageSelectorProps> = ({
       aria-label="Select voice assistant language"
       className="flex items-center gap-1 bg-muted/60 p-1 rounded-2xl border border-border/40"
     >
-      <div className="flex items-center pl-2 pr-1 text-muted-foreground hidden sm:flex" aria-hidden="true">
+      <div
+        className="flex items-center pl-2 pr-1 text-muted-foreground hidden sm:flex"
+        aria-hidden="true"
+      >
         <Globe size={16} />
       </div>
       {VOICE_LANGUAGES.map((lang) => {

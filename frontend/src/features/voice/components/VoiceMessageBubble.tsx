@@ -79,7 +79,9 @@ export const VoiceMessageBubble: React.FC<VoiceMessageBubbleProps> = ({
           {/* Timestamp */}
           <div
             className={`text-[10px] mt-2 font-medium ${
-              isUser ? "text-primary-foreground/75 text-right" : "text-muted-foreground"
+              isUser
+                ? "text-primary-foreground/75 text-right"
+                : "text-muted-foreground"
             }`}
           >
             {formattedTime}
@@ -87,20 +89,22 @@ export const VoiceMessageBubble: React.FC<VoiceMessageBubbleProps> = ({
         </div>
 
         {/* Suggested Action Chips */}
-        {!isUser && message.suggested_actions && message.suggested_actions.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {message.suggested_actions.map((action, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => onSelectAction?.(action)}
-                className="px-3 py-1.5 text-xs font-medium bg-muted/60 hover:bg-muted text-foreground rounded-full border border-border/50 transition-colors min-h-[36px]"
-              >
-                {action}
-              </button>
-            ))}
-          </div>
-        )}
+        {!isUser &&
+          message.suggested_actions &&
+          message.suggested_actions.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {message.suggested_actions.map((action, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => onSelectAction?.(action)}
+                  className="px-3 py-1.5 text-xs font-medium bg-muted/60 hover:bg-muted text-foreground rounded-full border border-border/50 transition-colors min-h-[36px]"
+                >
+                  {action}
+                </button>
+              ))}
+            </div>
+          )}
       </div>
     </div>
   );

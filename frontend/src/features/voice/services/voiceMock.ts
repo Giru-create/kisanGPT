@@ -23,7 +23,11 @@ const LOCALIZED_RESPONSES: Record<
     defaultResponse:
       "आज करनाल मंडी में गेहूं (PBW 550) का भाव ₹2,275 प्रति क्विंटल है, जो MSP (₹2,250) से अधिक है। आने वाले 2-3 दिनों में मांग अच्छी रहने की संभावना है।",
     intent: "market_price",
-    suggested: ["भाव अलर्ट सेट करें", "मौसम का पूर्वानुमान देखें", "फसल डॉक्टर से बात करें"],
+    suggested: [
+      "भाव अलर्ट सेट करें",
+      "मौसम का पूर्वानुमान देखें",
+      "फसल डॉक्टर से बात करें",
+    ],
   },
   "pa-IN": {
     defaultResponse:
@@ -35,15 +39,20 @@ const LOCALIZED_RESPONSES: Record<
     defaultResponse:
       "Today's wheat price in Karnal Mandi is ₹2,275 per quintal, which is ₹25 above the MSP (₹2,250). Market demand is strong.",
     intent: "market_price",
-    suggested: ["Set Price Alert", "View 30-Day Trend", "Check Weather Forecast"],
+    suggested: [
+      "Set Price Alert",
+      "View 30-Day Trend",
+      "Check Weather Forecast",
+    ],
   },
 };
 
 export const voiceMockService = {
   speechToText: async (
-    _audioBlob: Blob,
+    audioBlob: Blob,
     language: string = "hi-IN",
   ): Promise<STTResult> => {
+    void audioBlob;
     await mockDelay(1200);
     const lang = (language as VoiceLanguage) || "hi-IN";
     const sampleText =
@@ -65,12 +74,13 @@ export const voiceMockService = {
     text: string,
     language: string = "hi-IN",
   ): Promise<TTSResult> => {
+    void language;
     await mockDelay(600);
     return {
       audio_base64: "",
       mime_type: "audio/mp3",
       duration_seconds: 4.2,
-      text: `[${language}] ${text}`,
+      text,
     };
   },
 
@@ -84,7 +94,11 @@ export const voiceMockService = {
     const preset = LOCALIZED_RESPONSES[lang] || LOCALIZED_RESPONSES["hi-IN"];
 
     let responseText = preset.defaultResponse;
-    if (userText.includes("मौसम") || userText.includes("rain") || userText.includes("ਮੌਸਮ")) {
+    if (
+      userText.includes("मौसम") ||
+      userText.includes("rain") ||
+      userText.includes("ਮੌਸਮ")
+    ) {
       responseText =
         lang === "hi-IN"
           ? "अगले 24 घंटों में करनाल और आसपास के इलाकों में हल्की बारिश की 40% संभावना है। तापमान 28°C से 32°C के बीच रहेगा।"
@@ -116,13 +130,17 @@ export const voiceMockService = {
     };
   },
 
-  createSession: async (language: string = "hi-IN"): Promise<{ session_id: string }> => {
+  createSession: async (
+    language: string = "hi-IN",
+  ): Promise<{ session_id: string }> => {
+    void language;
     await mockDelay(200);
-    return { session_id: `session-${language}-${Date.now()}` };
+    return { session_id: `session-${Date.now()}` };
   },
 
   endSession: async (sessionId: string): Promise<{ detail: string }> => {
+    void sessionId;
     await mockDelay(200);
-    return { detail: `Session ${sessionId} ended` };
+    return { detail: "Session ended" };
   },
 };

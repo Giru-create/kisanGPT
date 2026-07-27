@@ -7,7 +7,13 @@
 "use client";
 
 import React from "react";
-import { AlertTriangle, MicOff, WifiOff, RefreshCw, VolumeX } from "lucide-react";
+import {
+  AlertTriangle,
+  MicOff,
+  WifiOff,
+  RefreshCw,
+  VolumeX,
+} from "lucide-react";
 import type { VoiceErrorCode } from "../types/voice.types";
 
 interface VoiceErrorProps {

@@ -15,8 +15,18 @@ export const VOICE_LANGUAGES: Array<{
   nativeLabel: string;
   script: string;
 }> = [
-  { code: "hi-IN", label: "Hindi", nativeLabel: "हिन्दी", script: "Devanagari" },
-  { code: "pa-IN", label: "Punjabi", nativeLabel: "ਪੰਜਾਬੀ", script: "Gurmukhi" },
+  {
+    code: "hi-IN",
+    label: "Hindi",
+    nativeLabel: "हिन्दी",
+    script: "Devanagari",
+  },
+  {
+    code: "pa-IN",
+    label: "Punjabi",
+    nativeLabel: "ਪੰਜਾਬੀ",
+    script: "Gurmukhi",
+  },
   { code: "en-US", label: "English", nativeLabel: "English", script: "Latin" },
 ];
 

@@ -36,7 +36,11 @@ export const VoicePlaybackPlayer: React.FC<VoicePlaybackPlayerProps> = ({
         aria-label={isPlaying ? "Pause audio response" : "Play audio response"}
         className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-sm hover:scale-105 transition-transform min-w-[40px] focus:outline-none focus:ring-2 focus:ring-primary"
       >
-        {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
+        {isPlaying ? (
+          <Pause size={18} />
+        ) : (
+          <Play size={18} className="ml-0.5" />
+        )}
       </button>
 
       <div className="flex-1 space-y-1">

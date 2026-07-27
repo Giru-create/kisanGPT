@@ -29,9 +29,10 @@ export function useAudioPlayer() {
         audioRef.current.pause();
       }
 
-      const src = srcOrBase64.startsWith("data:") || srcOrBase64.startsWith("http")
-        ? srcOrBase64
-        : `data:${mimeType};base64,${srcOrBase64}`;
+      const src =
+        srcOrBase64.startsWith("data:") || srcOrBase64.startsWith("http")
+          ? srcOrBase64
+          : `data:${mimeType};base64,${srcOrBase64}`;
 
       const audio = new Audio(src);
       audioRef.current = audio;
@@ -68,7 +69,10 @@ export function useAudioPlayer() {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     }
   }, [isPlaying]);
 
