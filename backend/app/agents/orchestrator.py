@@ -1,10 +1,11 @@
-"""Agent orchestrator — Sprint 2 with LLM planner and response generator."""
+"""Agent orchestrator -- Sprint 4 with RAG context integration."""
 
 from __future__ import annotations
 
 from typing import Any
 
 from app.agents.context import AgentContext
+from app.agents.context_builder import ContextBuilder
 from app.agents.executor import execute
 from app.agents.registry import ToolRegistry, default_registry
 from app.core.logging import logger
@@ -18,8 +19,9 @@ class Orchestrator:
 
     Workflow:
         1. LLM planner selects tools (with keyword fallback).
-        2. Executor runs tools concurrently.
-        3. LLM generator produces a natural-language answer.
+        2. Executor runs tools sequentially.
+        3. ContextBuilder merges knowledge, tool results, and memory.
+        4. LLM generator produces a natural-language answer.
     """
 
     def __init__(
@@ -49,7 +51,7 @@ class Orchestrator:
 
         Returns:
             Dict with ``message`` (natural-language), ``planned_tools``,
-            and ``tool_results``.
+            ``tool_results``, and ``context``.
         """
         ctx = context or AgentContext()
 
@@ -72,10 +74,18 @@ class Orchestrator:
             registry=self._registry,
         )
 
-        answer = await self._generator.generate(message, tool_results)
+        merged_context = ContextBuilder.build(
+            query=message,
+            tool_results=tool_results,
+        )
+
+        answer = await self._generator.generate(
+            message, tool_results, context=merged_context
+        )
 
         return {
             "message": answer,
             "planned_tools": planned_tools,
             "tool_results": tool_results,
+            "context": merged_context,
         }

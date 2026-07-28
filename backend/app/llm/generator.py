@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class ResponseGenerator:
-    """Turns tool results into a human-friendly answer."""
+    """Turns tool results and retrieved knowledge into a human-friendly answer."""
 
     def __init__(self, provider: LLMProvider | None = None) -> None:
         self._provider = provider
@@ -22,19 +22,29 @@ class ResponseGenerator:
         self,
         message: str,
         tool_results: list[dict[str, Any]],
+        context: dict[str, Any] | None = None,
     ) -> str:
         """Generate a natural-language answer.
 
-        If the LLM is unavailable or fails, returns a simple echo of the
-        user message so the API never breaks.
+        Args:
+            message: The original user question.
+            tool_results: Raw results from the executor.
+            context: Optional merged context from ContextBuilder.  When
+                provided, retrieved knowledge documents are injected into
+                the prompt before tool outputs.
+
+        Returns:
+            A natural-language answer string.  Falls back to a minimal
+            response when the LLM is unavailable.
         """
         if self._provider is None:
             return self._fallback(message, tool_results)
 
         try:
+            context_block = self._build_context_block(tool_results, context)
             user_content = GENERATOR_USER_TEMPLATE.format(
                 message=message,
-                tool_outputs=self._format_tool_outputs(tool_results),
+                context_block=context_block,
             )
             response = await self._provider.generate(
                 system_instruction=GENERATOR_SYSTEM_PROMPT,
@@ -49,6 +59,44 @@ class ResponseGenerator:
                 extra={"error": str(exc)},
             )
             return self._fallback(message, tool_results)
+
+    @staticmethod
+    def _build_context_block(
+        tool_results: list[dict[str, Any]],
+        context: dict[str, Any] | None = None,
+    ) -> str:
+        """Build the context section of the prompt.
+
+        Includes retrieved knowledge documents first, then tool outputs.
+        """
+        parts: list[str] = []
+
+        # Inject retrieved knowledge if available
+        knowledge: list[dict[str, Any]] = []
+        if context:
+            knowledge = context.get("knowledge", [])
+        if not knowledge:
+            # Also check tool_results for knowledge tool output
+            for r in tool_results:
+                if r.get("tool") == "knowledge" and r.get("success"):
+                    data = r.get("data", {})
+                    if isinstance(data, dict):
+                        knowledge = data.get("documents", [])
+                    break
+
+        if knowledge:
+            parts.append("Retrieved knowledge documents:")
+            for i, doc in enumerate(knowledge, 1):
+                content = doc.get("content", "")
+                source = doc.get("source", "")
+                parts.append(f"  [{i}] ({source}) {content}")
+            parts.append("")
+
+        # Add tool outputs
+        tool_outputs = ResponseGenerator._format_tool_outputs(tool_results)
+        parts.append(f"Tool outputs:\n{tool_outputs}")
+
+        return "\n".join(parts)
 
     @staticmethod
     def _format_tool_outputs(tool_results: list[dict[str, Any]]) -> str:

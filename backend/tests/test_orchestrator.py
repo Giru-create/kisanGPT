@@ -149,3 +149,109 @@ async def test_orchestrator_without_api_key_uses_fallback() -> None:
         result = await orch.chat("What is the weather?")
         assert "weather" in result["planned_tools"]
         assert isinstance(result["message"], str)
+
+
+# --- Knowledge tool integration tests ---
+
+
+class StubKnowledgeTool(BaseTool):
+    name = "knowledge"
+    description = "Stub knowledge."
+
+    async def run(self, query: str, context: dict[str, Any]) -> dict[str, Any]:
+        return self._success(
+            {
+                "documents": [
+                    {
+                        "id": "k1",
+                        "content": "Wheat needs nitrogen.",
+                        "source": "observation",
+                    }
+                ],
+                "count": 1,
+            }
+        )
+
+
+def _make_registry_with_knowledge() -> ToolRegistry:
+    registry = ToolRegistry()
+    registry.register(StubWeatherTool())
+    registry.register(StubMarketTool())
+    registry.register(StubKnowledgeTool())
+    return registry
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_knowledge_in_result() -> None:
+    orch = Orchestrator(registry=_make_registry_with_knowledge())
+    result = await orch.chat("What is the weather?")
+    assert "context" in result
+    assert isinstance(result["context"], dict)
+    assert "knowledge" in result["context"]
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_knowledge_tool_executes() -> None:
+    """When planner selects knowledge, it appears in tool_results."""
+
+    class _FakePlanner:
+        async def generate(self, *, system_instruction: str, user_content: str) -> str:
+            return '{"tools":["knowledge"]}'
+
+    provider = _FakePlanner()
+    orch = Orchestrator(registry=_make_registry_with_knowledge(), llm_provider=provider)
+    result = await orch.chat("Tell me about government schemes")
+    assert "knowledge" in result["planned_tools"]
+    knowledge_result = next(
+        r for r in result["tool_results"] if r["tool"] == "knowledge"
+    )
+    assert knowledge_result["success"] is True
+    assert knowledge_result["data"]["count"] == 1
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_context_has_knowledge_docs() -> None:
+    """ContextBuilder extracts knowledge documents into context."""
+
+    class _FakePlanner:
+        async def generate(self, *, system_instruction: str, user_content: str) -> str:
+            return '{"tools":["knowledge","weather"]}'
+
+    provider = _FakePlanner()
+    orch = Orchestrator(registry=_make_registry_with_knowledge(), llm_provider=provider)
+    result = await orch.chat("What about wheat fertilizer?")
+    ctx = result["context"]
+    assert len(ctx["knowledge"]) == 1
+    assert ctx["knowledge"][0]["content"] == "Wheat needs nitrogen."
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_context_query_matches_user() -> None:
+    orch = Orchestrator(registry=_make_registry_with_knowledge())
+    result = await orch.chat("Hello!")
+    assert result["context"]["query"] == "Hello!"
+
+
+@pytest.mark.asyncio
+async def test_planner_selects_knowledge_for_scheme_query() -> None:
+    """Keyword planner should select knowledge for scheme queries."""
+    from app.agents.planner import plan
+
+    tools = plan("Tell me about government schemes")
+    assert "knowledge" in tools
+
+
+@pytest.mark.asyncio
+async def test_planner_selects_knowledge_for_fertilizer_guide() -> None:
+    from app.agents.planner import plan
+
+    tools = plan("Give me a fertilizer guide for wheat")
+    assert "knowledge" in tools
+
+
+@pytest.mark.asyncio
+async def test_planner_selects_knowledge_for_soil_question() -> None:
+    from app.agents.planner import plan
+
+    tools = plan("What type of soil is best for rice?")
+    assert "knowledge" in tools

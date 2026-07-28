@@ -21,6 +21,18 @@ This project follows a milestone-based development workflow.
 - **Dashboard Integration**: Added Farm Memory tile to `QuickActionsGrid` on farmer dashboard.
 - **Unit Tests**: `memoryService.test.ts` verifying service layer and store state mutations.
 
+### Farm Memory (Phase 9 — OpenCode)
+
+- **Memory Schemas**: `FarmMemory`, `MemoryCreateRequest`, `MemorySearchRequest`, `MemoryResponse`, `MemorySearchResponse`, `Recommendation`, `RecommendationRequest`, `RecommendationResponse` Pydantic models (`app/schemas/memory.py`).
+- **Embedding Provider ABC**: Abstract base class `EmbeddingProvider` with `embed` and `embed_batch` methods (`app/services/embedding.py`).
+- **Gemini Embedding Provider**: Concrete implementation using `text-embedding-004` model via `google-genai` SDK (`app/services/embedding.py`).
+- **Vector Store ABC**: Abstract base class `VectorStore` with `add`, `search`, `delete`, `get`, `count` methods (`app/services/vector_store.py`).
+- **ChromaDB Vector Store**: Concrete implementation using ChromaDB HTTP client with in-memory fallback (`app/services/vector_store.py`).
+- **Memory Service**: Orchestrates memory CRUD with vector embeddings — create, search (cosine similarity), get, delete, list by user (`app/services/memory.py`).
+- **Recommendation Engine**: Generates personalized farming recommendations using LLM with memory history context, falls back to pattern-based recommendations (`app/services/recommendation.py`).
+- **Memory Endpoints**: `POST /api/v1/memory`, `POST /api/v1/memory/search`, `GET /api/v1/memory`, `GET /api/v1/memory/{id}`, `DELETE /api/v1/memory/{id}`, `POST /api/v1/memory/recommendations` (`app/api/v1/memory.py`).
+- **Memory Tests**: 34 new tests covering schemas, memory service, recommendation engine, and API endpoints (`tests/test_memory_schemas.py`, `tests/test_memory_service.py`, `tests/test_recommendation.py`, `tests/test_memory_api.py`). Total: 388 tests passing.
+
 ### Voice Assistant (Phase 8 — OpenCode)
 
 - **Voice Provider Abstraction**: `SpeechToTextProvider` ABC + `MockSpeechToTextProvider`, `TextToSpeechProvider` ABC + `MockTextToSpeechProvider` for development/testing (`app/agents/voice.py`).

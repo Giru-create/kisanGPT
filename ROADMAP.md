@@ -14,13 +14,13 @@
 
 **Project Name:** KisanGPT
 
-**Current Phase:** 🟢 Phase 9 — Farm Memory
+**Current Phase:** 🟢 Phase 10 — Government Schemes
 
-**Current Milestone:** Milestone 9
+**Current Milestone:** Milestone 10
 
-**Overall Progress:** 67%
+**Overall Progress:** 75%
 
-**Status:** 🟡 In Progress
+**Status:** ⏳ Pending
 
 ---
 
@@ -212,16 +212,16 @@ Tasks
 
 # Phase 9 — Farm Memory
 
-Status: 🟡 In Progress (Frontend Complete)
+Status: ✅ Complete
 
 ## Milestone 9
 
 Tasks
 
-- [ ] ChromaDB (Backend)
+- [x] ChromaDB (Backend)
 - [x] Long-Term Memory UI Logbook & Timeline (Frontend)
 - [x] Personalized Context & AI Recommendations Cards (Frontend)
-- [ ] Recommendation Engine (Backend)
+- [x] Recommendation Engine (Backend)
 
 ---
 
@@ -311,15 +311,15 @@ Responsible for:
 
 🎯 Active Phase
 
-Phase 9 — Farm Memory
+Phase 10 — Government Schemes
 
 🎯 Active Milestone
 
-Milestone 9
+Milestone 10
 
 🎯 Current Task
 
-Implement ChromaDB integration, long-term memory, personalized context, and recommendation engine.
+Implement government scheme search, eligibility checker, application guidance, and notifications.
 
 Do not begin feature implementation until approved.
 
@@ -351,7 +351,8 @@ Before marking any milestone complete:
 | 2026-07-24 | Phase 6 — Weather Intelligence | ✅ |
 | 2026-07-25 | Phase 7 — Market Intelligence | ✅ |
 | 2026-07-26 | Phase 8 — Voice Assistant | ✅ |
-| 2026-07-27 | Phase 9 — Farm Memory | 🟡 |
+| 2026-07-27 | Phase 9 — Farm Memory | ✅ |
+| 2026-07-28 | Phase 10 — Government Schemes | ⏳ |
 
 ---
 

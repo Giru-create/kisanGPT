@@ -42,6 +42,7 @@ def _create_default_registry() -> ToolRegistry:
     """Build a registry pre-loaded with all built-in tools."""
     from app.tools.dashboard import DashboardTool
     from app.tools.disease import DiseaseTool
+    from app.tools.knowledge import KnowledgeTool
     from app.tools.market import MarketTool
     from app.tools.memory import MemoryTool
     from app.tools.weather import WeatherTool
@@ -53,6 +54,7 @@ def _create_default_registry() -> ToolRegistry:
         MarketTool,
         MemoryTool,
         DashboardTool,
+        KnowledgeTool,
     ):
         registry.register(tool_cls())
     return registry

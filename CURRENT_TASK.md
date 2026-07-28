@@ -14,21 +14,21 @@
 
 **Status:** 🟡 Active Development
 
-**Current Version:** 0.4.0
+**Current Version:** 0.5.0
 
 ---
 
 # Current Phase
 
-🟢 Phase 9 — Farm Memory
+🟢 Phase 10 — Government Schemes
 
 ---
 
 # Current Milestone
 
-Milestone 9 — Farm Memory
+Milestone 10 — Government Schemes
 
-Status: **In Progress**
+Status: **Pending**
 
 ---
 
@@ -42,9 +42,9 @@ Status: **In Progress**
 
 # Objective
 
-Implement farm memory features for personalized farming assistance.
+Implement government scheme features for Indian farmers.
 
-The objective is to provide ChromaDB integration, long-term memory, personalized context, and a recommendation engine.
+The objective is to provide scheme search, eligibility checker, application guidance, and notifications.
 
 ---
 
@@ -54,11 +54,11 @@ The objective is to provide ChromaDB integration, long-term memory, personalized
 
 Responsible for:
 
-- ChromaDB integration
-- Vector embeddings
-- Long-term memory storage
-- Personalized context retrieval
-- Recommendation engine
+- Government scheme data models
+- Scheme search API
+- Eligibility checker
+- Application guidance
+- Notifications system
 - Backend infrastructure
 
 ---
@@ -67,9 +67,10 @@ Responsible for:
 
 Responsible for:
 
-- Farm memory UI components
-- History visualization
-- Personalized recommendations display
+- Government scheme UI components
+- Scheme search interface
+- Eligibility form
+- Notification display
 
 ---
 
@@ -77,11 +78,10 @@ Responsible for:
 
 The milestone is complete only when:
 
-- ChromaDB integration works
-- Vector embeddings are stored
-- Long-term memory retrieval works
-- Personalized context is provided to chat
-- Recommendation engine generates suggestions
+- Scheme search works
+- Eligibility checker works
+- Application guidance is provided
+- Notifications system works
 - Tests passing
 - Lint passing
 - Type checking passing
@@ -93,9 +93,9 @@ The milestone is complete only when:
 
 Do NOT implement:
 
-- Government Schemes
 - Market Intelligence (already complete)
 - Voice Assistant (already complete)
+- Farm Memory (already complete)
 
 These belong to other milestones.
 
@@ -118,19 +118,20 @@ Never begin coding before reading them.
 
 OpenCode should deliver:
 
-- ChromaDB integration
-- Vector embedding service
-- Memory storage service
-- Context retrieval service
-- Recommendation engine
+- Government scheme models
+- Scheme search API
+- Eligibility checker service
+- Application guidance service
+- Notifications service
 - Backend tests
 - Updated documentation
 
 Antigravity should deliver:
 
-- Farm memory UI
-- History display components
-- Recommendation cards
+- Government scheme UI
+- Search interface components
+- Eligibility form
+- Notification display
 - Frontend tests
 
 ---
