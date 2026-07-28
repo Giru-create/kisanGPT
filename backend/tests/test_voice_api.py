@@ -287,7 +287,7 @@ class TestVoiceSessionEndpoint:
 
 class TestVoiceEndpointsCount:
     @pytest.mark.parametrize(
-        "method,path",
+        ("method", "path"),
         [
             ("GET", "/api/v1/voice/health"),
             ("POST", "/api/v1/voice/stt"),
@@ -297,6 +297,14 @@ class TestVoiceEndpointsCount:
             ("POST", "/api/v1/voice/session"),
         ],
     )
-    def test_voice_endpoint_exists(self, client: TestClient, method: str, path: str) -> None:
+    def test_voice_endpoint_exists(
+        self,
+        client: TestClient,
+        method: str,
+        path: str,
+    ) -> None:
         response = client.request(method, path)
-        assert response.status_code != 404, f"{method} {path} returned 404 (not found)"
+
+        assert response.status_code != 404, (
+            f"{method} {path} returned 404 (route not registered)"
+        )
