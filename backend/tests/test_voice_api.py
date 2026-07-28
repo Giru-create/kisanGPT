@@ -286,25 +286,17 @@ class TestVoiceSessionEndpoint:
 
 
 class TestVoiceEndpointsCount:
-    def test_all_expected_routes_exist(self, client: TestClient) -> None:
-        from fastapi.routing import APIRoute
-
-        def _collect_paths(routes: list[Any]) -> list[str]:
-            paths: list[str] = []
-            for route in routes:
-                if isinstance(route, APIRoute):
-                    paths.append(route.path)
-                elif hasattr(route, "original_router"):
-                    paths.extend(_collect_paths(route.original_router.routes))
-                elif hasattr(route, "routes"):
-                    paths.extend(_collect_paths(route.routes))
-            return paths
-
-        all_paths = _collect_paths(app.routes)
-        voice_routes = [p for p in all_paths if "/voice" in p]
-        assert "/api/v1/voice/stt" in voice_routes
-        assert "/api/v1/voice/tts" in voice_routes
-        assert "/api/v1/voice/command" in voice_routes
-        assert "/api/v1/voice/chat" in voice_routes
-        assert "/api/v1/voice/session" in voice_routes
-        assert "/api/v1/voice/health" in voice_routes
+    @pytest.mark.parametrize(
+        "method,path",
+        [
+            ("GET", "/api/v1/voice/health"),
+            ("POST", "/api/v1/voice/stt"),
+            ("POST", "/api/v1/voice/tts"),
+            ("POST", "/api/v1/voice/command"),
+            ("POST", "/api/v1/voice/chat"),
+            ("POST", "/api/v1/voice/session"),
+        ],
+    )
+    def test_voice_endpoint_exists(self, client: TestClient, method: str, path: str) -> None:
+        response = client.request(method, path)
+        assert response.status_code != 404, f"{method} {path} returned 404 (not found)"
