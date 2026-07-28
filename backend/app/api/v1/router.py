@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.api.v1.agent import router as agent_router
 from app.api.v1.auth import router as auth_router
 from app.api.v1.chat import router as chat_router
 from app.api.v1.dashboard import router as dashboard_router
@@ -13,6 +14,7 @@ router = APIRouter()
 
 router.include_router(health_router, prefix="/health", tags=["health"])
 router.include_router(auth_router, prefix="/auth", tags=["auth"])
+router.include_router(agent_router, prefix="/agent", tags=["agent"])
 router.include_router(chat_router, prefix="/chat", tags=["chat"])
 router.include_router(weather_router, prefix="/weather", tags=["weather"])
 router.include_router(disease_router, prefix="/disease", tags=["disease"])

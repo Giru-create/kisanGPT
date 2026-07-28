@@ -9,7 +9,8 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: list[str] = ["http://localhost:3000"]
 
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash"
+    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_ORCHESTRATOR_MODEL: str = "gemini-2.5-flash"
     FIREBASE_SERVICE_ACCOUNT_KEY: str = ""
     CHROMA_HOST: str = "localhost"
     CHROMA_PORT: int = 8000
