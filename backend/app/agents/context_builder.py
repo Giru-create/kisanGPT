@@ -8,9 +8,9 @@ from typing import Any
 class ContextBuilder:
     """Builds a unified context object for the LLM generator.
 
-    Merges retrieved documents, tool results, conversation memory,
-    and the original user query into a single dictionary that the
-    generator can consume.
+    Merges retrieved documents, tool results, farmer profile,
+    conversation history, preferences, and the original user query
+    into a single dictionary that the generator can consume.
     """
 
     @staticmethod
@@ -24,19 +24,54 @@ class ContextBuilder:
         Args:
             query: The original user question.
             tool_results: Raw results returned by the executor.
-            memory: Optional conversation memory dict.
+            memory: Optional memory context dict.  May contain
+                ``farmer_profile``, ``history``, ``preferences``,
+                and ``facts`` keys from MemoryContext, or the older
+                ``conversation_id``/``messages`` format.
 
         Returns:
             A dictionary with keys ``query``, ``knowledge``,
             ``tool_results``, and ``memory``.
         """
         knowledge = ContextBuilder._extract_knowledge(tool_results)
+        memory_block = ContextBuilder._build_memory_block(memory)
 
         return {
             "query": query,
             "knowledge": knowledge,
             "tool_results": tool_results,
-            "memory": memory or {},
+            "memory": memory_block,
+        }
+
+    @staticmethod
+    def _build_memory_block(
+        memory: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        """Normalise the memory dict into a consistent structure.
+
+        Handles both the new MemoryContext format (with farmer_profile,
+        history, preferences, facts) and the legacy format (with
+        conversation_id, messages).
+        """
+        if not memory:
+            return {}
+
+        # New format: already structured
+        if "farmer_profile" in memory or "preferences" in memory:
+            return {
+                "farmer_profile": memory.get("farmer_profile"),
+                "history": memory.get("history", []),
+                "preferences": memory.get("preferences", {}),
+                "facts": memory.get("facts", []),
+            }
+
+        # Legacy format: conversation-based
+        return {
+            "farmer_profile": None,
+            "history": memory.get("messages", []),
+            "preferences": {},
+            "facts": [],
+            **{k: v for k, v in memory.items() if k not in ("messages",)},
         }
 
     @staticmethod

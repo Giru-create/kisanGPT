@@ -18,7 +18,12 @@ class TestContextBuilderBuild:
     def test_build_with_memory(self) -> None:
         mem = {"conversation_id": "abc", "messages": []}
         ctx = ContextBuilder.build(query="q", tool_results=[], memory=mem)
-        assert ctx["memory"] == mem
+        # Legacy format is normalised into the new structure
+        assert ctx["memory"]["history"] == []
+        assert ctx["memory"]["farmer_profile"] is None
+        assert ctx["memory"]["preferences"] == {}
+        assert ctx["memory"]["facts"] == []
+        assert ctx["memory"]["conversation_id"] == "abc"
 
     def test_build_extracts_knowledge_from_tool_results(self) -> None:
         tool_results = [

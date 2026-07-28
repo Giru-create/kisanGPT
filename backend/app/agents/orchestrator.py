@@ -1,4 +1,4 @@
-"""Agent orchestrator -- Sprint 4 with RAG context integration."""
+"""Agent orchestrator -- Sprint 5 with persistent memory integration."""
 
 from __future__ import annotations
 
@@ -18,21 +18,25 @@ class Orchestrator:
     """Entry point for the agent pipeline.
 
     Workflow:
-        1. LLM planner selects tools (with keyword fallback).
-        2. Executor runs tools sequentially.
-        3. ContextBuilder merges knowledge, tool results, and memory.
-        4. LLM generator produces a natural-language answer.
+        1. Retrieve farmer memory (profile, history, facts).
+        2. LLM planner selects tools (with keyword fallback).
+        3. Executor runs tools sequentially.
+        4. ContextBuilder merges knowledge, tool results, and memory.
+        5. LLM generator produces a natural-language answer.
+        6. Save useful information from the conversation.
     """
 
     def __init__(
         self,
         registry: ToolRegistry | None = None,
         llm_provider: LLMProvider | None = None,
+        memory_manager: Any | None = None,
     ) -> None:
         self._registry = registry or default_registry
         provider = llm_provider or self._safe_get_provider()
         self._planner = LLMPlanner(provider=provider)
         self._generator = ResponseGenerator(provider=provider)
+        self._memory_manager = memory_manager
 
     @staticmethod
     def _safe_get_provider() -> LLMProvider | None:
@@ -57,9 +61,13 @@ class Orchestrator:
 
         logger.info(
             "Orchestrator.chat started",
-            extra={"user_message": message[:80]},
+            extra={"user_id": ctx.user_id, "user_message": message[:80]},
         )
 
+        # Step 1: Retrieve farmer memory
+        memory_context = await self._load_memory(ctx.user_id)
+
+        # Step 2: Planner selects tools
         available_tools = self._registry.list_names()
         planned_tools = await self._planner.plan(message, available_tools)
         logger.info(
@@ -67,6 +75,7 @@ class Orchestrator:
             extra={"tools": planned_tools},
         )
 
+        # Step 3: Execute tools
         tool_results = await execute(
             tool_names=planned_tools,
             query=message,
@@ -74,14 +83,20 @@ class Orchestrator:
             registry=self._registry,
         )
 
+        # Step 4: Build context
         merged_context = ContextBuilder.build(
             query=message,
             tool_results=tool_results,
+            memory=memory_context,
         )
 
+        # Step 5: Generate response
         answer = await self._generator.generate(
             message, tool_results, context=merged_context
         )
+
+        # Step 6: Save memory after response
+        await self._save_memory(ctx.user_id, message, answer)
 
         return {
             "message": answer,
@@ -89,3 +104,39 @@ class Orchestrator:
             "tool_results": tool_results,
             "context": merged_context,
         }
+
+    async def _load_memory(self, user_id: str) -> dict[str, Any] | None:
+        """Load farmer memory if a memory manager is available."""
+        if not self._memory_manager or not user_id:
+            return None
+
+        try:
+            memory_ctx = await self._memory_manager.retrieve_memory(user_id)
+            return memory_ctx.model_dump()
+        except Exception as exc:
+            logger.warning(
+                "Failed to load memory",
+                extra={"user_id": user_id, "error": str(exc)},
+            )
+            return None
+
+    async def _save_memory(
+        self, user_id: str, user_message: str, assistant_message: str
+    ) -> None:
+        """Save conversation to memory if a memory manager is available."""
+        if not self._memory_manager or not user_id:
+            return
+
+        try:
+            await self._memory_manager.save_conversation_message(
+                user_id, "user", user_message
+            )
+            await self._memory_manager.save_conversation_message(
+                user_id, "assistant", assistant_message
+            )
+            await self._memory_manager.save_memory(user_id, user_message)
+        except Exception as exc:
+            logger.warning(
+                "Failed to save memory",
+                extra={"user_id": user_id, "error": str(exc)},
+            )

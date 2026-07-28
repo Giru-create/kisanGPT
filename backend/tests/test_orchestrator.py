@@ -255,3 +255,85 @@ async def test_planner_selects_knowledge_for_soil_question() -> None:
 
     tools = plan("What type of soil is best for rice?")
     assert "knowledge" in tools
+
+
+# --- Memory integration tests ---
+
+
+class StubMemoryManager:
+    """Fake memory manager for orchestrator tests."""
+
+    def __init__(self) -> None:
+        self.retrieved = False
+        self.saved_messages: list[tuple[str, str]] = []
+        self.saved_extractions: list[str] = []
+
+    async def retrieve_memory(self, user_id: str) -> Any:  # noqa: ANN401
+        self.retrieved = True
+        from app.memory.schemas import MemoryContext
+
+        return MemoryContext(
+            farmer_profile=None,
+            history=[],
+            preferences={},
+            facts=[],
+        )
+
+    async def save_conversation_message(
+        self, user_id: str, role: str, content: str
+    ) -> None:
+        self.saved_messages.append((role, content))
+
+    async def save_memory(self, user_id: str, message: str) -> list[Any]:
+        self.saved_extractions.append(message)
+        return []
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_loads_memory() -> None:
+    """Orchestrator retrieves memory before planning."""
+    mgr = StubMemoryManager()
+    orch = Orchestrator(registry=_make_registry(), memory_manager=mgr)
+    await orch.chat("What is the weather?", AgentContext(user_id="u1"))
+    assert mgr.retrieved is True
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_saves_conversation() -> None:
+    """Orchestrator saves user and assistant messages after response."""
+    mgr = StubMemoryManager()
+    orch = Orchestrator(registry=_make_registry(), memory_manager=mgr)
+    await orch.chat("Hello!", AgentContext(user_id="u1"))
+    assert len(mgr.saved_messages) == 2
+    assert mgr.saved_messages[0] == ("user", "Hello!")
+    assert mgr.saved_messages[1][0] == "assistant"
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_extracts_memory() -> None:
+    """Orchestrator triggers memory extraction from user message."""
+    mgr = StubMemoryManager()
+    orch = Orchestrator(registry=_make_registry(), memory_manager=mgr)
+    await orch.chat("I grow wheat", AgentContext(user_id="u1"))
+    assert len(mgr.saved_extractions) == 1
+    assert "wheat" in mgr.saved_extractions[0]
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_works_without_memory_manager() -> None:
+    """Orchestrator functions normally when no memory manager is set."""
+    orch = Orchestrator(registry=_make_registry())
+    result = await orch.chat("What is the weather?")
+    assert isinstance(result["message"], str)
+    assert len(result["message"]) > 0
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_memory_in_context() -> None:
+    """Memory context appears in the merged context output."""
+    mgr = StubMemoryManager()
+    orch = Orchestrator(registry=_make_registry(), memory_manager=mgr)
+    result = await orch.chat("Hello!", AgentContext(user_id="u1"))
+    ctx = result["context"]
+    assert "memory" in ctx
+    assert isinstance(ctx["memory"], dict)

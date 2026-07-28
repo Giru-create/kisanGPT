@@ -5,6 +5,7 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.chat import router as chat_router
 from app.api.v1.dashboard import router as dashboard_router
 from app.api.v1.disease import router as disease_router
+from app.api.v1.farmer_memory import router as farmer_memory_router
 from app.api.v1.health import router as health_router
 from app.api.v1.knowledge import router as knowledge_router
 from app.api.v1.market import router as market_router
@@ -25,3 +26,6 @@ router.include_router(voice_router, prefix="/voice", tags=["voice"])
 router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 router.include_router(memory_router, prefix="/memory", tags=["memory"])
 router.include_router(knowledge_router, prefix="/knowledge", tags=["knowledge"])
+router.include_router(
+    farmer_memory_router, prefix="/farmer-memory", tags=["farmer-memory"]
+)
