@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import TYPE_CHECKING
 
-from app.agents.weather import OpenWeatherMapProvider, WeatherProvider
 from app.cache.memory import TTLCache
 from app.core.config import settings
 from app.core.logging import logger
@@ -13,15 +13,30 @@ from app.schemas.weather import (
     WeatherQuery,
 )
 
+if TYPE_CHECKING:
+    from app.agents.weather import WeatherProvider
+
 
 class WeatherService:
     """Orchestrates weather data fetching, caching, and advice."""
 
     def __init__(self, provider: WeatherProvider | None = None) -> None:
-        self._provider = provider or OpenWeatherMapProvider(
-            api_key=settings.OPENWEATHERMAP_API_KEY,
-            timeout=settings.WEATHER_TIMEOUT,
-        )
+        if provider is not None:
+            self._provider = provider
+        elif settings.OPENWEATHERMAP_API_KEY:
+            from app.agents.weather import OpenWeatherMapProvider
+
+            self._provider = OpenWeatherMapProvider(
+                api_key=settings.OPENWEATHERMAP_API_KEY,
+                timeout=settings.WEATHER_TIMEOUT,
+            )
+        else:
+            from app.providers.weather.open_meteo import OpenMeteoProvider
+
+            self._provider = OpenMeteoProvider(
+                base_url=settings.OPEN_METEO_BASE_URL,
+                timeout=settings.WEATHER_TIMEOUT,
+            )
         self._cache = TTLCache(default_ttl=settings.WEATHER_CACHE_TTL)
 
     async def get_current(self, query: WeatherQuery) -> dict[str, object]:

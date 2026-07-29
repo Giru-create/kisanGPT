@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     CHROMA_PORT: int = 8000
 
     OPENWEATHERMAP_API_KEY: str = ""
+    OPEN_METEO_BASE_URL: str = "https://api.open-meteo.com/v1"
     WEATHER_TIMEOUT: float = 10.0
     WEATHER_CACHE_TTL: int = 600
 
@@ -24,8 +25,15 @@ class Settings(BaseSettings):
     DISEASE_TIMEOUT: float = 60.0
     DISEASE_CACHE_TTL: int = 3600
 
+    MARKET_PROVIDER: str = "mock"  # "mock" | "live"
+    MARKET_LIVE_URL: str = ""
     MARKET_CACHE_TTL: int = 300
     MARKET_TIMEOUT: float = 10.0
+
+    CACHE_TTL: int = 600
+    RETRY_COUNT: int = 3
+    RETRY_BASE_DELAY: float = 0.5
+    REQUEST_TIMEOUT: float = 10.0
 
     VOICE_STT_TIMEOUT: float = 30.0
     VOICE_TTS_TIMEOUT: float = 30.0

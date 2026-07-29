@@ -30,7 +30,17 @@ class MarketService:
     """Orchestrates market data fetching, caching, and alert management."""
 
     def __init__(self, provider: MarketDataProvider | None = None) -> None:
-        self._provider = provider or MockMarketProvider()
+        if provider is not None:
+            self._provider = provider
+        elif settings.MARKET_PROVIDER == "live" and settings.MARKET_LIVE_URL:
+            from app.providers.market.live import LiveMarketProvider
+
+            self._provider = LiveMarketProvider(
+                base_url=settings.MARKET_LIVE_URL,
+                timeout=settings.MARKET_TIMEOUT,
+            )
+        else:
+            self._provider = MockMarketProvider()
         self._cache = TTLCache(default_ttl=settings.MARKET_CACHE_TTL)
         self._alerts: list[PriceAlert] = []
 
