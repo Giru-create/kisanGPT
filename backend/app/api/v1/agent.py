@@ -1,7 +1,9 @@
+"""Agent chat endpoint -- now powered by MasterAgent."""
+
 from fastapi import APIRouter
 
 from app.agents.context import AgentContext
-from app.agents.orchestrator import Orchestrator
+from app.agents.master import MasterAgent
 from app.core.security import CurrentUserDependency
 from app.schemas.agent import AgentRequest, AgentResponse
 
@@ -13,7 +15,7 @@ async def agent_chat(
     request: AgentRequest,
     current_user: CurrentUserDependency,
 ) -> AgentResponse:
-    """Process a farming query through the AI orchestrator."""
+    """Process a farming query through the AI multi-agent system."""
     context = AgentContext(
         user_id=current_user.user_id,
         city=request.city,
@@ -21,10 +23,11 @@ async def agent_chat(
         lon=request.lon,
         commodity=request.commodity,
         conversation_id=request.conversation_id,
+        message=request.message,
     )
 
-    orchestrator = Orchestrator()
-    result = await orchestrator.chat(request.message, context)
+    master = MasterAgent()
+    result = await master.chat(request.message, context)
 
     return AgentResponse(
         message=result["message"],
