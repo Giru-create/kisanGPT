@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -38,15 +38,12 @@ class TestKnowledgeSearchEndpoint:
 
     def test_search_returns_200(self, client: TestClient) -> None:
         app.dependency_overrides[get_current_user] = _auth_override
-
-        class _FakeMemoryService:
-            async def search_memories(self, user_id: str, request: Any) -> list[Any]:
-                return []
-
         try:
+            instance = AsyncMock()
+            instance.retrieve.return_value = []
             with patch(
-                "app.services.memory.MemoryService",
-                _FakeMemoryService,
+                "app.rag.retriever.KnowledgeRetriever",
+                return_value=instance,
             ):
                 response = client.post(
                     "/api/v1/knowledge/search",
@@ -92,15 +89,12 @@ class TestKnowledgeSearchEndpoint:
 
     def test_search_default_k(self, client: TestClient) -> None:
         app.dependency_overrides[get_current_user] = _auth_override
-
-        class _FakeMemoryService:
-            async def search_memories(self, user_id: str, request: Any) -> list[Any]:
-                return []
-
         try:
+            instance = AsyncMock()
+            instance.retrieve.return_value = []
             with patch(
-                "app.services.memory.MemoryService",
-                _FakeMemoryService,
+                "app.rag.retriever.KnowledgeRetriever",
+                return_value=instance,
             ):
                 response = client.post(
                     "/api/v1/knowledge/search",

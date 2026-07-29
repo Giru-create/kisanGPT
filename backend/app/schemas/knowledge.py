@@ -20,6 +20,10 @@ class KnowledgeSearchRequest(BaseModel):
 
     query: str = Field(..., min_length=1, max_length=1000)
     k: int = Field(default=5, ge=1, le=20, description="Number of results.")
+    category: str | None = Field(default=None, description="Filter by category.")
+    crop: str | None = Field(default=None, description="Filter by crop.")
+    state: str | None = Field(default=None, description="Filter by state.")
+    language: str | None = Field(default=None, description="Filter by language.")
 
 
 class KnowledgeSearchResponse(BaseModel):

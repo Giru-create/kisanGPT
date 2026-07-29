@@ -35,6 +35,13 @@ class Settings(BaseSettings):
     RETRY_BASE_DELAY: float = 0.5
     REQUEST_TIMEOUT: float = 10.0
 
+    RAG_TOP_K: int = 5
+    RAG_CHUNK_SIZE: int = 500
+    RAG_CHUNK_OVERLAP: int = 100
+    RAG_MIN_SCORE: float = 0.3
+    RAG_COLLECTION: str = "farm_knowledge"
+    DOCUMENTS_PATH: str = "data"
+
     VOICE_STT_TIMEOUT: float = 30.0
     VOICE_TTS_TIMEOUT: float = 30.0
     VOICE_SUPPORTED_LANGUAGES: list[str] = ["hi-IN", "pa-IN", "en-US"]

@@ -1,24 +1,24 @@
-"""Knowledge tool -- wraps the memory/RAG pipeline for the orchestrator."""
+"""Knowledge tool -- wraps the RAG retrieval pipeline for the orchestrator."""
 
 from __future__ import annotations
 
 from typing import Any
 
 from app.core.logging import logger
-from app.schemas.memory import MemorySearchRequest
-from app.services.memory import MemoryService
 from app.tools.base import BaseTool
 
-KNOWLEDGE_COLLECTION = "farm_memories"
 DEFAULT_K = 5
 
 
 class KnowledgeTool(BaseTool):
     """Retrieve relevant knowledge documents from the vector store.
 
-    This tool wraps the existing MemoryService (RAG pipeline) and exposes
-    it as a standard orchestrator tool so the planner can invoke it
-    alongside weather, market, and other tools.
+    This tool wraps the KnowledgeRetriever and exposes it as a standard
+    orchestrator tool so the planner can invoke it alongside weather,
+    market, and other tools.
+
+    Supports metadata filters: category, crop, state, language.
+    Returns source citations with each document.
     """
 
     name = "knowledge"
@@ -33,39 +33,45 @@ class KnowledgeTool(BaseTool):
 
         Args:
             query: The user's question or search terms.
-            context: Must contain ``user_id``.  May contain ``k`` to
-                override the default number of results.
+            context: May contain ``user_id``, ``k``, ``category``,
+                ``crop``, ``state``, ``language`` to refine results.
 
         Returns:
             Standardised tool result with ``documents``, ``count``, and
             ``success`` keys.
         """
-        user_id = context.get("user_id", "")
         k = context.get("k", DEFAULT_K)
 
-        if not user_id:
-            return self._success(
-                {"documents": [], "count": 0, "message": "No user context."}
+        try:
+            from app.rag.retriever import KnowledgeRetriever, RetrievalFilter
+
+            retriever = KnowledgeRetriever()
+            filters = RetrievalFilter(
+                category=context.get("category"),
+                crop=context.get("crop"),
+                state=context.get("state"),
+                language=context.get("language"),
             )
 
-        try:
-            service = MemoryService()
-            search_request = MemorySearchRequest(query=query, limit=k)
-            memories = await service.search_memories(user_id, search_request)
+            results = await retriever.retrieve(query=query, top_k=k, filters=filters)
 
             documents = [
                 {
-                    "id": m.memory_id,
-                    "content": m.content,
-                    "source": m.memory_type,
-                    "score": 1.0,
+                    "id": r.id,
+                    "content": r.content,
+                    "source": r.metadata.get("source", ""),
+                    "title": r.metadata.get("title", ""),
+                    "score": round(r.score, 3),
                     "metadata": {
-                        "crop": m.crop,
-                        "location": m.location,
-                        "memory_type": m.memory_type,
+                        "category": r.metadata.get("category", ""),
+                        "crop": r.metadata.get("crop", ""),
+                        "state": r.metadata.get("state", ""),
+                        "language": r.metadata.get("language", ""),
+                        "tags": r.metadata.get("tags", []),
+                        "heading": r.metadata.get("heading", ""),
                     },
                 }
-                for m in memories
+                for r in results
             ]
 
             logger.info(

@@ -10,7 +10,6 @@ from app.schemas.knowledge import (
     KnowledgeSearchRequest,
     KnowledgeSearchResponse,
 )
-from app.schemas.memory import MemorySearchRequest
 
 router = APIRouter()
 
@@ -24,25 +23,34 @@ async def knowledge_search(
 
     This endpoint is intended for debugging and testing only.
     """
-    from app.services.memory import MemoryService
+    from app.rag.retriever import KnowledgeRetriever, RetrievalFilter
 
-    service = MemoryService()
-    search_request = MemorySearchRequest(query=request.query, limit=request.k)
-    memories = await service.search_memories(current_user.user_id, search_request)
+    retriever = KnowledgeRetriever()
+    filters = RetrievalFilter(
+        category=request.category,
+        crop=request.crop,
+        state=request.state,
+        language=request.language,
+    )
+
+    results = await retriever.retrieve(
+        query=request.query, top_k=request.k, filters=filters
+    )
 
     documents = [
         KnowledgeDocument(
-            id=m.memory_id,
-            content=m.content,
-            source=m.memory_type,
-            score=1.0,
+            id=r.id,
+            content=r.content,
+            source=r.metadata.get("source", ""),
+            score=r.score,
             metadata={
-                "crop": m.crop,
-                "location": m.location,
-                "memory_type": m.memory_type,
+                "title": r.metadata.get("title", ""),
+                "category": r.metadata.get("category", ""),
+                "crop": r.metadata.get("crop", ""),
+                "state": r.metadata.get("state", ""),
             },
         )
-        for m in memories
+        for r in results
     ]
 
     return KnowledgeSearchResponse(
