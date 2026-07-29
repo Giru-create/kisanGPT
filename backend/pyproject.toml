@@ -42,6 +42,15 @@ select = [
 [tool.ruff.lint.isort]
 known-first-party = ["app"]
 
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = [
+    "data*",
+    "tests*",
+    "docs*",
+    "scripts*",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
