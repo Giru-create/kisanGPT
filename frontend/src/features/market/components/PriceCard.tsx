@@ -23,7 +23,9 @@ export function PriceCard({ price }: PriceCardProps) {
   const changeColor = price.is_rise
     ? "text-emerald-600 dark:text-emerald-400"
     : "text-red-600 dark:text-red-400";
-  const changeBg = price.is_rise ? "bg-emerald-50 dark:bg-emerald-900/20" : "bg-red-50 dark:bg-red-900/20";
+  const changeBg = price.is_rise
+    ? "bg-emerald-50 dark:bg-emerald-900/20"
+    : "bg-red-50 dark:bg-red-900/20";
   const changeIcon = price.is_rise ? "▲" : "▼";
   const mspStatus =
     price.msp_difference > 0
@@ -35,12 +37,12 @@ export function PriceCard({ price }: PriceCardProps) {
       : price.msp_difference < 0
         ? {
             label: "Below MSP",
-            color: "text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/30",
+            color:
+              "text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/30",
           }
         : {
             label: "At MSP",
-            color:
-              "text-muted-foreground bg-muted dark:bg-muted/50",
+            color: "text-muted-foreground bg-muted dark:bg-muted/50",
           };
 
   return (

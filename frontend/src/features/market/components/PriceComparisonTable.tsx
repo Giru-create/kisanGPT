@@ -41,16 +41,31 @@ export function PriceComparisonTable({ prices }: PriceComparisonTableProps) {
           </caption>
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th scope="col" className="px-4 py-3 font-medium text-foreground">Mandi</th>
-              <th scope="col" className="px-4 py-3 font-medium text-foreground">District</th>
-              <th scope="col" className="px-4 py-3 font-medium text-foreground">State</th>
-              <th scope="col" className="px-4 py-3 text-right font-medium text-foreground">
+              <th scope="col" className="px-4 py-3 font-medium text-foreground">
+                Mandi
+              </th>
+              <th scope="col" className="px-4 py-3 font-medium text-foreground">
+                District
+              </th>
+              <th scope="col" className="px-4 py-3 font-medium text-foreground">
+                State
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-3 text-right font-medium text-foreground"
+              >
                 Price (₹/qnt)
               </th>
-              <th scope="col" className="px-4 py-3 text-right font-medium text-foreground">
+              <th
+                scope="col"
+                className="px-4 py-3 text-right font-medium text-foreground"
+              >
                 Change
               </th>
-              <th scope="col" className="px-4 py-3 text-right font-medium text-foreground">
+              <th
+                scope="col"
+                className="px-4 py-3 text-right font-medium text-foreground"
+              >
                 MSP Diff
               </th>
             </tr>
@@ -64,7 +79,9 @@ export function PriceComparisonTable({ prices }: PriceComparisonTableProps) {
                 <td className="px-4 py-3 font-medium text-foreground">
                   {p.mandi_name}
                 </td>
-                <td className="px-4 py-3 text-muted-foreground">{p.district}</td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {p.district}
+                </td>
                 <td className="px-4 py-3 text-muted-foreground">{p.state}</td>
                 <td className="px-4 py-3 text-right font-semibold text-foreground">
                   ₹{p.price_per_quintal.toLocaleString("en-IN")}
