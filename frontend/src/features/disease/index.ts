@@ -15,11 +15,21 @@ export { DetectionSkeleton } from "./components/DetectionSkeleton";
 export { DetectionError } from "./components/DetectionError";
 export { DetectionEmpty } from "./components/DetectionEmpty";
 
-// Hook
+// Hooks
 export { useDiseaseDetection } from "./hooks/useDiseaseDetection";
+export { useDiseaseDetectionMutation } from "./hooks/useDiseaseMutation";
 
 // Store
-export { useDiseaseStore } from "./store/diseaseStore";
+export {
+  useDiseaseStore,
+  selectDiseaseState,
+  selectPreviewUrl,
+} from "./store/diseaseStore";
+
+// Services
+export { diseaseService, validateFile } from "./services/diseaseService";
+export { diseaseApi } from "./services/diseaseApi";
+export { diseaseMockService } from "./services/diseaseMock";
 
 // Types
 export type {

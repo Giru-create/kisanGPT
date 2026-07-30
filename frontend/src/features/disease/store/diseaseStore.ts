@@ -1,6 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // diseaseStore.ts
 // KisanGPT — Crop Disease Detection Zustand slice
+// UI-only state: file, preview URL, and discriminated-union UI state
+// Disease data is managed by React Query in useDiseaseMutation.ts
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { create } from "zustand";
