@@ -60,8 +60,7 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       daysSinceSown: 42,
       status: "alert",
       moisturePercent: 45,
-      alertMessage:
-        "Pest Alert: Pink Bollworm detected via satellite infra.",
+      alertMessage: "Pest Alert: Pink Bollworm detected via satellite infra.",
       recommendation: "Recommended: Organic pesticide application.",
     },
   ],
@@ -132,8 +131,7 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
     {
       id: "priority-1",
       title: "Frost Warning",
-      description:
-        "Temperatures expected to drop below 4\u00b0C in 48 hours.",
+      description: "Temperatures expected to drop below 4\u00b0C in 48 hours.",
       type: "frost",
       borderColor: "border-red-500",
     },
@@ -211,8 +209,7 @@ export const MOCK_DASHBOARD_DATA: DashboardData = {
       id: "act-1",
       type: "scan",
       title: "Scanned Wheat Field Leaf",
-      description:
-        "No diseases detected. Crop health is optimal at 78%.",
+      description: "No diseases detected. Crop health is optimal at 78%.",
       timestamp: new Date(Date.now() - 12 * 3600 * 1000),
       targetHref: "/disease",
     },

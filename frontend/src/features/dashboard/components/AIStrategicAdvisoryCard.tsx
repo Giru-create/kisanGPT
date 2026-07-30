@@ -13,7 +13,11 @@ export const AIStrategicAdvisoryCard: React.FC = () => {
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-4">
           <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
-            <Sparkles size={20} className="text-emerald-300" aria-hidden="true" />
+            <Sparkles
+              size={20}
+              className="text-emerald-300"
+              aria-hidden="true"
+            />
           </div>
           <h3 className="text-lg font-semibold">AI Strategic Advisory</h3>
         </div>

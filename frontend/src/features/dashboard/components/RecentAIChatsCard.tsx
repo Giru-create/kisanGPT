@@ -16,9 +16,11 @@ const ICON_MAP: Record<AIAdvisorChat["iconType"], React.ElementType> = {
 };
 
 const ICON_BG_MAP: Record<AIAdvisorChat["iconType"], string> = {
-  water: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  water:
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
   pest: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300",
-  fertilizer: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
+  fertilizer:
+    "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
   weather: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300",
 };
 
@@ -53,7 +55,9 @@ export const RecentAIChatsCard: React.FC<RecentAIChatsCardProps> = ({
               <Icon size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <h5 className="text-sm font-bold text-foreground">{chat.title}</h5>
+              <h5 className="text-sm font-bold text-foreground">
+                {chat.title}
+              </h5>
               <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
                 {chat.description}
               </p>

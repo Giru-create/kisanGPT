@@ -40,7 +40,11 @@ export const PriorityAlertsCard: React.FC<PriorityAlertsCardProps> = ({
             key={alert.id}
             className={`bg-card border border-border rounded-xl p-4 flex gap-3 items-center shadow-sm border-l-4 ${alert.borderColor}`}
           >
-            <Icon size={20} className={`${color} shrink-0`} aria-hidden="true" />
+            <Icon
+              size={20}
+              className={`${color} shrink-0`}
+              aria-hidden="true"
+            />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-foreground">{alert.title}</p>
               <p className="text-xs text-muted-foreground mt-0.5">

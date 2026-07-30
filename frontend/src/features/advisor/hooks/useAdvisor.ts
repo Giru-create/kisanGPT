@@ -69,13 +69,7 @@ export function useAdvisor() {
       };
       addAssistantMessage(assistantMessage);
     },
-    [
-      status,
-      generateId,
-      addUserMessage,
-      addAssistantMessage,
-      setStatus,
-    ],
+    [status, generateId, addUserMessage, addAssistantMessage, setStatus],
   );
 
   const handleSuggestionClick = useCallback(

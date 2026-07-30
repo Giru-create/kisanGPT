@@ -1,0 +1,36 @@
+"use client";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SuggestedQuestions.tsx
+// KisanGPT — Suggested question chips for AI Advisor
+// ─────────────────────────────────────────────────────────────────────────────
+
+import React from "react";
+import { MOCK_SUGGESTED_QUESTIONS } from "../constants/advisor.constants";
+
+interface SuggestedQuestionsProps {
+  onSelect: (question: string) => void;
+}
+
+export const SuggestedQuestions: React.FC<SuggestedQuestionsProps> = ({
+  onSelect,
+}) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+      {MOCK_SUGGESTED_QUESTIONS.map((question) => (
+        <button
+          key={question}
+          type="button"
+          onClick={() => onSelect(question)}
+          className="text-left p-3 border border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-all group"
+        >
+          <p className="text-sm font-medium text-muted-foreground group-hover:text-primary">
+            {question}
+          </p>
+        </button>
+      ))}
+    </div>
+  );
+};
+
+SuggestedQuestions.displayName = "SuggestedQuestions";

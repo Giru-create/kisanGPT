@@ -98,7 +98,11 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
 
       <div className="mt-4 pt-4 border-t border-border">
         <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-          <Lightbulb size={14} className="text-amber-500 shrink-0" aria-hidden="true" />
+          <Lightbulb
+            size={14}
+            className="text-amber-500 shrink-0"
+            aria-hidden="true"
+          />
           AI Insight: Market liquidity suggests a peak in 10-14 days.
         </p>
       </div>

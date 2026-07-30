@@ -35,9 +35,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
             <div
               key={item.id}
               className={`bg-card border rounded-xl p-4 shadow-sm group hover:border-primary transition-all relative overflow-hidden ${
-                isAlert
-                  ? "border-red-500/30"
-                  : "border-border"
+                isAlert ? "border-red-500/30" : "border-border"
               }`}
             >
               {isAlert && (
@@ -71,9 +69,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
                       : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
                   }`}
                 >
-                  {isAlert && (
-                    <AlertTriangle size={12} aria-hidden="true" />
-                  )}
+                  {isAlert && <AlertTriangle size={12} aria-hidden="true" />}
                   {isAlert ? "Alert" : "Healthy"}
                 </span>
               </div>

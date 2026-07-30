@@ -126,9 +126,7 @@ export const FarmerDashboard: React.FC = () => {
                     temperatureC={
                       dashboardState.data.weatherSummary.temperatureC
                     }
-                    feelsLikeC={
-                      dashboardState.data.weatherSummary.feelsLikeC
-                    }
+                    feelsLikeC={dashboardState.data.weatherSummary.feelsLikeC}
                     condition={dashboardState.data.weatherSummary.condition}
                     humidity={dashboardState.data.weatherSummary.humidity}
                     windSpeedKmh={
@@ -148,22 +146,16 @@ export const FarmerDashboard: React.FC = () => {
               {/* Main Grid: Crop Health (7/12) + Market Trends (5/12) */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                 <section className="lg:col-span-7">
-                  <CropHealthCard
-                    items={dashboardState.data.cropHealthCards}
-                  />
+                  <CropHealthCard items={dashboardState.data.cropHealthCards} />
                 </section>
                 <section className="lg:col-span-5">
-                  <MarketTrendsCard
-                    trends={dashboardState.data.marketTrends}
-                  />
+                  <MarketTrendsCard trends={dashboardState.data.marketTrends} />
                 </section>
               </div>
 
               {/* Bottom Row: Recent AI Chats + Priority Alerts */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pb-6">
-                <RecentAIChatsCard
-                  chats={dashboardState.data.aiAdvisorChats}
-                />
+                <RecentAIChatsCard chats={dashboardState.data.aiAdvisorChats} />
                 <PriorityAlertsCard
                   alerts={dashboardState.data.priorityAlerts}
                 />
@@ -178,7 +170,11 @@ export const FarmerDashboard: React.FC = () => {
           aria-label="Ask KisanGPT AI"
           className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center transition-transform active:scale-90 z-50 group hover:bg-primary/90"
         >
-          <MessageCircle size={24} className="group-hover:rotate-12 transition-transform" aria-hidden="true" />
+          <MessageCircle
+            size={24}
+            className="group-hover:rotate-12 transition-transform"
+            aria-hidden="true"
+          />
           <div className="absolute right-16 bg-foreground text-background px-3 py-1.5 rounded-lg whitespace-nowrap text-sm font-medium opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all pointer-events-none shadow-lg">
             Ask KisanGPT AI
           </div>

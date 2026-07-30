@@ -50,7 +50,10 @@ export const DashboardTopBar: React.FC = () => {
           <History size={20} />
         </button>
 
-        <div className="h-6 w-px bg-border mx-1 hidden sm:block" aria-hidden="true" />
+        <div
+          className="h-6 w-px bg-border mx-1 hidden sm:block"
+          aria-hidden="true"
+        />
 
         <button
           type="button"
