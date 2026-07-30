@@ -14,9 +14,7 @@ class Scheme(BaseModel):
         ...,
         description="Category (Direct Benefit, Insurance, Irrigation, etc.).",
     )
-    description: str = Field(
-        default="", description="Full description of the scheme."
-    )
+    description: str = Field(default="", description="Full description of the scheme.")
     eligibility: str = Field(default="", description="Who is eligible.")
     benefits: str = Field(default="", description="What the farmer receives.")
     required_documents: list[str] = Field(
@@ -35,9 +33,7 @@ class Scheme(BaseModel):
     benefit_amount: str = Field(
         default="", description="Short benefit summary for card display."
     )
-    summary: str = Field(
-        default="", description="One-line summary for card display."
-    )
+    summary: str = Field(default="", description="One-line summary for card display.")
     state: str | None = Field(
         default=None, description="Applicable state, or null for all-India."
     )

@@ -38,8 +38,7 @@ def _get_default_schemes() -> list[Scheme]:
                 "Land records (Khata/Khasra)",
             ],
             application_process=(
-                "Apply online at pmkisan.gov.in or visit "
-                "nearest CSC centre."
+                "Apply online at pmkisan.gov.in or visit nearest CSC centre."
             ),
             deadline=None,
             official_link="https://pmkisan.gov.in",
@@ -76,8 +75,7 @@ def _get_default_schemes() -> list[Scheme]:
                 "Bank passbook",
             ],
             application_process=(
-                "Apply through bank, CSC, or insurance company "
-                "within sowing period."
+                "Apply through bank, CSC, or insurance company within sowing period."
             ),
             deadline="Before sowing season begins",
             official_link="https://pmfby.gov.in",
@@ -101,10 +99,7 @@ def _get_default_schemes() -> list[Scheme]:
                 "sprinkler systems to improve water use efficiency "
                 "and expand irrigated area."
             ),
-            eligibility=(
-                "All farmers with focus on small and marginal "
-                "farmers."
-            ),
+            eligibility=("All farmers with focus on small and marginal farmers."),
             benefits="Up to 55% subsidy for micro-irrigation equipment.",
             required_documents=[
                 "Aadhaar card",
@@ -113,8 +108,7 @@ def _get_default_schemes() -> list[Scheme]:
                 "Water source proof",
             ],
             application_process=(
-                "Apply through state agriculture department "
-                "or online portal."
+                "Apply through state agriculture department or online portal."
             ),
             deadline="15 Feb 2026",
             official_link="https://pmksy.gov.in",
@@ -139,17 +133,13 @@ def _get_default_schemes() -> list[Scheme]:
                 "fertilizers."
             ),
             eligibility="All farmers.",
-            benefits=(
-                "Free soil testing and personalized fertilizer "
-                "recommendations."
-            ),
+            benefits=("Free soil testing and personalized fertilizer recommendations."),
             required_documents=[
                 "Aadhaar card",
                 "Land records",
             ],
             application_process=(
-                "Visit nearest soil testing laboratory "
-                "or CSC centre."
+                "Visit nearest soil testing laboratory or CSC centre."
             ),
             deadline=None,
             official_link="https://soilhealth.dac.gov.in",
@@ -173,14 +163,8 @@ def _get_default_schemes() -> list[Scheme]:
                 "agricultural needs including crop production, "
                 "post-harvest expenses, and maintenance."
             ),
-            eligibility=(
-                "All farmers, fishermen, and animal "
-                "husbandry farmers."
-            ),
-            benefits=(
-                "Crop loan at 4% p.a. "
-                "(with prompt repayment rebate)."
-            ),
+            eligibility=("All farmers, fishermen, and animal husbandry farmers."),
+            benefits=("Crop loan at 4% p.a. (with prompt repayment rebate)."),
             required_documents=[
                 "Aadhaar card",
                 "Land records",
@@ -188,8 +172,7 @@ def _get_default_schemes() -> list[Scheme]:
                 "Passport-size photograph",
             ],
             application_process=(
-                "Apply at nearest bank branch with "
-                "required documents."
+                "Apply at nearest bank branch with required documents."
             ),
             deadline=None,
             official_link=(
@@ -246,9 +229,7 @@ class SchemesService:
             generated_at=datetime.now(UTC).isoformat(),
         )
 
-    async def get_scheme(
-        self, scheme_id: str
-    ) -> SchemeDetailResponse | None:
+    async def get_scheme(self, scheme_id: str) -> SchemeDetailResponse | None:
         """Get a single scheme by ID."""
         for scheme in self._default_schemes:
             if scheme.id == scheme_id:
@@ -270,9 +251,7 @@ class SchemesService:
             or q in s.summary.lower()
         ]
 
-    def _filter_schemes(
-        self, request: SchemeSearchRequest
-    ) -> list[Scheme]:
+    def _filter_schemes(self, request: SchemeSearchRequest) -> list[Scheme]:
         """Apply filters to the scheme list."""
         result = list(self._default_schemes)
 
@@ -280,16 +259,14 @@ class SchemesService:
             result = [
                 s
                 for s in result
-                if s.state is None
-                or s.state.lower() == request.state.lower()
+                if s.state is None or s.state.lower() == request.state.lower()
             ]
 
         if request.crop:
             result = [
                 s
                 for s in result
-                if s.crop is None
-                or s.crop.lower() == request.crop.lower()
+                if s.crop is None or s.crop.lower() == request.crop.lower()
             ]
 
         if request.farmer_category:
@@ -305,10 +282,7 @@ class SchemesService:
         if request.scheme_type:
             st = request.scheme_type.lower()
             result = [
-                s
-                for s in result
-                if s.scheme_type
-                and s.scheme_type.lower() == st
+                s for s in result if s.scheme_type and s.scheme_type.lower() == st
             ]
 
         if request.search:
