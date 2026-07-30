@@ -54,9 +54,9 @@ export function useWeather() {
   const location = useWeatherStore(selectLocation);
   const unit = useWeatherStore(selectUnit);
   const toggleUnit = useWeatherStore(selectToggleUnit);
-  const { refetch } = useWeatherQuery(location);
 
   const query = useWeatherQuery(location);
+  const { refetch } = query;
 
   const weatherState: WeatherUIState = (() => {
     if (!location && !query.data) return { status: "idle" };

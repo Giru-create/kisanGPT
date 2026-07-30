@@ -5,7 +5,7 @@
 // KisanGPT — Government Scheme detail panel component
 // ─────────────────────────────────────────────────────────────────────────────
 
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   X,
   ExternalLink,
@@ -29,6 +29,20 @@ export const SchemeDetailPanel: React.FC<SchemeDetailPanelProps> = ({
   isOpen,
   onClose,
 }) => {
+  const handleEscape = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isOpen, handleEscape]);
+
   if (!isOpen || !scheme) return null;
 
   return (
@@ -43,7 +57,8 @@ export const SchemeDetailPanel: React.FC<SchemeDetailPanelProps> = ({
       {/* Panel */}
       <div
         role="dialog"
-        aria-label={`Scheme details: ${scheme.title}`}
+        aria-modal="true"
+        aria-labelledby={`scheme-title-${scheme.id}`}
         className="fixed inset-y-0 right-0 z-50 w-full max-w-lg bg-card border-l border-border shadow-xl overflow-y-auto"
       >
         <div className="flex flex-col gap-5 p-6">

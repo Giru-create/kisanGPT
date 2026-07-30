@@ -112,7 +112,7 @@ export const WeatherPage: React.FC = () => {
             <FarmingRecommendationCard
               recommendation={weatherState.data.recommendation}
               onChatRedirect={() => {
-                // TODO: navigate to /chat with recommendation pre-filled
+                window.location.href = "/advisor";
               }}
             />
           </motion.div>

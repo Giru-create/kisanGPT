@@ -17,14 +17,14 @@ export const AIChatShortcutWidget: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) {
-      router.push("/chat");
+      router.push("/advisor");
       return;
     }
-    router.push(`/chat?q=${encodeURIComponent(query.trim())}`);
+    router.push(`/advisor?q=${encodeURIComponent(query.trim())}`);
   };
 
   const handleChipClick = (prompt: string) => {
-    router.push(`/chat?q=${encodeURIComponent(prompt.trim())}`);
+    router.push(`/advisor?q=${encodeURIComponent(prompt.trim())}`);
   };
 
   return (

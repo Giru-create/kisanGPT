@@ -76,22 +76,28 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             <div className="flex gap-1">
               <button
                 type="button"
-                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors"
+                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
                 aria-label="Attach image"
+                disabled
+                title="Image attachment coming soon"
               >
                 <ImageIcon size={18} />
               </button>
               <button
                 type="button"
-                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors"
+                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
                 aria-label="Attach file"
+                disabled
+                title="File attachment coming soon"
               >
                 <Paperclip size={18} />
               </button>
               <button
                 type="button"
-                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors"
+                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
                 aria-label="Take photo"
+                disabled
+                title="Camera coming soon"
               >
                 <Camera size={18} />
               </button>

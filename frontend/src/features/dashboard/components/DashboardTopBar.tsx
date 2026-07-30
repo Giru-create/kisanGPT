@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Search, Bell, History, Crop } from "lucide-react";
 
 export const DashboardTopBar: React.FC = () => {
@@ -33,7 +34,7 @@ export const DashboardTopBar: React.FC = () => {
         <button
           type="button"
           aria-label="Notifications"
-          className="relative p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors"
+          className="relative p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
         >
           <Bell size={20} />
           <span
@@ -45,7 +46,7 @@ export const DashboardTopBar: React.FC = () => {
         <button
           type="button"
           aria-label="History"
-          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors"
+          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
         >
           <History size={20} />
         </button>
@@ -55,13 +56,13 @@ export const DashboardTopBar: React.FC = () => {
           aria-hidden="true"
         />
 
-        <button
-          type="button"
-          className="hidden lg:flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors active:scale-95"
+        <Link
+          href="/disease"
+          className="hidden lg:flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors active:scale-95 min-h-[44px]"
         >
           <Crop size={16} aria-hidden="true" />
           Analyze Crop
-        </button>
+        </Link>
 
         <div
           className="w-9 h-9 rounded-full bg-primary/10 border border-border flex items-center justify-center text-sm font-bold text-primary overflow-hidden"

@@ -68,7 +68,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               <div className="flex items-center gap-2">
                 <Brain size={16} className="text-primary animate-pulse" />
                 <span className="text-sm font-medium text-muted-foreground">
-                  Reasoning with CropGPT-4o...
+                  Reasoning with KisanGPT AI...
                 </span>
               </div>
               <ChevronDown
@@ -118,29 +118,35 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
           <button
             type="button"
             onClick={handleCopy}
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md"
+            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
             aria-label={isCopied ? "Copied" : "Copy message"}
           >
             <Copy size={16} />
           </button>
           <button
             type="button"
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md"
-            aria-label="Helpful"
+            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
+            aria-label="Mark as helpful"
+            disabled
+            title="Feedback coming soon"
           >
             <ThumbsUp size={16} />
           </button>
           <button
             type="button"
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md"
-            aria-label="Not helpful"
+            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
+            aria-label="Mark as not helpful"
+            disabled
+            title="Feedback coming soon"
           >
             <ThumbsDown size={16} />
           </button>
           <button
             type="button"
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md"
-            aria-label="Share"
+            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
+            aria-label="Share response"
+            disabled
+            title="Share coming soon"
           >
             <Share2 size={16} />
           </button>

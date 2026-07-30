@@ -6,10 +6,10 @@
 import type { DashboardData } from "../types/dashboard.types";
 
 export const QUICK_PROMPTS = [
-  " How much Urea per acre for Wheat?",
-  " Yellow rust symptoms on Wheat",
-  " Will it rain in Karnal tomorrow?",
-  " Current Mandi price of Mustard",
+  "How much Urea per acre for Wheat?",
+  "Yellow rust symptoms on Wheat",
+  "Will it rain in Karnal tomorrow?",
+  "Current Mandi price of Mustard",
 ];
 
 export const MOCK_DASHBOARD_DATA: DashboardData = {

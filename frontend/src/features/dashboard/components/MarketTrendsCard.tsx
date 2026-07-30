@@ -74,7 +74,7 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
         {trends.slice(1).map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between p-2.5 hover:bg-muted rounded-lg transition-colors cursor-pointer"
+            className="flex items-center justify-between p-2.5 hover:bg-muted rounded-lg transition-colors"
           >
             <span className="text-sm font-medium text-foreground">
               {item.commodity}

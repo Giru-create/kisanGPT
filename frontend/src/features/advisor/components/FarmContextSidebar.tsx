@@ -62,18 +62,17 @@ export const FarmContextSidebar: React.FC = () => {
         </h3>
         <div className="space-y-1">
           {MOCK_CONVERSATION_HISTORY.map((item) => (
-            <button
+            <div
               key={item.id}
-              type="button"
-              className="block w-full text-left p-2.5 rounded-lg hover:bg-muted transition-colors border-l-2 border-transparent hover:border-primary group"
+              className="block w-full p-2.5 rounded-lg border-l-2 border-transparent"
             >
-              <p className="text-sm font-medium truncate group-hover:text-primary">
+              <p className="text-sm font-medium truncate text-foreground">
                 {item.title}
               </p>
               <p className="text-[11px] text-muted-foreground">
                 {item.timestamp}
               </p>
-            </button>
+            </div>
           ))}
         </div>
       </section>
@@ -91,7 +90,8 @@ export const FarmContextSidebar: React.FC = () => {
           </p>
           <button
             type="button"
-            className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            disabled
+            className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors opacity-70 cursor-not-allowed"
           >
             Upgrade Plan
           </button>

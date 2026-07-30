@@ -394,7 +394,7 @@ export const MarketPage: React.FC = () => {
                         MSP Reference
                       </h2>
                       <p className="text-[11px] text-muted-foreground mb-3">
-                        Government Minimum Support Prices 2024–25
+                        Government Minimum Support Prices 2025–26
                       </p>
                       <ul
                         className="space-y-2"

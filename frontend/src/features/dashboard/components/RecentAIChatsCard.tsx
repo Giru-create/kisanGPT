@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Droplets, Bug, Leaf, Cloud } from "lucide-react";
 import type { AIAdvisorChat } from "../types/dashboard.types";
 
@@ -44,9 +45,10 @@ export const RecentAIChatsCard: React.FC<RecentAIChatsCardProps> = ({
         const iconBg = ICON_BG_MAP[chat.iconType] ?? ICON_BG_MAP.water;
 
         return (
-          <div
+          <Link
             key={chat.id}
-            className="px-5 py-4 flex items-start gap-3 hover:bg-muted/50 transition-colors cursor-pointer"
+            href="/advisor"
+            className="px-5 py-4 flex items-start gap-3 hover:bg-muted/50 transition-colors"
           >
             <div
               className={`p-2.5 rounded-full shrink-0 ${iconBg}`}
@@ -65,18 +67,9 @@ export const RecentAIChatsCard: React.FC<RecentAIChatsCardProps> = ({
                 {chat.timestamp}
               </span>
             </div>
-          </div>
+          </Link>
         );
       })}
-
-      {/* Skeleton placeholder */}
-      <div className="px-5 py-4 flex items-start gap-3 opacity-60">
-        <div className="w-9 h-9 rounded-full bg-muted animate-pulse" />
-        <div className="flex-1 space-y-2">
-          <div className="h-3 w-1/3 bg-muted rounded animate-pulse" />
-          <div className="h-2 w-3/4 bg-muted rounded animate-pulse" />
-        </div>
-      </div>
     </section>
   );
 };

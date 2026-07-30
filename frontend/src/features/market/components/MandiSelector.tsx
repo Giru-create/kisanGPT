@@ -27,7 +27,7 @@ export function MandiSelector() {
     <div className="flex flex-col gap-2">
       <label
         htmlFor="mandi-selector"
-        className="text-sm font-medium text-green-900"
+        className="text-sm font-medium text-foreground"
       >
         Select Mandi
       </label>
@@ -35,7 +35,7 @@ export function MandiSelector() {
         id="mandi-selector"
         value={selectedMandi.name}
         onChange={handleChange}
-        className="rounded-lg border border-green-300 bg-white px-4 py-2.5 text-sm text-green-900 shadow-sm transition-colors hover:border-green-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20"
+        className="rounded-lg border border-border bg-card px-4 py-2.5 text-sm text-foreground shadow-sm transition-colors hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         aria-label={`Select mandi. Current: ${selectedMandi.name}`}
         onFocus={() =>
           announceToScreenReader(

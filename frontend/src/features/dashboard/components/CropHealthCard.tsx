@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import type { CropHealthItem } from "../types/dashboard.types";
 
@@ -19,12 +20,12 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
         <h2 className="font-semibold text-base text-foreground">
           Crop Health Monitoring
         </h2>
-        <button
-          type="button"
+        <Link
+          href="/disease"
           className="text-sm font-semibold text-primary hover:underline"
         >
           View All Fields
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

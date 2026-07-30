@@ -53,7 +53,7 @@ export const VoicePage: React.FC = () => {
       <header className="sticky top-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/60 px-4 py-3 flex items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-2">
           <Link
-            href="/"
+            href="/dashboard"
             aria-label="Back to Dashboard"
             className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
           >

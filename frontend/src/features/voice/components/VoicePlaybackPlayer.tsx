@@ -48,7 +48,7 @@ export const VoicePlaybackPlayer: React.FC<VoicePlaybackPlayerProps> = ({
           <span className="flex items-center gap-1">
             <Volume2 size={12} /> Voice Response
           </span>
-          <span>0:04</span>
+          <span>{isPlaying ? "Playing" : "Voice Response"}</span>
         </div>
         <div className="h-1.5 w-full bg-border/60 rounded-full overflow-hidden">
           <div

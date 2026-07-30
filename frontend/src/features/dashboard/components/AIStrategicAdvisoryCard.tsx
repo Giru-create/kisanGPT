@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Sparkles } from "lucide-react";
 
 export const AIStrategicAdvisoryCard: React.FC = () => {
@@ -33,15 +34,17 @@ export const AIStrategicAdvisoryCard: React.FC = () => {
       </div>
 
       <div className="relative z-10 mt-6 flex flex-wrap gap-3">
-        <button
-          type="button"
+        <Link
+          href="/advisor"
           className="bg-white/10 hover:bg-white/20 border border-white/20 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
         >
           Generate Sowing Plan
-        </button>
+        </Link>
         <button
           type="button"
           className="bg-white text-primary px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg transition-transform active:scale-95"
+          disabled
+          title="Scheduling coming soon"
         >
           Accept &amp; Schedule
         </button>

@@ -1,14 +1,18 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import { expect, it } from "vitest";
-import { ThemeProvider } from "@/store/themeStore";
+import { expect, it, vi } from "vitest";
 
-it("renders without crashing", async () => {
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
+}));
+
+it("redirects to /dashboard", async () => {
+  const { redirect } = await import("next/navigation");
   const { default: Home } = await import("@/app/page");
-  const { container } = render(
-    <ThemeProvider>
-      <Home />
-    </ThemeProvider>
-  );
-  expect(container).toBeTruthy();
+
+  try {
+    Home();
+  } catch {
+    // redirect() throws in test context, which is expected
+  }
+
+  expect(redirect).toHaveBeenCalledWith("/dashboard");
 });

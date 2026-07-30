@@ -7,6 +7,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { RefreshCcw, AlertTriangle, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -164,8 +165,8 @@ export const FarmerDashboard: React.FC = () => {
         </AnimatePresence>
 
         {/* Floating Action Button */}
-        <button
-          type="button"
+        <Link
+          href="/advisor"
           aria-label="Ask KisanGPT AI"
           className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center transition-transform active:scale-90 z-50 group hover:bg-primary/90"
         >
@@ -177,7 +178,7 @@ export const FarmerDashboard: React.FC = () => {
           <div className="absolute right-16 bg-foreground text-background px-3 py-1.5 rounded-lg whitespace-nowrap text-sm font-medium opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all pointer-events-none shadow-lg">
             Ask KisanGPT AI
           </div>
-        </button>
+        </Link>
       </main>
     </div>
   );

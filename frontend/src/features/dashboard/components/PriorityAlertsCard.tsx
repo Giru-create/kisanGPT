@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { AlertTriangle, Landmark } from "lucide-react";
 import type { PriorityAlert } from "../types/dashboard.types";
 
@@ -51,12 +52,12 @@ export const PriorityAlertsCard: React.FC<PriorityAlertsCardProps> = ({
                 {alert.description}
               </p>
             </div>
-            <button
-              type="button"
-              className="text-xs font-bold text-primary px-3 py-2 shrink-0 hover:underline min-h-[44px]"
+            <Link
+              href="/weather"
+              className="text-xs font-bold text-primary px-3 py-2 shrink-0 hover:underline min-h-[44px] flex items-center"
             >
               {alert.type === "frost" ? "Review" : "Details"}
-            </button>
+            </Link>
           </div>
         );
       })}

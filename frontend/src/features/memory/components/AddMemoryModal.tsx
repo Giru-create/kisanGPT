@@ -5,7 +5,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { X, Plus, Save } from "lucide-react";
 import { MEMORY_CATEGORIES } from "../constants/memory.constants";
 import type { AddMemoryInput, MemoryCategory } from "../types/memory.types";
@@ -28,6 +28,20 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
   const [cropName, setCropName] = useState("");
   const [season, setSeason] = useState("Kharif 2026");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleEscape = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isOpen, handleEscape]);
 
   if (!isOpen) return null;
 
@@ -60,6 +74,9 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
       aria-modal="true"
       aria-labelledby="add-memory-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div className="w-full max-w-lg rounded-3xl bg-card border border-border/80 shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
         {/* Modal Header */}

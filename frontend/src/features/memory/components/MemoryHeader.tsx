@@ -31,7 +31,7 @@ export const MemoryHeader: React.FC<MemoryHeaderProps> = ({
       <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Link
-            href="/"
+            href="/dashboard"
             aria-label="Back to Dashboard"
             className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
           >
