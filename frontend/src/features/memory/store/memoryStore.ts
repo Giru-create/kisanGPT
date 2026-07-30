@@ -1,65 +1,61 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // memoryStore.ts
 // KisanGPT — Farm Memory Zustand slice
+// UI-only state: selected category, modal state
+// Memory data is managed by React Query in useMemoryQuery.ts
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { create } from "zustand";
-import type {
-  FarmMemoryItem,
-  PersonalizedRecommendation,
-  MemoryCategory,
-} from "../types/memory.types";
+import type { MemoryCategory } from "../types/memory.types";
+
+// ---------------------------------------------------------------------------
+// Store shape
+// ---------------------------------------------------------------------------
 
 interface MemoryStore {
-  memories: FarmMemoryItem[];
-  recommendations: PersonalizedRecommendation[];
+  /** Currently selected category filter */
   selectedCategory: MemoryCategory;
+
+  /** Add memory modal open state */
   isAddModalOpen: boolean;
-  isLoading: boolean;
-  error: string | null;
+
+  /** Search query string */
+  searchQuery: string;
 
   // Actions
-  setMemories: (memories: FarmMemoryItem[]) => void;
-  addMemory: (memory: FarmMemoryItem) => void;
-  setRecommendations: (recommendations: PersonalizedRecommendation[]) => void;
   setSelectedCategory: (category: MemoryCategory) => void;
   setAddModalOpen: (open: boolean) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
+  setSearchQuery: (query: string) => void;
   reset: () => void;
 }
 
-export const useMemoryStore = create<MemoryStore>((set) => ({
-  memories: [],
-  recommendations: [],
-  selectedCategory: "all",
-  isAddModalOpen: false,
-  isLoading: false,
-  error: null,
+// ---------------------------------------------------------------------------
+// Defaults
+// ---------------------------------------------------------------------------
 
-  setMemories: (memories) => set({ memories }),
-  addMemory: (memory) =>
-    set((state) => ({ memories: [memory, ...state.memories] })),
-  setRecommendations: (recommendations) => set({ recommendations }),
+const DEFAULT_STATE = {
+  selectedCategory: "all" as MemoryCategory,
+  isAddModalOpen: false,
+  searchQuery: "",
+};
+
+// ---------------------------------------------------------------------------
+// Store
+// ---------------------------------------------------------------------------
+
+export const useMemoryStore = create<MemoryStore>((set) => ({
+  ...DEFAULT_STATE,
+
   setSelectedCategory: (selectedCategory) => set({ selectedCategory }),
   setAddModalOpen: (isAddModalOpen) => set({ isAddModalOpen }),
-  setLoading: (isLoading) => set({ isLoading }),
-  setError: (error) => set({ error }),
-  reset: () =>
-    set({
-      memories: [],
-      recommendations: [],
-      selectedCategory: "all",
-      isAddModalOpen: false,
-      isLoading: false,
-      error: null,
-    }),
+  setSearchQuery: (searchQuery) => set({ searchQuery }),
+  reset: () => set(DEFAULT_STATE),
 }));
 
+// ---------------------------------------------------------------------------
 // Selectors
-export const selectMemories = (s: MemoryStore) => s.memories;
-export const selectRecommendations = (s: MemoryStore) => s.recommendations;
+// ---------------------------------------------------------------------------
+
 export const selectSelectedCategory = (s: MemoryStore) => s.selectedCategory;
 export const selectIsAddModalOpen = (s: MemoryStore) => s.isAddModalOpen;
-export const selectIsLoading = (s: MemoryStore) => s.isLoading;
-export const selectError = (s: MemoryStore) => s.error;
+export const selectSearchQuery = (s: MemoryStore) => s.searchQuery;

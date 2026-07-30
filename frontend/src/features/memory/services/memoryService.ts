@@ -10,22 +10,30 @@ import type {
   FarmMemoryItem,
   PersonalizedRecommendation,
   AddMemoryInput,
+  MemoryCategory,
 } from "../types/memory.types";
 
 export interface IMemoryService {
-  getMemories: (category?: string) => Promise<FarmMemoryItem[]>;
+  getMemories: (category?: MemoryCategory) => Promise<FarmMemoryItem[]>;
   createMemory: (input: AddMemoryInput) => Promise<FarmMemoryItem>;
-  getRecommendations: () => Promise<PersonalizedRecommendation[]>;
   deleteMemory: (id: string) => Promise<{ detail: string }>;
+  searchMemories: (
+    query: string,
+    category?: MemoryCategory,
+  ) => Promise<FarmMemoryItem[]>;
+  getRecommendations: () => Promise<PersonalizedRecommendation[]>;
 }
 
-const isMockMode =
-  process.env.NEXT_PUBLIC_USE_MOCK_API === undefined ||
-  process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
+function isMockMode(): boolean {
+  return (
+    process.env.NEXT_PUBLIC_USE_MOCK_API === undefined ||
+    process.env.NEXT_PUBLIC_USE_MOCK_API === "true"
+  );
+}
 
 export const memoryService: IMemoryService = {
   getMemories: async (category) => {
-    if (isMockMode) return memoryMockService.getMemories(category);
+    if (isMockMode()) return memoryMockService.getMemories(category);
     try {
       return await memoryApi.getMemories(category);
     } catch (err) {
@@ -35,7 +43,7 @@ export const memoryService: IMemoryService = {
   },
 
   createMemory: async (input) => {
-    if (isMockMode) return memoryMockService.createMemory(input);
+    if (isMockMode()) return memoryMockService.createMemory(input);
     try {
       return await memoryApi.createMemory(input);
     } catch (err) {
@@ -44,8 +52,28 @@ export const memoryService: IMemoryService = {
     }
   },
 
+  deleteMemory: async (id) => {
+    if (isMockMode()) return memoryMockService.deleteMemory(id);
+    try {
+      return await memoryApi.deleteMemory(id);
+    } catch (err) {
+      console.warn("Memory Delete API error, falling back to mock:", err);
+      return memoryMockService.deleteMemory(id);
+    }
+  },
+
+  searchMemories: async (query, category) => {
+    if (isMockMode()) return memoryMockService.searchMemories(query, category);
+    try {
+      return await memoryApi.searchMemories(query, category);
+    } catch (err) {
+      console.warn("Memory Search API error, falling back to mock:", err);
+      return memoryMockService.searchMemories(query, category);
+    }
+  },
+
   getRecommendations: async () => {
-    if (isMockMode) return memoryMockService.getRecommendations();
+    if (isMockMode()) return memoryMockService.getRecommendations();
     try {
       return await memoryApi.getRecommendations();
     } catch (err) {
@@ -54,16 +82,6 @@ export const memoryService: IMemoryService = {
         err,
       );
       return memoryMockService.getRecommendations();
-    }
-  },
-
-  deleteMemory: async (id) => {
-    if (isMockMode) return memoryMockService.deleteMemory(id);
-    try {
-      return await memoryApi.deleteMemory(id);
-    } catch (err) {
-      console.warn("Memory Delete API error, falling back to mock:", err);
-      return memoryMockService.deleteMemory(id);
     }
   },
 };

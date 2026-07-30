@@ -1,125 +1,84 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // useMemory.ts
-// KisanGPT — Master Farm Memory Hook
-// Wires Zustand store, memoryService API calls, and a11y live region announcements
+// KisanGPT — Farm Memory orchestration hook
+// Bridges React Query (data) + Zustand (UI state)
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import {
   useMemoryStore,
-  selectMemories,
-  selectRecommendations,
   selectSelectedCategory,
   selectIsAddModalOpen,
-  selectIsLoading,
-  selectError,
 } from "../store/memoryStore";
-import { memoryService } from "../services/memoryService";
+import {
+  useMemoryListQuery,
+  useCreateMemoryMutation,
+  useDeleteMemoryMutation,
+  useRecommendationsQuery,
+} from "./useMemoryQuery";
 import type { MemoryCategory, AddMemoryInput } from "../types/memory.types";
 import { announceToScreenReader } from "@/utils/a11y";
 
 export function useMemory() {
-  const memories = useMemoryStore(selectMemories);
-  const recommendations = useMemoryStore(selectRecommendations);
   const selectedCategory = useMemoryStore(selectSelectedCategory);
   const isAddModalOpen = useMemoryStore(selectIsAddModalOpen);
-  const isLoading = useMemoryStore(selectIsLoading);
-  const error = useMemoryStore(selectError);
+
+  const setSelectedCategory = useMemoryStore((s) => s.setSelectedCategory);
+  const setAddModalOpen = useMemoryStore((s) => s.setAddModalOpen);
 
   const {
-    setMemories,
-    addMemory: storeAddMemory,
-    setRecommendations,
-    setSelectedCategory: storeSetSelectedCategory,
-    setAddModalOpen,
-    setLoading,
-    setError,
-  } = useMemoryStore();
-
-  const fetchMemories = useCallback(
-    async (category: MemoryCategory = "all") => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await memoryService.getMemories(
-          category === "all" ? undefined : category,
-        );
-        setMemories(data);
-        announceToScreenReader(
-          `Loaded ${data.length} farm memory records for category ${category}`,
-        );
-      } catch (err) {
-        console.error("Failed to load farm memories:", err);
-        setError("Unable to load farm memory records. Please try again.");
-        announceToScreenReader("Failed to load farm memories.");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [setMemories, setLoading, setError],
+    data: memories = [],
+    isLoading,
+    isError,
+    error,
+    refetch: refetchMemories,
+  } = useMemoryListQuery(
+    selectedCategory === "all" ? undefined : selectedCategory,
   );
 
-  const fetchRecommendations = useCallback(async () => {
-    try {
-      const recs = await memoryService.getRecommendations();
-      setRecommendations(recs);
-    } catch (err) {
-      console.error("Failed to load recommendations:", err);
-    }
-  }, [setRecommendations]);
+  const { data: recommendations = [] } = useRecommendationsQuery();
+
+  const createMutation = useCreateMemoryMutation();
+  const deleteMutation = useDeleteMemoryMutation();
 
   const handleSelectCategory = useCallback(
     (category: MemoryCategory) => {
-      storeSetSelectedCategory(category);
-      fetchMemories(category);
+      setSelectedCategory(category);
     },
-    [storeSetSelectedCategory, fetchMemories],
+    [setSelectedCategory],
   );
 
   const handleAddMemory = useCallback(
-    async (input: AddMemoryInput) => {
-      setLoading(true);
+    async (input: AddMemoryInput): Promise<boolean> => {
       try {
-        const created = await memoryService.createMemory(input);
-        storeAddMemory(created);
+        await createMutation.mutateAsync(input);
         setAddModalOpen(false);
         announceToScreenReader(
-          `New farm memory "${created.title}" saved successfully`,
+          `New farm memory "${input.title}" saved successfully`,
         );
         return true;
       } catch (err) {
         console.error("Failed to add farm memory:", err);
-        setError("Could not save new farm record.");
+        announceToScreenReader("Failed to save farm memory.");
         return false;
-      } finally {
-        setLoading(false);
       }
     },
-    [storeAddMemory, setAddModalOpen, setLoading, setError],
+    [createMutation, setAddModalOpen],
   );
 
   const handleDeleteMemory = useCallback(
     async (id: string) => {
       try {
-        await memoryService.deleteMemory(id);
-        const updated = memories.filter((m) => m.id !== id);
-        setMemories(updated);
+        await deleteMutation.mutateAsync(id);
         announceToScreenReader("Farm memory record deleted.");
       } catch (err) {
         console.error("Failed to delete memory:", err);
       }
     },
-    [memories, setMemories],
+    [deleteMutation],
   );
-
-  useEffect(() => {
-    if (memories.length === 0) {
-      fetchMemories(selectedCategory);
-      fetchRecommendations();
-    }
-  }, [memories.length, selectedCategory, fetchMemories, fetchRecommendations]);
 
   return {
     memories,
@@ -127,11 +86,12 @@ export function useMemory() {
     selectedCategory,
     isAddModalOpen,
     isLoading,
-    error,
+    isError,
+    error: isError ? (error?.message ?? "Failed to load farm memories.") : null,
     setSelectedCategory: handleSelectCategory,
     setAddModalOpen,
     handleAddMemory,
     handleDeleteMemory,
-    refreshMemories: () => fetchMemories(selectedCategory),
+    refreshMemories: () => void refetchMemories(),
   };
 }
