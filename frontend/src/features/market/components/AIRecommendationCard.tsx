@@ -49,9 +49,27 @@ const RECOMMENDATION_CONFIG: Record<RecommendationType, RecommendationConfig> =
         "bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/60 dark:to-amber-900/30",
       textClass: "text-amber-700 dark:text-amber-300",
     },
+    wait: {
+      emoji: "⏳",
+      label: "Wait",
+      badgeVariant: "warning",
+      borderClass: "border-amber-300 dark:border-amber-700",
+      headerBgClass:
+        "bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-950/60 dark:to-amber-900/30",
+      textClass: "text-amber-700 dark:text-amber-300",
+    },
     alternative_mandi: {
       emoji: "🔵",
       label: "Better Mandi",
+      badgeVariant: "info",
+      borderClass: "border-blue-300 dark:border-blue-700",
+      headerBgClass:
+        "bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/60 dark:to-blue-900/30",
+      textClass: "text-blue-700 dark:text-blue-300",
+    },
+    switch_mandi: {
+      emoji: "🔵",
+      label: "Switch Mandi",
       badgeVariant: "info",
       borderClass: "border-blue-300 dark:border-blue-700",
       headerBgClass:
@@ -104,7 +122,8 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
                   className={`h-full rounded-full transition-all duration-700 ${
                     recommendation.type === "sell_now"
                       ? "bg-emerald-500"
-                      : recommendation.type === "hold"
+                      : recommendation.type === "hold" ||
+                          recommendation.type === "wait"
                         ? "bg-amber-500"
                         : "bg-blue-500"
                   }`}

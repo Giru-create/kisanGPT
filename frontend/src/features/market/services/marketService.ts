@@ -12,6 +12,7 @@ import type {
   MarketTrendResponse,
   MarketHistoryResponse,
   MarketAdviceResponse,
+  MarketRecommendationResponse,
   PriceAlert,
   PriceAlertDraft,
 } from "../types/market.types";
@@ -32,6 +33,9 @@ export interface IMarketService {
     days?: number,
   ) => Promise<MarketHistoryResponse>;
   getMarketAdvice: (commodity: string) => Promise<MarketAdviceResponse>;
+  getMarketRecommendation: (
+    commodity: string,
+  ) => Promise<MarketRecommendationResponse>;
   getMarketAlerts: () => Promise<PriceAlert[]>;
   createMarketAlert: (draft: PriceAlertDraft) => Promise<PriceAlert>;
   deleteMarketAlert: (alertId: string) => Promise<{ detail: string }>;
@@ -90,6 +94,16 @@ export const marketService: IMarketService = {
     } catch (err) {
       console.warn("Market API error, falling back to mock:", err);
       return marketMockService.getMarketAdvice(commodity);
+    }
+  },
+
+  getMarketRecommendation: async (commodity) => {
+    if (isMockMode) return marketMockService.getMarketRecommendation(commodity);
+    try {
+      return await marketApi.getMarketRecommendation(commodity);
+    } catch (err) {
+      console.warn("Market API error, falling back to mock:", err);
+      return marketMockService.getMarketRecommendation(commodity);
     }
   },
 

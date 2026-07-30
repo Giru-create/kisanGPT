@@ -13,3 +13,16 @@ export { useMarketStore } from "./store/marketStore";
 export { marketService } from "./services/marketService";
 export { marketApi } from "./services/marketApi";
 export { marketMockService } from "./services/marketMock";
+
+// React Query hooks
+export {
+  useMarketOverviewQuery,
+  useMarketPricesQuery,
+  useMarketTrendQuery,
+  useMarketHistoryQuery,
+  useMarketAdviceQuery,
+  useMarketRecommendationQuery,
+  useMarketAlertsQuery,
+  useCreateMarketAlertMutation,
+  useDeleteMarketAlertMutation,
+} from "./hooks/useMarketQuery";

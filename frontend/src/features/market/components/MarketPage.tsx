@@ -20,7 +20,6 @@ import { MarketSkeleton } from "./MarketSkeleton";
 import { MarketError } from "./MarketError";
 import { MarketEmpty } from "./MarketEmpty";
 import { LiveRegion } from "@/components/accessibility/LiveRegion";
-import { MOCK_AI_RECOMMENDATION } from "../constants/market.constants";
 import type { PriceAlertDraft } from "../types/market.types";
 
 // ---------------------------------------------------------------------------
@@ -47,6 +46,7 @@ export const MarketPage: React.FC = () => {
     priceListState,
     trendState,
     selectedCommodity,
+    recommendation,
     activeAlerts,
     isAlertDialogOpen,
     alertDialogCommodity,
@@ -65,7 +65,7 @@ export const MarketPage: React.FC = () => {
     if (marketState.status === "idle") {
       loadOverview();
       loadPrices(selectedCommodity);
-      loadTrend(selectedCommodity);
+      loadTrend();
     }
   }, [
     marketState.status,
@@ -282,7 +282,7 @@ export const MarketPage: React.FC = () => {
                         >
                           <MarketError
                             message={trendState.message}
-                            onRetry={() => loadTrend(selectedCommodity)}
+                            onRetry={loadTrend}
                           />
                         </motion.div>
                       )}
@@ -290,10 +290,12 @@ export const MarketPage: React.FC = () => {
 
                     {/* 4. AI Recommendation (mobile — on desktop in sidebar) */}
                     <div className="xl:hidden">
-                      <AIRecommendationCard
-                        recommendation={MOCK_AI_RECOMMENDATION}
-                        onSetAlert={openAlertDialog}
-                      />
+                      {recommendation && (
+                        <AIRecommendationCard
+                          recommendation={recommendation}
+                          onSetAlert={openAlertDialog}
+                        />
+                      )}
                     </div>
                   </motion.div>
                 )}
@@ -307,9 +309,9 @@ export const MarketPage: React.FC = () => {
             >
               <div className="sticky top-20 flex flex-col gap-4">
                 {/* AI Recommendation Card */}
-                {marketState.status === "success" && (
+                {marketState.status === "success" && recommendation && (
                   <AIRecommendationCard
-                    recommendation={MOCK_AI_RECOMMENDATION}
+                    recommendation={recommendation}
                     onSetAlert={openAlertDialog}
                   />
                 )}

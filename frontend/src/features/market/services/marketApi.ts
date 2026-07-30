@@ -11,6 +11,7 @@ import type {
   MarketTrendResponse,
   MarketHistoryResponse,
   MarketAdviceResponse,
+  MarketRecommendationResponse,
   PriceAlert,
   PriceAlertDraft,
 } from "../types/market.types";
@@ -54,6 +55,15 @@ export const marketApi = {
     return apiClient.get<MarketAdviceResponse>("/market/advice", {
       params: { commodity },
     });
+  },
+
+  getMarketRecommendation: async (
+    commodity: string,
+  ): Promise<MarketRecommendationResponse> => {
+    return apiClient.get<MarketRecommendationResponse>(
+      "/market/recommendation",
+      { params: { commodity } },
+    );
   },
 
   getMarketAlerts: async (): Promise<PriceAlert[]> => {

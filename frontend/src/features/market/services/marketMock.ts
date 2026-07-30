@@ -17,6 +17,7 @@ import type {
   MarketTrendResponse,
   MarketHistoryResponse,
   MarketAdviceResponse,
+  MarketRecommendationResponse,
   PriceAlert,
   PriceAlertDraft,
 } from "../types/market.types";
@@ -62,6 +63,30 @@ export const marketMockService = {
   getMarketAdvice: async (commodity: string): Promise<MarketAdviceResponse> => {
     await mockDelay(700);
     return { ...MOCK_ADVICE_DATA, commodity };
+  },
+
+  getMarketRecommendation: async (
+    commodity: string,
+  ): Promise<MarketRecommendationResponse> => {
+    await mockDelay(900);
+    return {
+      commodity,
+      current_price: 2275,
+      msp: 2125,
+      recommendation: {
+        type: "sell_now",
+        commodity,
+        confidence: 91,
+        headline: `Sell ${commodity} Now — Prices Above MSP`,
+        rationale: `${commodity} prices are 7% above MSP at most mandis. Current trend is stable with high demand. Consider selling within 2 days for optimal returns.`,
+        potential_gain: 150,
+        risk_level: "low",
+        suggested_action:
+          "Sell at your nearest mandi within 2 days. Prices are expected to stabilize.",
+        generated_at: new Date().toISOString(),
+      },
+      generated_at: new Date().toISOString(),
+    };
   },
 
   getMarketAlerts: async (): Promise<PriceAlert[]> => {

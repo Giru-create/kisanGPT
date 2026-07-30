@@ -73,10 +73,11 @@ export interface PriceAlertDraft {
 }
 
 // ---------------------------------------------------------------------------
-// AI Selling Recommendation
+// AI Selling Recommendation (frontend display type)
 // ---------------------------------------------------------------------------
 
-export type RecommendationType = "sell_now" | "hold" | "alternative_mandi";
+export type RecommendationType =
+  "sell_now" | "hold" | "wait" | "alternative_mandi" | "switch_mandi";
 
 export interface AIRecommendation {
   type: RecommendationType;
@@ -87,6 +88,35 @@ export interface AIRecommendation {
   net_gain_per_quintal?: number;
   suggested_mandi?: string;
   sell_within_days?: number;
+  generated_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Backend recommendation (matches backend Recommendation schema)
+// ---------------------------------------------------------------------------
+
+export type BackendRecommendationType =
+  "sell_now" | "hold" | "wait" | "switch_mandi";
+
+export type RiskLevel = "low" | "medium" | "high";
+
+export interface MarketRecommendation {
+  type: BackendRecommendationType;
+  commodity: string;
+  confidence: number;
+  headline: string;
+  rationale: string;
+  potential_gain: number;
+  risk_level: RiskLevel;
+  suggested_action: string;
+  generated_at: string;
+}
+
+export interface MarketRecommendationResponse {
+  commodity: string;
+  current_price: number;
+  msp: number;
+  recommendation: MarketRecommendation;
   generated_at: string;
 }
 
