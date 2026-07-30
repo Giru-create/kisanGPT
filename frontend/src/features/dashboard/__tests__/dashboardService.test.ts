@@ -154,7 +154,7 @@ describe("dashboardService", () => {
       .spyOn(dashboardApi, "getDashboard")
       .mockResolvedValue(mockData as never);
 
-    await dashboardService.getDashboard({ lat: 29.15, lon: 76.50 });
-    expect(getSpy).toHaveBeenCalledWith({ lat: 29.15, lon: 76.50 });
+    await dashboardService.getDashboard({ lat: 29.15, lon: 76.5 });
+    expect(getSpy).toHaveBeenCalledWith({ lat: 29.15, lon: 76.5 });
   });
 });

@@ -101,8 +101,8 @@ describe("dashboardStore", () => {
 
   it("selectDismissedAlertId returns the dismissed alert id", () => {
     useDashboardStore.getState().dismissEmergencyAlert("alert-99");
-    expect(
-      useDashboardStore.getState().dismissedEmergencyAlertId,
-    ).toBe("alert-99");
+    expect(useDashboardStore.getState().dismissedEmergencyAlertId).toBe(
+      "alert-99",
+    );
   });
 });

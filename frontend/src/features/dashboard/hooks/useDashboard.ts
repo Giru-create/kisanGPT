@@ -6,9 +6,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import {
-  useDashboardStore,
-} from "../store/dashboardStore";
+import { useDashboardStore } from "../store/dashboardStore";
 import { useDashboardQuery } from "./useDashboardData";
 import { announceToScreenReader } from "@/utils/a11y";
 import type { DashboardData } from "../types/dashboard.types";
