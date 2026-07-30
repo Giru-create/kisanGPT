@@ -14,6 +14,7 @@ export { AdvisorTopBar } from "./components/AdvisorTopBar";
 export { FarmContextSidebar } from "./components/FarmContextSidebar";
 
 export { useAdvisor } from "./hooks/useAdvisor";
+export { useAdvisorChatMutation } from "./hooks/useAdvisorChat";
 export { useAdvisorStore } from "./store/advisorStore";
 
 export type {
@@ -23,4 +24,7 @@ export type {
   ConversationHistoryItem,
   FarmContext,
   AdvisorUIState,
+  ChatRequest,
+  AgentResponse,
+  ChatApiResponse,
 } from "./types/advisor.types";

@@ -3,6 +3,34 @@
 // KisanGPT — AI Advisor feature types
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ---------------------------------------------------------------------------
+// API Request / Response
+// ---------------------------------------------------------------------------
+
+export interface ChatRequest {
+  message: string;
+  conversationId?: string;
+  city?: string;
+  lat?: number;
+  lon?: number;
+  commodity?: string;
+}
+
+export interface AgentResponse {
+  message: string;
+  plannedTools: string[];
+  toolResults: Record<string, unknown>[];
+}
+
+export interface ChatApiResponse {
+  content: string;
+  conversationId: string;
+}
+
+// ---------------------------------------------------------------------------
+// Chat Message
+// ---------------------------------------------------------------------------
+
 export interface ChatSource {
   id: string;
   title: string;
@@ -23,11 +51,19 @@ export interface ChatMessage {
   thinkingSteps?: ThinkingStep[];
 }
 
+// ---------------------------------------------------------------------------
+// Conversation
+// ---------------------------------------------------------------------------
+
 export interface ConversationHistoryItem {
   id: string;
   title: string;
   timestamp: string;
 }
+
+// ---------------------------------------------------------------------------
+// Farm Context
+// ---------------------------------------------------------------------------
 
 export interface FarmContext {
   farmName: string;
@@ -37,15 +73,17 @@ export interface FarmContext {
   soilHealth: string;
 }
 
+// ---------------------------------------------------------------------------
+// UI State (Discriminated Union)
+// ---------------------------------------------------------------------------
+
+export type AdvisorStatus =
+  "idle" | "loading" | "streaming" | "error" | "success";
+
 export interface AdvisorUIState {
-  status: "idle" | "loading" | "streaming" | "error";
+  status: AdvisorStatus;
   messages: ChatMessage[];
   inputValue: string;
+  conversationId: string | null;
+  errorMessage: string | null;
 }
-
-export type AdvisorAction =
-  | { type: "SET_INPUT"; value: string }
-  | { type: "ADD_USER_MESSAGE"; message: ChatMessage }
-  | { type: "ADD_ASSISTANT_MESSAGE"; message: ChatMessage }
-  | { type: "SET_STATUS"; status: AdvisorUIState["status"] }
-  | { type: "CLEAR_MESSAGES" };

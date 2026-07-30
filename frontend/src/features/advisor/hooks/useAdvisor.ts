@@ -1,26 +1,32 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // useAdvisor.ts
 // KisanGPT — AI Advisor custom hook
+// Orchestrates React Query mutation + Zustand store for chat
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
 import { useCallback } from "react";
 import { useAdvisorStore } from "../store/advisorStore";
+import { useAdvisorChatMutation } from "./useAdvisorChat";
 import type { ChatMessage } from "../types/advisor.types";
-import { MOCK_STREAMING_RESPONSE } from "../constants/advisor.constants";
+import { announceToScreenReader } from "@/utils/a11y";
 
 export function useAdvisor() {
   const {
-    status,
     messages,
     inputValue,
+    status,
+    errorMessage,
     setInput,
     addUserMessage,
     addAssistantMessage,
     setStatus,
+    setErrorMessage,
     clearMessages,
   } = useAdvisorStore();
+
+  const mutation = useAdvisorChatMutation();
 
   const generateId = useCallback(() => {
     return `msg-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -32,7 +38,6 @@ export function useAdvisor() {
         return;
       }
 
-      // Add user message
       const userMessage: ChatMessage = {
         id: generateId(),
         role: "user",
@@ -45,31 +50,53 @@ export function useAdvisor() {
       };
       addUserMessage(userMessage);
       setStatus("loading");
+      announceToScreenReader("Sending message to AI Advisor");
 
-      // TODO: Replace with actual API call to backend
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setStatus("streaming");
-
-      // Simulate streaming delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Add assistant response
-      const assistantMessage: ChatMessage = {
-        id: generateId(),
-        role: "assistant",
-        content: MOCK_STREAMING_RESPONSE,
-        timestamp: new Date().toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        }),
-        sources: [],
-      };
-      addAssistantMessage(assistantMessage);
+      mutation.mutate(
+        {
+          message: content.trim(),
+        },
+        {
+          onSuccess: (response) => {
+            const assistantMessage: ChatMessage = {
+              id: generateId(),
+              role: "assistant",
+              content: response.message,
+              timestamp: new Date().toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              }),
+              sources: [],
+              thinkingSteps: response.plannedTools.map((tool, i) => ({
+                id: `think-${i}`,
+                text: `Tool used: ${tool}`,
+              })),
+            };
+            addAssistantMessage(assistantMessage);
+            setStatus("idle");
+            announceToScreenReader("AI response received");
+          },
+          onError: (error) => {
+            const message =
+              error instanceof Error
+                ? error.message
+                : "Unable to get AI response. Please check your connection.";
+            setErrorMessage(message);
+            announceToScreenReader("Failed to get AI response");
+          },
+        },
+      );
     },
-    [status, generateId, addUserMessage, addAssistantMessage, setStatus],
+    [
+      status,
+      generateId,
+      addUserMessage,
+      addAssistantMessage,
+      setStatus,
+      setErrorMessage,
+      mutation,
+    ],
   );
 
   const handleSuggestionClick = useCallback(
@@ -80,13 +107,26 @@ export function useAdvisor() {
     [setInput, sendMessage],
   );
 
+  const retry = useCallback(() => {
+    const lastUserMessage = [...messages]
+      .reverse()
+      .find((m) => m.role === "user");
+    if (lastUserMessage) {
+      setErrorMessage(null);
+      sendMessage(lastUserMessage.content);
+    }
+  }, [messages, setErrorMessage, sendMessage]);
+
   return {
-    status,
     messages,
     inputValue,
+    status,
+    errorMessage,
+    isPending: mutation.isPending,
     setInput,
     sendMessage,
     handleSuggestionClick,
     clearMessages,
+    retry,
   };
 }

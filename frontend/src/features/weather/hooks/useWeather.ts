@@ -2,20 +2,21 @@
 // useWeather.ts
 // KisanGPT — Weather Intelligence hook
 //
-// Wires the Zustand store to mock data today.
-// Later: swap fetchWeather() to call the real FastAPI /weather endpoint.
+// Orchestrates React Query (data fetching) + Zustand (UI state).
+// Temperature conversion utilities are preserved for component use.
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import {
   useWeatherStore,
-  selectWeatherState,
+  selectLocation,
   selectUnit,
+  selectToggleUnit,
 } from "../store/weatherStore";
-import { MOCK_WEATHER_DATA } from "../constants/weather.constants";
-import type { WeatherData, TemperatureUnit } from "../types/weather.types";
+import { useWeatherQuery } from "./useWeatherQuery";
+import type { TemperatureUnit, WeatherUIState } from "../types/weather.types";
 
 // ---------------------------------------------------------------------------
 // Temperature conversion utilities
@@ -46,52 +47,40 @@ export function relativeTime(date: Date): string {
 }
 
 // ---------------------------------------------------------------------------
-// Simulated fetch — replace body with real API call in a later milestone
-// ---------------------------------------------------------------------------
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function fetchWeather(_location: unknown): Promise<WeatherData> {
-  // Simulate network latency
-  await new Promise((resolve) => setTimeout(resolve, 1800));
-
-  // TODO (Milestone N): return await api.get<WeatherData>(`/weather?lat=...&lng=...`)
-  return MOCK_WEATHER_DATA;
-}
-
-// ---------------------------------------------------------------------------
 // Hook
 // ---------------------------------------------------------------------------
 
 export function useWeather() {
-  const weatherState = useWeatherStore(selectWeatherState);
+  const location = useWeatherStore(selectLocation);
   const unit = useWeatherStore(selectUnit);
-  const { setWeatherState, toggleUnit, setLocation } = useWeatherStore();
+  const toggleUnit = useWeatherStore(selectToggleUnit);
+  const { refetch } = useWeatherQuery(location);
 
-  const load = useCallback(async () => {
-    setWeatherState({ status: "loading" });
-    try {
-      const data = await fetchWeather(null);
-      setWeatherState({ status: "success", data });
-      setLocation(data.location);
-    } catch (err) {
+  const query = useWeatherQuery(location);
+
+  const weatherState: WeatherUIState = (() => {
+    if (!location && !query.data) return { status: "idle" };
+    if (query.isPending) return { status: "loading" };
+    if (query.isError) {
       const message =
-        err instanceof Error
-          ? err.message
+        query.error instanceof Error
+          ? query.error.message
           : "Unable to load weather data. Please try again.";
-      setWeatherState({ status: "error", message });
+      return { status: "error", message };
     }
-  }, [setWeatherState, setLocation]);
+    if (query.data) return { status: "success", data: query.data };
+    return { status: "loading" };
+  })();
 
-  // Auto-load on mount
-  useEffect(() => {
-    load();
-  }, [load]);
+  const refresh = useCallback(() => {
+    refetch();
+  }, [refetch]);
 
   return {
     weatherState,
     unit,
     toggleUnit,
-    refresh: load,
+    refresh,
     convertTemp: (c: number) => convertTemp(c, unit),
     unitSymbol: unitSymbol(unit),
     relativeTime,

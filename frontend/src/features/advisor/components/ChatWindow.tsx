@@ -6,6 +6,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React, { useRef, useEffect } from "react";
+import { AlertTriangle, RefreshCcw } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { useAdvisor } from "../hooks/useAdvisor";
 import { ChatMessage } from "./ChatMessage";
 import { TypingIndicator } from "./TypingIndicator";
@@ -18,9 +20,11 @@ export const ChatWindow: React.FC = () => {
     status,
     messages,
     inputValue,
+    errorMessage,
     setInput,
     sendMessage,
     handleSuggestionClick,
+    retry,
   } = useAdvisor();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -35,11 +39,13 @@ export const ChatWindow: React.FC = () => {
     }
   };
 
+  const isBusy = status === "loading" || status === "streaming";
+
   return (
     <div className="flex flex-col h-full">
       {/* Chat Canvas */}
       <section className="flex-1 overflow-y-auto px-4 pt-6 pb-4 custom-scrollbar">
-        {messages.length === 0 ? (
+        {messages.length === 0 && status !== "error" ? (
           <EmptyState onQuestionSelect={handleSuggestionClick} />
         ) : (
           <div className="max-w-3xl mx-auto space-y-6">
@@ -47,15 +53,34 @@ export const ChatWindow: React.FC = () => {
               <ChatMessage key={message.id} message={message} />
             ))}
 
-            {status === "loading" || status === "streaming" ? (
-              <TypingIndicator />
-            ) : null}
+            {isBusy && <TypingIndicator />}
 
-            {messages.length > 0 && messages.length % 2 === 0 && (
-              <div className="pt-4">
-                <SuggestedQuestions onSelect={handleSuggestionClick} />
+            {/* Error State */}
+            {status === "error" && errorMessage && (
+              <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-6 text-center flex flex-col items-center gap-3">
+                <div className="p-3 rounded-2xl bg-destructive/20 text-destructive">
+                  <AlertTriangle size={24} aria-hidden="true" />
+                </div>
+                <p className="text-sm text-muted-foreground">{errorMessage}</p>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  leftIcon={<RefreshCcw size={14} aria-hidden="true" />}
+                  onClick={retry}
+                >
+                  Retry
+                </Button>
               </div>
             )}
+
+            {!isBusy &&
+              messages.length > 0 &&
+              messages.length % 2 === 0 &&
+              status !== "error" && (
+                <div className="pt-4">
+                  <SuggestedQuestions onSelect={handleSuggestionClick} />
+                </div>
+              )}
 
             <div ref={messagesEndRef} />
           </div>
@@ -67,7 +92,7 @@ export const ChatWindow: React.FC = () => {
         value={inputValue}
         onChange={setInput}
         onSend={handleSend}
-        disabled={status === "loading" || status === "streaming"}
+        disabled={isBusy}
       />
     </div>
   );

@@ -26,7 +26,12 @@ export {
 } from "./hooks/useWeather";
 
 // Store
-export { useWeatherStore } from "./store/weatherStore";
+export {
+  useWeatherStore,
+  selectLocation,
+  selectUnit,
+  selectToggleUnit,
+} from "./store/weatherStore";
 
 // Types
 export type {
