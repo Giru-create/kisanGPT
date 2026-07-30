@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pytest
+from pydantic import ValidationError
 
 from app.schemas.schemes import Scheme, SchemeSearchRequest
 from app.services.schemes import SchemesService
@@ -88,7 +89,7 @@ class TestSchemeModel:
         assert s.crop is None
 
     def test_invalid_status_badge(self) -> None:
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             Scheme(
                 id="test-2",
                 title="Test",

@@ -1,10 +1,9 @@
-"""Government Schemes service — combines hardcoded defaults with RAG knowledge retrieval."""
+"""Government Schemes service with hardcoded defaults."""
 
 from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from app.core.config import settings
 from app.core.logging import logger
 from app.schemas.schemes import (
     Scheme,
@@ -22,13 +21,15 @@ def _get_default_schemes() -> list[Scheme]:
             title="PM-KISAN Samman Nidhi",
             category="Direct Benefit",
             description=(
-                "Pradhan Mantri Kisan Samman Nidhi provides income support of "
-                "₹6,000 per year to small and marginal farmer families, paid in "
-                "3 equal installments of ₹2,000 each via direct benefit transfer."
+                "Pradhan Mantri Kisan Samman Nidhi provides income "
+                "support of ₹6,000 per year to small and marginal "
+                "farmer families, paid in 3 equal installments of "
+                "₹2,000 each via direct benefit transfer."
             ),
             eligibility=(
-                "All small and marginal farmer families with cultivable land. "
-                "Subject to certain exclusion criteria for institutional landholders."
+                "All small and marginal farmer families with "
+                "cultivable land. Subject to certain exclusion "
+                "criteria for institutional landholders."
             ),
             benefits="₹6,000 per year in 3 installments of ₹2,000 each.",
             required_documents=[
@@ -37,13 +38,17 @@ def _get_default_schemes() -> list[Scheme]:
                 "Land records (Khata/Khasra)",
             ],
             application_process=(
-                "Apply online at pmkisan.gov.in or visit nearest CSC centre."
+                "Apply online at pmkisan.gov.in or visit "
+                "nearest CSC centre."
             ),
             deadline=None,
             official_link="https://pmkisan.gov.in",
             status_badge="Eligible",
             benefit_amount="₹6,000/year",
-            summary="Income support of ₹6,000 per year paid in 3 installments to farmer families.",
+            summary=(
+                "Income support of ₹6,000 per year paid in "
+                "3 installments to farmer families."
+            ),
             state=None,
             crop=None,
             farmer_category="small",
@@ -54,12 +59,14 @@ def _get_default_schemes() -> list[Scheme]:
             title="Pradhan Mantri Fasal Bima Yojana",
             category="Insurance",
             description=(
-                "Crop insurance scheme providing comprehensive insurance cover "
-                "against crop loss due to natural calamities, pests, and diseases."
+                "Crop insurance scheme providing comprehensive "
+                "insurance cover against crop loss due to natural "
+                "calamities, pests, and diseases."
             ),
             eligibility=(
-                "All farmers including sharecroppers and tenant farmers. "
-                "Kharif: 2% premium, Rabi: 1.5% premium, Commercial: 5% premium."
+                "All farmers including sharecroppers and tenant "
+                "farmers. Kharif: 2% premium, Rabi: 1.5% premium, "
+                "Commercial: 5% premium."
             ),
             benefits="Full crop loss coverage at subsidized premium rates.",
             required_documents=[
@@ -69,13 +76,17 @@ def _get_default_schemes() -> list[Scheme]:
                 "Bank passbook",
             ],
             application_process=(
-                "Apply through bank, CSC, or insurance company within sowing period."
+                "Apply through bank, CSC, or insurance company "
+                "within sowing period."
             ),
             deadline="Before sowing season begins",
             official_link="https://pmfby.gov.in",
             status_badge="Action Needed",
             benefit_amount="Full crop coverage",
-            summary="Crop insurance at 1-5% premium covering natural calamities, pests, and diseases.",
+            summary=(
+                "Crop insurance at 1-5% premium covering natural "
+                "calamities, pests, and diseases."
+            ),
             state=None,
             crop=None,
             farmer_category="all",
@@ -86,10 +97,14 @@ def _get_default_schemes() -> list[Scheme]:
             title="Pradhatri Krishi Sinchayee Yojana",
             category="Irrigation",
             description=(
-                "Promotes micro-irrigation including drip and sprinkler systems "
-                "to improve water use efficiency and expand irrigated area."
+                "Promotes micro-irrigation including drip and "
+                "sprinkler systems to improve water use efficiency "
+                "and expand irrigated area."
             ),
-            eligibility="All farmers with focus on small and marginal farmers.",
+            eligibility=(
+                "All farmers with focus on small and marginal "
+                "farmers."
+            ),
             benefits="Up to 55% subsidy for micro-irrigation equipment.",
             required_documents=[
                 "Aadhaar card",
@@ -98,13 +113,17 @@ def _get_default_schemes() -> list[Scheme]:
                 "Water source proof",
             ],
             application_process=(
-                "Apply through state agriculture department or online portal."
+                "Apply through state agriculture department "
+                "or online portal."
             ),
             deadline="15 Feb 2026",
             official_link="https://pmksy.gov.in",
             status_badge="Action Needed",
             benefit_amount="Up to 55% Subsidy",
-            summary="Get subsidized drip and sprinkler irrigation systems with up to 55% subsidy.",
+            summary=(
+                "Get subsidized drip and sprinkler irrigation "
+                "systems with up to 55% subsidy."
+            ),
             state=None,
             crop=None,
             farmer_category="small",
@@ -115,23 +134,31 @@ def _get_default_schemes() -> list[Scheme]:
             title="Soil Health Card Scheme",
             category="Advisory",
             description=(
-                "Provides soil health cards to farmers with crop-wise "
-                "recommendations on nutrients and fertilizers."
+                "Provides soil health cards to farmers with "
+                "crop-wise recommendations on nutrients and "
+                "fertilizers."
             ),
             eligibility="All farmers.",
-            benefits="Free soil testing and personalized fertilizer recommendations.",
+            benefits=(
+                "Free soil testing and personalized fertilizer "
+                "recommendations."
+            ),
             required_documents=[
                 "Aadhaar card",
                 "Land records",
             ],
             application_process=(
-                "Visit nearest soil testing laboratory or CSC centre."
+                "Visit nearest soil testing laboratory "
+                "or CSC centre."
             ),
             deadline=None,
             official_link="https://soilhealth.dac.gov.in",
             status_badge="Eligible",
             benefit_amount="Free soil testing",
-            summary="Free soil health card with crop-wise nutrient and fertilizer recommendations.",
+            summary=(
+                "Free soil health card with crop-wise nutrient "
+                "and fertilizer recommendations."
+            ),
             state=None,
             crop=None,
             farmer_category="all",
@@ -142,23 +169,40 @@ def _get_default_schemes() -> list[Scheme]:
             title="Kisan Credit Card",
             category="Credit",
             description=(
-                "Provides affordable credit to farmers for agricultural needs "
-                "including crop production, post-harvest expenses, and maintenance."
+                "Provides affordable credit to farmers for "
+                "agricultural needs including crop production, "
+                "post-harvest expenses, and maintenance."
             ),
-            eligibility="All farmers, fishermen, and animal husbandry farmers.",
-            benefits="Crop loan at 4% p.a. (with prompt repayment rebate).",
+            eligibility=(
+                "All farmers, fishermen, and animal "
+                "husbandry farmers."
+            ),
+            benefits=(
+                "Crop loan at 4% p.a. "
+                "(with prompt repayment rebate)."
+            ),
             required_documents=[
                 "Aadhaar card",
                 "Land records",
                 "Bank passbook",
                 "Passport-size photograph",
             ],
-            application_process="Apply at nearest bank branch with required documents.",
+            application_process=(
+                "Apply at nearest bank branch with "
+                "required documents."
+            ),
             deadline=None,
-            official_link="https://www.india.gov.in/programmes/pradhan-mantri-kisan-samman-nidhi/kisan-credit-card",
+            official_link=(
+                "https://www.india.gov.in/programmes/"
+                "pradhan-mantri-kisan-samman-nidhi/"
+                "kisan-credit-card"
+            ),
             status_badge="Eligible",
             benefit_amount="4% p.a. interest",
-            summary="Credit card for farmers offering crop loans at subsidized interest rates.",
+            summary=(
+                "Credit card for farmers offering crop loans "
+                "at subsidized interest rates."
+            ),
             state=None,
             crop=None,
             farmer_category="all",
@@ -202,7 +246,9 @@ class SchemesService:
             generated_at=datetime.now(UTC).isoformat(),
         )
 
-    async def get_scheme(self, scheme_id: str) -> SchemeDetailResponse | None:
+    async def get_scheme(
+        self, scheme_id: str
+    ) -> SchemeDetailResponse | None:
         """Get a single scheme by ID."""
         for scheme in self._default_schemes:
             if scheme.id == scheme_id:
@@ -224,18 +270,26 @@ class SchemesService:
             or q in s.summary.lower()
         ]
 
-    def _filter_schemes(self, request: SchemeSearchRequest) -> list[Scheme]:
+    def _filter_schemes(
+        self, request: SchemeSearchRequest
+    ) -> list[Scheme]:
         """Apply filters to the scheme list."""
         result = list(self._default_schemes)
 
         if request.state:
             result = [
-                s for s in result if s.state is None or s.state.lower() == request.state.lower()
+                s
+                for s in result
+                if s.state is None
+                or s.state.lower() == request.state.lower()
             ]
 
         if request.crop:
             result = [
-                s for s in result if s.crop is None or s.crop.lower() == request.crop.lower()
+                s
+                for s in result
+                if s.crop is None
+                or s.crop.lower() == request.crop.lower()
             ]
 
         if request.farmer_category:
@@ -250,7 +304,12 @@ class SchemesService:
 
         if request.scheme_type:
             st = request.scheme_type.lower()
-            result = [s for s in result if s.scheme_type and s.scheme_type.lower() == st]
+            result = [
+                s
+                for s in result
+                if s.scheme_type
+                and s.scheme_type.lower() == st
+            ]
 
         if request.search:
             q = request.search.lower()

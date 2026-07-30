@@ -10,23 +10,40 @@ class Scheme(BaseModel):
 
     id: str = Field(..., description="Unique scheme identifier.")
     title: str = Field(..., description="Scheme name.")
-    category: str = Field(..., description="Category (Direct Benefit, Insurance, Irrigation, etc.).")
-    description: str = Field(default="", description="Full description of the scheme.")
+    category: str = Field(
+        ...,
+        description="Category (Direct Benefit, Insurance, Irrigation, etc.).",
+    )
+    description: str = Field(
+        default="", description="Full description of the scheme."
+    )
     eligibility: str = Field(default="", description="Who is eligible.")
     benefits: str = Field(default="", description="What the farmer receives.")
-    required_documents: list[str] = Field(default_factory=list, description="Documents needed to apply.")
+    required_documents: list[str] = Field(
+        default_factory=list, description="Documents needed to apply."
+    )
     application_process: str = Field(default="", description="How to apply.")
-    deadline: str | None = Field(default=None, description="Application deadline if any.")
+    deadline: str | None = Field(
+        default=None, description="Application deadline if any."
+    )
     official_link: str = Field(default="", description="Official application URL.")
     status_badge: str = Field(
         ...,
         pattern=r"^(Eligible|Action Needed|Applied|Approved)$",
         description="Status badge for UI.",
     )
-    benefit_amount: str = Field(default="", description="Short benefit summary for card display.")
-    summary: str = Field(default="", description="One-line summary for card display.")
-    state: str | None = Field(default=None, description="Applicable state, or null for all-India.")
-    crop: str | None = Field(default=None, description="Applicable crop, or null for all crops.")
+    benefit_amount: str = Field(
+        default="", description="Short benefit summary for card display."
+    )
+    summary: str = Field(
+        default="", description="One-line summary for card display."
+    )
+    state: str | None = Field(
+        default=None, description="Applicable state, or null for all-India."
+    )
+    crop: str | None = Field(
+        default=None, description="Applicable crop, or null for all crops."
+    )
     farmer_category: str | None = Field(
         default=None,
         description="Target farmer category (small, marginal, all).",
