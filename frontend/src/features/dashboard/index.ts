@@ -24,6 +24,7 @@ export { EmergencyAlertBanner } from "./components/EmergencyAlertBanner";
 export { DashboardSkeleton } from "./components/DashboardSkeleton";
 
 export { useDashboard } from "./hooks/useDashboard";
+export { useDashboardQuery } from "./hooks/useDashboardData";
 export { useDashboardStore } from "./store/dashboardStore";
 
 export type {

@@ -4,6 +4,10 @@ import pytest
 
 from app.services.dashboard import (
     DashboardService,
+    _get_default_ai_advisor_chats,
+    _get_default_crop_health_cards,
+    _get_default_market_trends,
+    _get_default_priority_alerts,
     _get_spray_advisory,
     _map_weather_condition,
 )
@@ -17,7 +21,11 @@ class TestDashboardService:
         assert "profile" in result
         assert "weatherSummary" in result
         assert "cropFields" in result
+        assert "cropHealthCards" in result
         assert "mandiPrices" in result
+        assert "marketTrends" in result
+        assert "aiAdvisorChats" in result
+        assert "priorityAlerts" in result
         assert "schemes" in result
         assert "recentActivities" in result
         assert "notifications" in result
@@ -105,3 +113,84 @@ class TestGetSprayAdvisory:
         advisory, safe = _get_spray_advisory(25, 50, 5, "sunny")
         assert safe is True
         assert "safe" in advisory.lower()
+
+
+class TestGetDefaultCropHealthCards:
+    def test_returns_cards(self) -> None:
+        cards = _get_default_crop_health_cards()
+        assert len(cards) == 2
+        assert cards[0].crop_name == "Wheat"
+        assert cards[0].status == "healthy"
+        assert cards[1].status == "alert"
+        assert cards[1].alert_message is not None
+
+
+class TestGetDefaultMarketTrends:
+    def test_from_mandi_prices(self) -> None:
+        from app.schemas.dashboard import MandiPriceItem
+
+        prices = [
+            MandiPriceItem(
+                id="mandi-1",
+                commodity="Wheat",
+                variety="PBW 550",
+                mandi_name="Karnal",
+                price_per_quintal=2275,
+                change_amount=45,
+                change_percent=2.02,
+                is_rise=True,
+                msp_difference=25,
+                updated_at="2026-01-01T00:00:00Z",
+            ),
+        ]
+        trends = _get_default_market_trends(prices)
+        assert len(trends) == 1
+        assert trends[0].commodity == "Wheat"
+        assert "2,275" in trends[0].price
+
+    def test_empty_prices(self) -> None:
+        trends = _get_default_market_trends([])
+        assert len(trends) == 3
+        assert trends[0].commodity == "Wheat (Dara)"
+
+
+class TestGetDefaultAiAdvisorChats:
+    def test_returns_chats(self) -> None:
+        chats = _get_default_ai_advisor_chats()
+        assert len(chats) == 2
+        assert chats[0].icon_type == "water"
+        assert chats[1].icon_type == "pest"
+
+
+class TestGetDefaultPriorityAlerts:
+    def test_includes_subsidy(self) -> None:
+        from app.schemas.dashboard import WeatherSummary
+
+        weather = WeatherSummary(
+            temperature_c=25,
+            feels_like_c=27,
+            condition="sunny",
+            humidity=50,
+            wind_speed_kmh=10,
+            advisory="Safe",
+            advisory_safe=True,
+        )
+        alerts = _get_default_priority_alerts(weather)
+        types = [a.type for a in alerts]
+        assert "subsidy" in types
+
+    def test_frost_alert_when_cold(self) -> None:
+        from app.schemas.dashboard import WeatherSummary
+
+        weather = WeatherSummary(
+            temperature_c=5,
+            feels_like_c=2,
+            condition="fog",
+            humidity=80,
+            wind_speed_kmh=8,
+            advisory="Cold",
+            advisory_safe=True,
+        )
+        alerts = _get_default_priority_alerts(weather)
+        types = [a.type for a in alerts]
+        assert "frost" in types

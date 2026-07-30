@@ -1,99 +1,68 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // dashboardStore.ts
 // KisanGPT — Farmer Dashboard Zustand slice
+// Manages UI-only state (dismissed alerts, notification reads, profile edits)
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { create } from "zustand";
-import type { DashboardUIState } from "../types/dashboard.types";
+import type { DashboardData } from "../types/dashboard.types";
 
 interface DashboardStore {
-  dashboardState: DashboardUIState;
   dismissedEmergencyAlertId: string | null;
+  localNotifications: DashboardData["notifications"] | null;
+  localProfile: DashboardData["profile"] | null;
 
-  setDashboardState: (state: DashboardUIState) => void;
   dismissEmergencyAlert: (alertId: string) => void;
-  markNotificationRead: (id: string) => void;
-  markAllNotificationsRead: () => void;
-  updateProfileLocation: (village: string, district: string) => void;
+  markNotificationRead: (
+    id: string,
+    notifications: DashboardData["notifications"],
+  ) => DashboardData["notifications"];
+  markAllNotificationsRead: (
+    notifications: DashboardData["notifications"],
+  ) => DashboardData["notifications"];
+  updateProfileLocation: (
+    village: string,
+    district: string,
+    profile: DashboardData["profile"],
+  ) => DashboardData["profile"];
   reset: () => void;
 }
 
 export const useDashboardStore = create<DashboardStore>((set) => ({
-  dashboardState: { status: "idle" },
   dismissedEmergencyAlertId: null,
-
-  setDashboardState: (dashboardState) => set({ dashboardState }),
+  localNotifications: null,
+  localProfile: null,
 
   dismissEmergencyAlert: (alertId) =>
     set({ dismissedEmergencyAlertId: alertId }),
 
-  markNotificationRead: (id) =>
-    set((state) => {
-      if (state.dashboardState.status !== "success") return state;
+  markNotificationRead: (id, notifications) => {
+    const updated = notifications.map((n) =>
+      n.id === id ? { ...n, read: true } : n,
+    );
+    set({ localNotifications: updated });
+    return updated;
+  },
 
-      const updatedNotifs = state.dashboardState.data.notifications.map((n) =>
-        n.id === id ? { ...n, read: true } : n,
-      );
+  markAllNotificationsRead: (notifications) => {
+    const updated = notifications.map((n) => ({ ...n, read: true }));
+    set({ localNotifications: updated });
+    return updated;
+  },
 
-      return {
-        dashboardState: {
-          status: "success",
-          data: {
-            ...state.dashboardState.data,
-            notifications: updatedNotifs,
-          },
-        },
-      };
-    }),
-
-  markAllNotificationsRead: () =>
-    set((state) => {
-      if (state.dashboardState.status !== "success") return state;
-
-      const updatedNotifs = state.dashboardState.data.notifications.map(
-        (n) => ({
-          ...n,
-          read: true,
-        }),
-      );
-
-      return {
-        dashboardState: {
-          status: "success",
-          data: {
-            ...state.dashboardState.data,
-            notifications: updatedNotifs,
-          },
-        },
-      };
-    }),
-
-  updateProfileLocation: (village, district) =>
-    set((state) => {
-      if (state.dashboardState.status !== "success") return state;
-
-      return {
-        dashboardState: {
-          status: "success",
-          data: {
-            ...state.dashboardState.data,
-            profile: {
-              ...state.dashboardState.data.profile,
-              village,
-              district,
-            },
-          },
-        },
-      };
-    }),
+  updateProfileLocation: (village, district, profile) => {
+    const updated = { ...profile, village, district };
+    set({ localProfile: updated });
+    return updated;
+  },
 
   reset: () =>
     set({
-      dashboardState: { status: "idle" },
       dismissedEmergencyAlertId: null,
+      localNotifications: null,
+      localProfile: null,
     }),
 }));
 
-export const selectDashboardState = (s: DashboardStore) => s.dashboardState;
 export const selectDismissedAlertId = (s: DashboardStore) =>
   s.dismissedEmergencyAlertId;

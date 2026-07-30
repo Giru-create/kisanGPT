@@ -5,13 +5,17 @@ from datetime import UTC, datetime
 from app.core.logging import logger
 from app.schemas.dashboard import (
     ActivityItem,
+    AIAdvisorChat,
     CropFieldStatus,
+    CropHealthItem,
     DashboardNotification,
     DashboardResponse,
     EmergencyAlert,
     FarmerProfile,
     GovtSchemeItem,
     MandiPriceItem,
+    MarketTrendItem,
+    PriorityAlert,
     WeatherSummary,
 )
 from app.schemas.weather import WeatherQuery
@@ -37,6 +41,10 @@ class DashboardService:
         weather_summary = await self._get_weather_summary(lat, lon, city)
         mandi_prices = await self._get_mandi_prices()
         crop_fields = _get_default_crop_fields()
+        crop_health_cards = _get_default_crop_health_cards()
+        market_trends = _get_default_market_trends(mandi_prices)
+        ai_advisor_chats = _get_default_ai_advisor_chats()
+        priority_alerts = _get_default_priority_alerts(weather_summary)
         schemes = _get_default_schemes()
         activities = _get_default_activities()
         notifications = _get_default_notifications()
@@ -47,7 +55,11 @@ class DashboardService:
             emergency_alert=emergency,
             weather_summary=weather_summary,
             crop_fields=crop_fields,
+            crop_health_cards=crop_health_cards,
             mandi_prices=mandi_prices,
+            market_trends=market_trends,
+            ai_advisor_chats=ai_advisor_chats,
+            priority_alerts=priority_alerts,
             schemes=schemes,
             recent_activities=activities,
             notifications=notifications,
@@ -345,6 +357,122 @@ def _get_default_notifications() -> list[DashboardNotification]:
             read=True,
         ),
     ]
+
+
+def _get_default_crop_health_cards() -> list[CropHealthItem]:
+    return [
+        CropHealthItem(
+            id="crop-1",
+            crop_name="Wheat",
+            block_name="Block A",
+            days_since_sown=15,
+            status="healthy",
+            moisture_percent=78,
+        ),
+        CropHealthItem(
+            id="crop-2",
+            crop_name="Cotton",
+            block_name="Block B",
+            days_since_sown=42,
+            status="alert",
+            moisture_percent=45,
+            alert_message="Pest Alert: Pink Bollworm detected via satellite infra.",
+            recommendation="Recommended: Organic pesticide application.",
+        ),
+    ]
+
+
+def _get_default_market_trends(
+    mandi_prices: list[MandiPriceItem],
+) -> list[MarketTrendItem]:
+    if mandi_prices:
+        return [
+            MarketTrendItem(
+                id=f"trend-{i}",
+                commodity=p.commodity,
+                price=f"₹{p.price_per_quintal:,.0f}",
+                change_percent=p.change_percent,
+                is_rise=p.is_rise,
+            )
+            for i, p in enumerate(mandi_prices[:5], start=1)
+        ]
+    return [
+        MarketTrendItem(
+            id="trend-1",
+            commodity="Wheat (Dara)",
+            price="₹2,450",
+            change_percent=2.4,
+            is_rise=True,
+        ),
+        MarketTrendItem(
+            id="trend-2",
+            commodity="Basmati Rice",
+            price="₹4,200",
+            change_percent=-0.8,
+            is_rise=False,
+        ),
+        MarketTrendItem(
+            id="trend-3",
+            commodity="Cotton (Long Staple)",
+            price="₹7,820",
+            change_percent=1.2,
+            is_rise=True,
+        ),
+    ]
+
+
+def _get_default_ai_advisor_chats() -> list[AIAdvisorChat]:
+    return [
+        AIAdvisorChat(
+            id="chat-1",
+            title="Optimizing Drip Irrigation",
+            description=(
+                "Calculated water requirement for Block C based on ET0 values..."
+            ),
+            timestamp="2 Hours Ago",
+            icon_type="water",
+        ),
+        AIAdvisorChat(
+            id="chat-2",
+            title="Pest Identification: Aphids",
+            description=(
+                "Visual scan confirmed stage 1 infestation. Recommended Neem oil..."
+            ),
+            timestamp="Yesterday",
+            icon_type="pest",
+        ),
+    ]
+
+
+def _get_default_priority_alerts(
+    weather: WeatherSummary,
+) -> list[PriorityAlert]:
+    alerts: list[PriorityAlert] = []
+    if weather.temperature_c < 10:
+        alerts.append(
+            PriorityAlert(
+                id="priority-frost",
+                title="Frost Warning",
+                description=(
+                    f"Temperatures expected to drop below "
+                    f"{weather.temperature_c:.0f}°C in 48 hours."
+                ),
+                type="frost",
+                border_color="border-red-500",
+            )
+        )
+    alerts.append(
+        PriorityAlert(
+            id="priority-2",
+            title="New Subsidy: PM-Kisan Update",
+            description=(
+                "New solar pump subsidy application window open for your district."
+            ),
+            type="subsidy",
+            border_color="border-emerald-500",
+        )
+    )
+    return alerts
 
 
 dashboard_service = DashboardService()

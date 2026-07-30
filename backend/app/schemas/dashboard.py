@@ -149,12 +149,70 @@ class DashboardNotification(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+class CropHealthItem(BaseModel):
+    id: str
+    crop_name: str = Field(..., alias="cropName")
+    block_name: str = Field(..., alias="blockName")
+    days_since_sown: int = Field(..., alias="daysSinceSown")
+    status: str = Field(..., pattern=r"^(healthy|alert)$")
+    moisture_percent: int = Field(..., alias="moisturePercent", ge=0, le=100)
+    alert_message: str | None = Field(None, alias="alertMessage")
+    recommendation: str | None = None
+    image_url: str | None = Field(None, alias="imageUrl")
+
+    model_config = {"populate_by_name": True}
+
+
+class MarketTrendItem(BaseModel):
+    id: str
+    commodity: str
+    price: str
+    change_percent: float = Field(..., alias="changePercent")
+    is_rise: bool = Field(..., alias="isRise")
+
+    model_config = {"populate_by_name": True}
+
+
+class AIAdvisorChat(BaseModel):
+    id: str
+    title: str
+    description: str
+    timestamp: str
+    icon_type: str = Field(
+        ..., alias="iconType", pattern=r"^(water|pest|fertilizer|weather)$"
+    )
+
+    model_config = {"populate_by_name": True}
+
+
+class PriorityAlert(BaseModel):
+    id: str
+    title: str
+    description: str
+    type: str = Field(..., pattern=r"^(frost|subsidy|weather|pest)$")
+    border_color: str = Field(..., alias="borderColor")
+
+    model_config = {"populate_by_name": True}
+
+
 class DashboardResponse(BaseModel):
     profile: FarmerProfile
     emergency_alert: EmergencyAlert | None = Field(None, alias="emergencyAlert")
     weather_summary: WeatherSummary = Field(..., alias="weatherSummary")
     crop_fields: list[CropFieldStatus] = Field(..., alias="cropFields")
+    crop_health_cards: list[CropHealthItem] = Field(
+        default_factory=list, alias="cropHealthCards"
+    )
     mandi_prices: list[MandiPriceItem] = Field(..., alias="mandiPrices")
+    market_trends: list[MarketTrendItem] = Field(
+        default_factory=list, alias="marketTrends"
+    )
+    ai_advisor_chats: list[AIAdvisorChat] = Field(
+        default_factory=list, alias="aiAdvisorChats"
+    )
+    priority_alerts: list[PriorityAlert] = Field(
+        default_factory=list, alias="priorityAlerts"
+    )
     schemes: list[GovtSchemeItem]
     recent_activities: list[ActivityItem] = Field(..., alias="recentActivities")
     notifications: list[DashboardNotification]

@@ -5,13 +5,17 @@ from pydantic import ValidationError
 
 from app.schemas.dashboard import (
     ActivityItem,
+    AIAdvisorChat,
     CropFieldStatus,
+    CropHealthItem,
     DashboardNotification,
     DashboardResponse,
     EmergencyAlert,
     FarmerProfile,
     GovtSchemeItem,
     MandiPriceItem,
+    MarketTrendItem,
+    PriorityAlert,
     WeatherSummary,
 )
 
@@ -334,3 +338,200 @@ class TestDashboardResponse:
         )
         assert r.emergency_alert is not None
         assert r.emergency_alert.severity == "warning"
+
+    def test_with_new_fields(self) -> None:
+        r = DashboardResponse(
+            profile=FarmerProfile(
+                name="Test",
+                greeting_prefix="Hi",
+                village="Village",
+                district="District",
+                state="State",
+                active_crop="Wheat",
+                crop_season="Rabi",
+                farm_size_acres=2.0,
+            ),
+            weather_summary=WeatherSummary(
+                temperature_c=30,
+                feels_like_c=32,
+                condition="sunny",
+                humidity=50,
+                wind_speed_kmh=10,
+                advisory="Safe",
+                advisory_safe=True,
+            ),
+            crop_fields=[],
+            crop_health_cards=[
+                CropHealthItem(
+                    id="crop-1",
+                    crop_name="Wheat",
+                    block_name="A",
+                    days_since_sown=15,
+                    status="healthy",
+                    moisture_percent=78,
+                ),
+            ],
+            mandi_prices=[],
+            market_trends=[
+                MarketTrendItem(
+                    id="trend-1",
+                    commodity="Wheat",
+                    price="₹2,450",
+                    change_percent=2.4,
+                    is_rise=True,
+                ),
+            ],
+            ai_advisor_chats=[
+                AIAdvisorChat(
+                    id="chat-1",
+                    title="Irrigation",
+                    description="Optimized water usage",
+                    timestamp="2h ago",
+                    icon_type="water",
+                ),
+            ],
+            priority_alerts=[
+                PriorityAlert(
+                    id="p-1",
+                    title="Frost Warning",
+                    description="Cold expected",
+                    type="frost",
+                    border_color="border-red-500",
+                ),
+            ],
+            schemes=[],
+            recent_activities=[],
+            notifications=[],
+        )
+        assert len(r.crop_health_cards) == 1
+        assert len(r.market_trends) == 1
+        assert len(r.ai_advisor_chats) == 1
+        assert len(r.priority_alerts) == 1
+
+    def test_new_fields_default_empty(self) -> None:
+        r = DashboardResponse(
+            profile=FarmerProfile(
+                name="Test",
+                greeting_prefix="Hi",
+                village="Village",
+                district="District",
+                state="State",
+                active_crop="Wheat",
+                crop_season="Rabi",
+                farm_size_acres=2.0,
+            ),
+            weather_summary=WeatherSummary(
+                temperature_c=30,
+                feels_like_c=32,
+                condition="sunny",
+                humidity=50,
+                wind_speed_kmh=10,
+                advisory="Safe",
+                advisory_safe=True,
+            ),
+            crop_fields=[],
+            mandi_prices=[],
+            schemes=[],
+            recent_activities=[],
+            notifications=[],
+        )
+        assert r.crop_health_cards == []
+        assert r.market_trends == []
+        assert r.ai_advisor_chats == []
+        assert r.priority_alerts == []
+
+
+class TestCropHealthItem:
+    def test_valid_healthy(self) -> None:
+        c = CropHealthItem(
+            id="c1",
+            crop_name="Wheat",
+            block_name="A",
+            days_since_sown=15,
+            status="healthy",
+            moisture_percent=78,
+        )
+        assert c.status == "healthy"
+        assert c.alert_message is None
+
+    def test_valid_alert(self) -> None:
+        c = CropHealthItem(
+            id="c2",
+            crop_name="Cotton",
+            block_name="B",
+            days_since_sown=42,
+            status="alert",
+            moisture_percent=45,
+            alert_message="Pest detected",
+            recommendation="Apply pesticide",
+        )
+        assert c.status == "alert"
+        assert c.alert_message == "Pest detected"
+
+    def test_invalid_status(self) -> None:
+        with pytest.raises(ValidationError):
+            CropHealthItem(
+                id="c3",
+                crop_name="Test",
+                block_name="T",
+                days_since_sown=10,
+                status="invalid",
+                moisture_percent=50,
+            )
+
+
+class TestMarketTrendItem:
+    def test_valid(self) -> None:
+        t = MarketTrendItem(
+            id="t1",
+            commodity="Wheat",
+            price="₹2,450",
+            change_percent=2.4,
+            is_rise=True,
+        )
+        assert t.is_rise is True
+        assert t.price == "₹2,450"
+
+
+class TestAIAdvisorChat:
+    def test_valid(self) -> None:
+        ch = AIAdvisorChat(
+            id="ch1",
+            title="Irrigation",
+            description="Optimized water",
+            timestamp="2h ago",
+            icon_type="water",
+        )
+        assert ch.icon_type == "water"
+
+    def test_invalid_icon_type(self) -> None:
+        with pytest.raises(ValidationError):
+            AIAdvisorChat(
+                id="ch2",
+                title="Test",
+                description="Test",
+                timestamp="now",
+                icon_type="invalid",
+            )
+
+
+class TestPriorityAlert:
+    def test_valid(self) -> None:
+        pa = PriorityAlert(
+            id="p1",
+            title="Frost",
+            description="Cold expected",
+            type="frost",
+            border_color="border-red-500",
+        )
+        assert pa.type == "frost"
+
+    def test_invalid_type(self) -> None:
+        with pytest.raises(ValidationError):
+            PriorityAlert(
+                id="p2",
+                title="Test",
+                description="Test",
+                type="invalid",
+                border_color="border-blue-500",
+            )

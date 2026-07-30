@@ -35,8 +35,7 @@ export const FarmerDashboard: React.FC = () => {
       >
         <AnimatePresence mode="wait">
           {/* ── Loading State ── */}
-          {(dashboardState.status === "idle" ||
-            dashboardState.status === "loading") && (
+          {dashboardState.status === "loading" && (
             <motion.div
               key="skeleton"
               initial={{ opacity: 0 }}

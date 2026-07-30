@@ -1,80 +1,65 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // useDashboard.ts
-// KisanGPT — Farmer Dashboard hook with optimistic loading & screen reader announcements
+// KisanGPT — Farmer Dashboard hook with React Query + Zustand
 // ─────────────────────────────────────────────────────────────────────────────
 
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
   useDashboardStore,
-  selectDashboardState,
 } from "../store/dashboardStore";
-import { MOCK_DASHBOARD_DATA } from "../constants/dashboard.constants";
-import type { DashboardData } from "../types/dashboard.types";
+import { useDashboardQuery } from "./useDashboardData";
 import { announceToScreenReader } from "@/utils/a11y";
-
-async function fetchDashboardData(): Promise<DashboardData> {
-  // Simulate network latency for realistic loading experience
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
-  // Connects to FastAPI endpoint or falls back gracefully to mock data
-  try {
-    const res = await fetch("/api/v1/dashboard", { cache: "no-store" });
-    if (res.ok) {
-      return (await res.json()) as DashboardData;
-    }
-  } catch {
-    // API not reachable in mock mode; return full fallback mock data
-  }
-
-  return MOCK_DASHBOARD_DATA;
-}
+import type { DashboardData } from "../types/dashboard.types";
 
 export function useDashboard() {
-  const dashboardState = useDashboardStore(selectDashboardState);
   const {
-    setDashboardState,
+    data: apiData,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useDashboardQuery();
+
+  const {
+    dismissedEmergencyAlertId,
+    localNotifications,
+    localProfile,
     dismissEmergencyAlert,
     markNotificationRead,
     markAllNotificationsRead,
     updateProfileLocation,
+    reset,
   } = useDashboardStore();
 
-  const load = useCallback(async () => {
-    setDashboardState({ status: "loading" });
-    try {
-      const data = await fetchDashboardData();
-      setDashboardState({ status: "success", data });
-      announceToScreenReader("Farmer dashboard loaded successfully");
-    } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Unable to load dashboard data. Please check your internet connection.";
-      setDashboardState({ status: "error", message });
-      announceToScreenReader("Failed to load dashboard data");
+  const dashboardState = useMemo(() => {
+    if (isLoading || apiData === undefined) {
+      return { status: "loading" as const };
     }
-  }, [setDashboardState]);
-
-  useEffect(() => {
-    if (dashboardState.status === "idle") {
-      load();
+    if (isError) {
+      return {
+        status: "error" as const,
+        message:
+          error instanceof Error
+            ? error.message
+            : "Unable to load dashboard data. Please check your internet connection.",
+      };
     }
-  }, [dashboardState.status, load]);
 
-  const handleMarkNotificationRead = useCallback(
-    (id: string) => {
-      markNotificationRead(id);
-      announceToScreenReader("Notification marked as read");
-    },
-    [markNotificationRead],
-  );
+    const data: DashboardData = {
+      ...apiData,
+      notifications: localNotifications ?? apiData.notifications,
+      profile: localProfile ?? apiData.profile,
+    };
 
-  const handleMarkAllRead = useCallback(() => {
-    markAllNotificationsRead();
-    announceToScreenReader("All notifications marked as read");
-  }, [markAllNotificationsRead]);
+    return { status: "success" as const, data };
+  }, [apiData, isLoading, isError, error, localNotifications, localProfile]);
+
+  const refresh = useCallback(() => {
+    announceToScreenReader("Refreshing dashboard data");
+    refetch();
+  }, [refetch]);
 
   const handleDismissAlert = useCallback(
     (alertId: string) => {
@@ -84,12 +69,38 @@ export function useDashboard() {
     [dismissEmergencyAlert],
   );
 
+  const handleMarkNotificationRead = useCallback(
+    (id: string) => {
+      if (dashboardState.status !== "success") return;
+      markNotificationRead(id, dashboardState.data.notifications);
+      announceToScreenReader("Notification marked as read");
+    },
+    [dashboardState, markNotificationRead],
+  );
+
+  const handleMarkAllRead = useCallback(() => {
+    if (dashboardState.status !== "success") return;
+    markAllNotificationsRead(dashboardState.data.notifications);
+    announceToScreenReader("All notifications marked as read");
+  }, [dashboardState, markAllNotificationsRead]);
+
+  const handleUpdateProfileLocation = useCallback(
+    (village: string, district: string) => {
+      if (dashboardState.status !== "success") return;
+      updateProfileLocation(village, district, dashboardState.data.profile);
+      announceToScreenReader("Profile location updated");
+    },
+    [dashboardState, updateProfileLocation],
+  );
+
   return {
     dashboardState,
-    refresh: load,
+    dismissedEmergencyAlertId,
+    refresh,
     dismissEmergencyAlert: handleDismissAlert,
     markNotificationRead: handleMarkNotificationRead,
     markAllNotificationsRead: handleMarkAllRead,
-    updateProfileLocation,
+    updateProfileLocation: handleUpdateProfileLocation,
+    reset,
   };
 }
