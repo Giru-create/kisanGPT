@@ -1,0 +1,377 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>KisanGPT | Settings &amp; Preferences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9ff;
+            color: #0c1d2b;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .settings-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .settings-card:hover {
+            box-shadow: 0 4px 20px rgba(27, 122, 74, 0.06);
+        }
+        .switch-checkbox:checked + .switch-label {
+            background-color: #1b7a4a;
+        }
+        .switch-checkbox:checked + .switch-label::after {
+            transform: translateX(100%);
+            background-color: #ffffff;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#edf4ff",
+                        "secondary-container": "#97f3b5",
+                        "on-primary-fixed-variant": "#00522e",
+                        "secondary-fixed": "#9af6b8",
+                        "on-surface-variant": "#3f4941",
+                        "surface-container-high": "#d9eafe",
+                        "on-error": "#ffffff",
+                        "on-surface": "#0c1d2b",
+                        "surface-container-highest": "#d3e4f8",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#cbdcef",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#d3e4f8",
+                        "primary-container": "#1b7a4a",
+                        "surface-container": "#e3efff",
+                        "on-secondary-fixed": "#00210f",
+                        "tertiary": "#005f41",
+                        "primary": "#006036",
+                        "surface-tint": "#006d3e",
+                        "on-primary-fixed": "#00210f",
+                        "secondary": "#006d3d",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "primary-fixed-dim": "#80d9a0",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "on-secondary-container": "#047240",
+                        "primary-fixed": "#9cf6ba",
+                        "surface": "#f7f9ff",
+                        "tertiary-fixed": "#5ffdbd",
+                        "outline-variant": "#bec9be",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#a3ffd2",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#80d9a0",
+                        "tertiary-container": "#007a55",
+                        "outline": "#6f7a70",
+                        "background": "#f7f9ff",
+                        "on-background": "#0c1d2b",
+                        "tertiary-fixed-dim": "#3ae0a3",
+                        "surface-bright": "#f7f9ff",
+                        "on-primary-container": "#abffc6",
+                        "inverse-on-surface": "#e8f2ff",
+                        "on-tertiary-fixed-variant": "#005137",
+                        "on-tertiary-fixed": "#002114",
+                        "inverse-surface": "#223241",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "4px",
+                        "3xl": "64px",
+                        "2xl": "48px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "32px"
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex overflow-hidden">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="hidden md:flex flex-col h-screen w-64 border-r border-outline-variant bg-surface-container-lowest dark:bg-inverse-surface shadow-sm z-50">
+<div class="flex flex-col h-full py-md px-sm">
+<!-- Brand Section -->
+<div class="flex items-center gap-sm px-md py-lg mb-lg">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">KisanGPT</span>
+<span class="text-caption-xs text-on-surface-variant">Enterprise AI Ag</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 space-y-xs overflow-y-auto">
+<div class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Field Insights</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-body-md text-body-md">Market Trends</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-md text-body-md">AI Advisor</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Resource Hub</span>
+</div>
+</nav>
+<!-- Footer Nav (Active Check: Settings) -->
+<div class="pt-md border-t border-outline-variant space-y-xs">
+<div class="flex items-center gap-md px-md py-sm cursor-pointer bg-secondary-container text-on-secondary-container font-bold rounded-lg scale-95 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm cursor-pointer text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 rounded-lg">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body-md text-body-md">Support</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar (Authority: JSON) -->
+<header class="flex justify-between items-center w-full px-xl h-16 sticky top-0 z-40 bg-surface dark:bg-surface-dim border-b border-outline-variant">
+<div class="flex items-center gap-xl">
+<div class="md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full w-64 text-label-sm focus:ring-2 focus:ring-secondary" placeholder="Search settings..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:text-primary transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:text-primary transition-all">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:text-primary transition-all">
+<span class="material-symbols-outlined">history_edu</span>
+</button>
+</div>
+<button class="hidden lg:block bg-primary text-on-primary px-lg py-2 rounded-lg font-label-sm hover:opacity-90 transition-opacity">
+                    Upgrade Plan
+                </button>
+<img class="w-10 h-10 rounded-full border-2 border-outline-variant object-cover" data-alt="A professional portrait of a tech-forward agricultural business consultant in a clean, modern studio setting. The subject is wearing a high-quality navy blazer, looking confident and approachable. The background is a soft gradient of light cream and pale emerald green, reflecting a premium corporate light-mode design system. High-resolution commercial photography style with soft key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqQpvKP1grHhFmIu2jNr6Y0WwuXvLqBQWU7-Ikb4EWl9HPSf5oV6UEDMMv7mUbjfaGcBwfl0zmhLd2AbOpTpaTCu2YFYSxbno9Kqbm92pZbcd8NBAnYMWaoDaLsVtfD4qeYU-3jmaZkra5WiiRiRLoHn_9_w-ERjbQ3AtRynXINh5N47b-4eXAlseLunDpXSpf2EYgknSh8dfqrPueB3ywoZrU7ODzXYVLH1EqhLl8xJMDgRjgNYXALw">
+</div>
+</header>
+<!-- Settings Content Scrollable Container -->
+<div class="flex-1 overflow-y-auto p-xl bg-background">
+<div class="max-w-4xl mx-auto space-y-xl pb-3xl">
+<!-- Page Title -->
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Settings &amp; Preferences</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage your enterprise AI farm management profile and system behaviors.</p>
+</div>
+<!-- Bento Grid Sections -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Profile Management Card (Spans 8) -->
+<section class="md:col-span-8 bg-surface-container-lowest p-xl rounded-xl border border-outline-variant settings-card">
+<div class="flex items-center gap-md mb-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<h2 class="font-title-md text-title-md">Profile Management</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<label class="font-label-sm text-outline uppercase tracking-wider text-xs block">Full Name</label>
+<input class="w-full px-md py-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:outline-none bg-surface-bright" type="text" value="Rajesh Kumar Patel">
+</div>
+<div class="space-y-sm">
+<label class="font-label-sm text-outline uppercase tracking-wider text-xs block">Phone Number</label>
+<input class="w-full px-md py-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:outline-none bg-surface-bright" type="tel" value="+91 98765 43210">
+</div>
+<div class="sm:col-span-2 space-y-sm">
+<label class="font-label-sm text-outline uppercase tracking-wider text-xs block">Primary Farming Location</label>
+<div class="flex gap-sm">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">location_on</span>
+<input class="w-full pl-10 pr-md py-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:outline-none bg-surface-bright" type="text" value="Anand, Gujarat">
+</div>
+<button class="px-md py-sm border border-primary text-primary rounded-lg font-label-sm hover:bg-surface-container-low">Detect</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Appearance & Theme Card (Spans 4) -->
+<section class="md:col-span-4 bg-surface-container-lowest p-xl rounded-xl border border-outline-variant settings-card flex flex-col justify-between">
+<div class="flex items-center gap-md mb-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">palette</span>
+<h2 class="font-title-md text-title-md">Appearance</h2>
+</div>
+<div class="space-y-lg">
+<div class="flex items-center justify-between p-sm bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">light_mode</span>
+<span class="font-label-sm">Light Mode</span>
+</div>
+<input checked="" class="text-primary focus:ring-primary h-5 w-5" name="theme" type="radio">
+</div>
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded-lg opacity-60">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">dark_mode</span>
+<span class="font-label-sm">Dark Mode</span>
+</div>
+<input class="text-primary focus:ring-primary h-5 w-5" name="theme" type="radio">
+</div>
+<p class="text-caption-xs text-outline text-center">Dark mode available for Premium subscribers.</p>
+</div>
+</section>
+<!-- Language & Localization Card (Spans 6) -->
+<section class="md:col-span-6 bg-surface-container-lowest p-xl rounded-xl border border-outline-variant settings-card">
+<div class="flex items-center gap-md mb-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">translate</span>
+<h2 class="font-title-md text-title-md">Language &amp; Region</h2>
+</div>
+<div class="space-y-lg">
+<div class="relative">
+<select class="w-full appearance-none px-md py-3 border border-outline-variant rounded-lg bg-surface-bright font-body-md focus:ring-2 focus:ring-primary focus:outline-none">
+<option>English (Global)</option>
+<option selected="">हिन्दी (Hindi)</option>
+<option>ગુજરાતી (Gujarati)</option>
+<option>मराठी (Marathi)</option>
+<option>தமிழ் (Tamil)</option>
+<option>తెలుగు (Telugu)</option>
+<option>ಕನ್ನಡ (Kannada)</option>
+<option>বাংলা (Bengali)</option>
+<option>ਪੰਜਾਬੀ (Punjabi)</option>
+<option>മലയാളം (Malayalam)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-secondary-container text-on-secondary-container rounded-full text-caption-xs font-bold">Recommended for your region</span>
+<span class="px-sm py-1 bg-surface-container-high text-on-surface-variant rounded-full text-caption-xs font-bold">Offline pack installed</span>
+</div>
+</div>
+</section>
+<!-- Voice Settings Card (Spans 6) -->
+<section class="md:col-span-6 bg-surface-container-lowest p-xl rounded-xl border border-outline-variant settings-card">
+<div class="flex items-center gap-md mb-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">spatial_audio_off</span>
+<h2 class="font-title-md text-title-md">Voice Advisor Settings</h2>
+</div>
+<div class="space-y-lg">
+<div>
+<div class="flex justify-between mb-sm">
+<label class="font-label-sm text-on-surface-variant">Playback Speed</label>
+<span class="text-caption-xs font-bold text-primary">1.0x</span>
+</div>
+<input class="w-full h-2 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary" max="2" min="0.5" step="0.1" type="range" value="1.0">
+</div>
+<div>
+<div class="flex justify-between mb-sm">
+<label class="font-label-sm text-on-surface-variant">Advisor Pitch</label>
+<span class="text-caption-xs font-bold text-primary">Balanced</span>
+</div>
+<input class="w-full h-2 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary" max="1.5" min="0.5" step="0.1" type="range" value="1.0">
+</div>
+</div>
+</section>
+<!-- Notification Preferences (Spans 12) -->
+<section class="md:col-span-12 bg-surface-container-lowest p-xl rounded-xl border border-outline-variant settings-card">
+<div class="flex items-center gap-md mb-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+<h2 class="font-title-md text-title-md">Notification Preferences</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<!-- Alert Type 1 -->
+<div class="flex items-start justify-between p-md border border-outline-variant rounded-xl hover:bg-surface-bright transition-colors">
+<div class="flex-1 pr-md">
+<h3 class="font-label-sm text-on-surface">Weather &amp; Disaster Alerts</h3>
+<p class="text-caption-xs text-on-surface-variant mt-xs">Immediate SMS and push for hail, frost, or floods.</p>
+</div>
+<div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="switch-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer right-6 checked:right-0 transition-all duration-200 ease-in-out" id="weather_toggle" name="toggle" type="checkbox">
+<label class="switch-label block overflow-hidden h-6 rounded-full bg-outline-variant cursor-pointer" for="weather_toggle"></label>
+</div>
+</div>
+<!-- Alert Type 2 -->
+<div class="flex items-start justify-between p-md border border-outline-variant rounded-xl hover:bg-surface-bright transition-colors">
+<div class="flex-1 pr-md">
+<h3 class="font-label-sm text-on-surface">Pest &amp; Disease Warnings</h3>
+<p class="text-caption-xs text-on-surface-variant mt-xs">Local outbreak intelligence from AI advisor.</p>
+</div>
+<div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="switch-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer right-6 checked:right-0 transition-all duration-200 ease-in-out" id="pest_toggle" name="toggle" type="checkbox">
+<label class="switch-label block overflow-hidden h-6 rounded-full bg-outline-variant cursor-pointer" for="pest_toggle"></label>
+</div>
+</div>
+<!-- Alert Type 3 -->
+<div class="flex items-start justify-between p-md border border-outline-variant rounded-xl hover:bg-surface-bright transition-colors">
+<div class="flex-1 pr-md">
+<h3 class="font-label-sm text-on-surface">Market Price Surges</h3>
+<p class="text-caption-xs text-on-surface-variant mt-xs">Alerts when your crop prices hit target sell zones.</p>
+</div>
+<div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+<input class="switch-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer right-6 checked:right-0 transition-all duration-200 ease-in-out" id="market_toggle" name="toggle" type="checkbox">
+<label class="switch-label block overflow-hidden h-6 rounded-full bg-outline-variant cursor-pointer" for="market_toggle"></label>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Action Footer -->
+<div class="flex justify-end gap-md pt-lg">
+<button class="px-xl py-md text-on-surface-variant font-label-sm hover:underline">Discard Changes</button>
+<button class="px-xl py-md bg-primary text-on-primary rounded-lg font-label-sm shadow-md hover:opacity-90 active:scale-95 transition-all">Save All Preferences</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('.settings-card input, .settings-card select').forEach(element => {
+            element.addEventListener('change', () => {
+                // Subtle pulse effect on save button to remind user to save
+                const saveBtn = document.querySelector('button.bg-primary');
+                saveBtn.classList.add('ring-4', 'ring-secondary-container');
+                setTimeout(() => {
+                    saveBtn.classList.remove('ring-4', 'ring-secondary-container');
+                }, 1000);
+            });
+        });
+    </script>
+</body></html>

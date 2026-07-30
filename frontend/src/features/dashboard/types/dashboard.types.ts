@@ -11,12 +11,12 @@ import type { WeatherCondition } from "@/features/weather/types/weather.types";
 
 export interface FarmerProfile {
   name: string;
-  greetingPrefix: string; // e.g. "Ram Ram" / "Sat Sri Akal"
+  greetingPrefix: string;
   village: string;
   district: string;
   state: string;
   activeCrop: string;
-  cropSeason: string; // e.g. "Rabi Season 2026"
+  cropSeason: string;
   farmSizeAcres: number;
 }
 
@@ -44,11 +44,27 @@ export interface CropFieldStatus {
   id: string;
   fieldName: string;
   cropName: string;
-  healthPercent: number; // 0-100
+  healthPercent: number;
   status: "healthy" | "at_risk" | "action_required";
   lastScanResult?: string;
   lastScanDate?: Date;
   nextAction?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Crop Health Card (Design Reference)
+// ---------------------------------------------------------------------------
+
+export interface CropHealthItem {
+  id: string;
+  cropName: string;
+  blockName: string;
+  daysSinceSown: number;
+  status: "healthy" | "alert";
+  moisturePercent: number;
+  alertMessage?: string;
+  recommendation?: string;
+  imageUrl?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -64,8 +80,20 @@ export interface MandiPriceItem {
   changeAmount: number;
   changePercent: number;
   isRise: boolean;
-  mspDifference: number; // Difference from Minimum Support Price
+  mspDifference: number;
   updatedAt: Date;
+}
+
+// ---------------------------------------------------------------------------
+// Market Trend Item (Design Reference)
+// ---------------------------------------------------------------------------
+
+export interface MarketTrendItem {
+  id: string;
+  commodity: string;
+  price: string;
+  changePercent: number;
+  isRise: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -76,10 +104,34 @@ export interface GovtSchemeItem {
   id: string;
   title: string;
   category: string;
-  benefitAmount: string; // e.g. "₹2,000 Direct Transfer"
+  benefitAmount: string;
   statusBadge: "Eligible" | "Action Needed" | "Applied" | "Approved";
   deadline?: string;
   summary: string;
+}
+
+// ---------------------------------------------------------------------------
+// Recent AI Advisor Chat (Design Reference)
+// ---------------------------------------------------------------------------
+
+export interface AIAdvisorChat {
+  id: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  iconType: "water" | "pest" | "fertilizer" | "weather";
+}
+
+// ---------------------------------------------------------------------------
+// Priority Alert (Design Reference)
+// ---------------------------------------------------------------------------
+
+export interface PriorityAlert {
+  id: string;
+  title: string;
+  description: string;
+  type: "frost" | "subsidy" | "weather" | "pest";
+  borderColor: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,7 +181,11 @@ export interface DashboardData {
     advisorySafe: boolean;
   };
   cropFields: CropFieldStatus[];
+  cropHealthCards: CropHealthItem[];
   mandiPrices: MandiPriceItem[];
+  marketTrends: MarketTrendItem[];
+  aiAdvisorChats: AIAdvisorChat[];
+  priorityAlerts: PriorityAlert[];
   schemes: GovtSchemeItem[];
   recentActivities: ActivityItem[];
   notifications: DashboardNotification[];

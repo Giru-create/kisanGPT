@@ -1,0 +1,389 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>KisanGPT Voice Advisor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .voice-ripple {
+            animation: ripple 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+        .pulse-ai {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 201, 142, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 201, 142, 0.4); }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#9af6b8",
+                        "inverse-primary": "#80d9a0",
+                        "surface-container": "#e3efff",
+                        "surface-container-high": "#d9eafe",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#005f41",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#d3e4f8",
+                        "surface-container-low": "#edf4ff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#80d9a0",
+                        "primary-container": "#1b7a4a",
+                        "on-tertiary-fixed-variant": "#005137",
+                        "on-tertiary-container": "#a3ffd2",
+                        "primary-fixed": "#9cf6ba",
+                        "inverse-on-surface": "#e8f2ff",
+                        "secondary": "#006d3d",
+                        "on-tertiary-fixed": "#002114",
+                        "primary": "#006036",
+                        "tertiary-fixed-dim": "#3ae0a3",
+                        "background": "#f7f9ff",
+                        "tertiary-fixed": "#5ffdbd",
+                        "surface-tint": "#006d3e",
+                        "on-primary-container": "#abffc6",
+                        "surface-dim": "#cbdcef",
+                        "on-surface": "#0c1d2b",
+                        "tertiary-container": "#007a55",
+                        "outline-variant": "#bec9be",
+                        "on-secondary-container": "#047240",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f7f9ff",
+                        "surface": "#f7f9ff",
+                        "secondary-container": "#97f3b5",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "on-secondary-fixed": "#00210f",
+                        "on-primary-fixed": "#00210f",
+                        "surface-variant": "#d3e4f8",
+                        "error": "#ba1a1a",
+                        "outline": "#6f7a70",
+                        "on-error": "#ffffff",
+                        "on-background": "#0c1d2b",
+                        "on-primary-fixed-variant": "#00522e",
+                        "on-surface-variant": "#3f4941",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#223241",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px", "xs": "4px", "xl": "32px", "margin-desktop": "32px", "lg": "24px", "md": "16px", "gutter": "16px", "3xl": "64px", "2xl": "48px", "base": "4px", "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Inter"], "display-lg": ["Inter"], "headline-lg": ["Inter"], "body-md": ["Inter"], "label-sm": ["Inter"], "headline-lg-mobile": ["Inter"], "caption-xs": ["Inter"], "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface overflow-hidden">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation (Predicted Component) -->
+<aside class="hidden md:flex flex-col h-full py-lg px-md bg-surface border-r border-outline-variant w-64">
+<div class="mb-3xl">
+<h1 class="font-title-md text-title-md font-bold text-primary">KisanGPT</h1>
+<p class="text-on-surface-variant font-label-sm text-label-sm">Enterprise AI</p>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-highest transition-colors rounded-lg text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-highest transition-colors rounded-lg text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-body-md text-body-md">Field Insights</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-primary font-bold border-r-4 border-primary bg-surface-container-low transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-body-md text-body-md">AI Advisor</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-highest transition-colors rounded-lg text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-body-md text-body-md">Market Trends</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm hover:bg-surface-container-highest transition-colors rounded-lg text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Resource Hub</span>
+</a>
+</nav>
+<button class="mb-xl w-full bg-primary-container text-on-primary-container py-sm px-md rounded-lg font-label-sm text-label-sm font-bold flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+                New Analysis
+            </button>
+<div class="pt-lg border-t border-outline-variant space-y-sm">
+<a class="flex items-center gap-md px-md py-sm hover:bg-surface-container transition-colors rounded-lg text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm hover:bg-surface-container transition-colors rounded-lg text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col relative h-screen">
+<!-- Top Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center w-full px-lg h-16 bg-surface-bright border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-lg">
+<div class="md:hidden font-title-md text-title-md font-black text-primary">KisanGPT</div>
+<div class="relative hidden md:block">
+<span class="absolute inset-y-0 left-0 pl-sm flex items-center text-outline">
+<span class="material-symbols-outlined">search</span>
+</span>
+<input class="pl-xl pr-md py-xs bg-surface-container-low border border-outline-variant rounded-lg text-label-sm font-label-sm w-64 focus:ring-2 focus:ring-primary outline-none" placeholder="Ask about soil health..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm hover:bg-surface-container-low rounded-lg transition-transform scale-95 active:scale-90">
+<span class="material-symbols-outlined">history</span>
+</button>
+<button class="p-sm hover:bg-surface-container-low rounded-lg transition-transform scale-95 active:scale-90 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a modern agribusiness manager in an office with subtle agricultural elements in the background, light-mode aesthetic, crisp and high-quality digital photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3wF18XAoAuI8NyLHVBju-GTskMtVaAB6g92HMOU0gSZVGiaIiQL0KqJZhEFLnY1WGQVyzBuIv_kX80XGTyqXFtRc3k2ck6_RCAYetVtjmE5jVvuJnd0lxTlABDNCSa_Kj8gUFr_9DFok0NVqrbG4F4-j1PwFgLLMPCBFqwUavuMvjpcNQ6s21rlSUEZIIxxpNWSnDYsjFT7AVPYO0x5qrHhhqleh9thQuDdvzNqsgUy2NR04LqqbZRA">
+</div>
+</div>
+</header>
+<!-- Voice Interface Content -->
+<div class="flex-1 overflow-y-auto bg-[#F5F3EF] p-lg md:p-3xl grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Left: History & Language (Bento Grid Style) -->
+<div class="lg:col-span-4 space-y-xl order-2 lg:order-1">
+<!-- Language Selector -->
+<div class="glass-card rounded-xl p-lg shadow-sm">
+<h3 class="font-title-md text-title-md text-on-surface mb-md">Advisor Language</h3>
+<div class="grid grid-cols-2 gap-sm">
+<button class="flex items-center gap-sm px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-label-sm text-label-sm">
+<span class="w-2 h-2 bg-on-primary-container rounded-full"></span> Hindi
+                            </button>
+<button class="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high rounded-lg font-label-sm text-label-sm text-on-surface-variant transition-colors">
+                                Tamil
+                            </button>
+<button class="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high rounded-lg font-label-sm text-label-sm text-on-surface-variant transition-colors">
+                                Telugu
+                            </button>
+<button class="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high rounded-lg font-label-sm text-label-sm text-on-surface-variant transition-colors">
+                                Marathi
+                            </button>
+<button class="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high rounded-lg font-label-sm text-label-sm text-on-surface-variant transition-colors">
+                                Punjabi
+                            </button>
+<button class="flex items-center gap-sm px-md py-sm hover:bg-surface-container-high rounded-lg font-label-sm text-label-sm text-on-surface-variant transition-colors">
+                                Bengali
+                            </button>
+</div>
+<button class="mt-md w-full text-center text-primary font-label-sm text-label-sm hover:underline">+ 4 more</button>
+</div>
+<!-- Recent History -->
+<div class="glass-card rounded-xl p-lg shadow-sm">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-title-md text-title-md text-on-surface">Recent Conversations</h3>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<div class="space-y-md">
+<div class="group flex gap-md items-start p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="bg-secondary-container/30 p-xs rounded-lg text-secondary">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface leading-tight">Soil pH adjustment for Wheat</p>
+<p class="font-caption-xs text-caption-xs text-on-surface-variant">2 mins ago • 0:45s</p>
+</div>
+</div>
+<div class="group flex gap-md items-start p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="bg-secondary-container/30 p-xs rounded-lg text-secondary">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface leading-tight">Pest control in Rice nursery</p>
+<p class="font-caption-xs text-caption-xs text-on-surface-variant">Yesterday • 1:12s</p>
+</div>
+</div>
+<div class="group flex gap-md items-start p-sm hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer border-l-4 border-transparent hover:border-primary">
+<div class="bg-secondary-container/30 p-xs rounded-lg text-secondary">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface leading-tight">Market price forecast: Cotton</p>
+<p class="font-caption-xs text-caption-xs text-on-surface-variant">Feb 20 • 2:05s</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Active Voice Assistant Area -->
+<div class="lg:col-span-8 flex flex-col items-center justify-center space-y-2xl order-1 lg:order-2">
+<!-- Real-time Transcription Display -->
+<div class="w-full text-center max-w-2xl">
+<p class="font-label-sm text-label-sm text-outline mb-sm uppercase tracking-widest" id="transcription-hint">Listening...</p>
+<h2 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-surface transition-all duration-300" id="transcription-text">
+                            "How can I improve the yield of my mustard crop in northern Rajasthan?"
+                        </h2>
+</div>
+<!-- Visualizer Area -->
+<div class="relative w-full h-48 flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 flex items-center justify-center gap-xs">
+<!-- Custom CSS-only Animated Waveform -->
+<div class="w-1.5 h-8 bg-primary rounded-full transition-all animate-[bounce_1.2s_infinite]"></div>
+<div class="w-1.5 h-16 bg-primary rounded-full transition-all animate-[bounce_1s_infinite]"></div>
+<div class="w-1.5 h-24 bg-primary rounded-full transition-all animate-[bounce_1.5s_infinite]"></div>
+<div class="w-1.5 h-32 bg-primary rounded-full transition-all animate-[bounce_1.1s_infinite]"></div>
+<div class="w-1.5 h-16 bg-primary rounded-full transition-all animate-[bounce_1.4s_infinite]"></div>
+<div class="w-1.5 h-24 bg-primary rounded-full transition-all animate-[bounce_1.3s_infinite]"></div>
+<div class="w-1.5 h-12 bg-primary rounded-full transition-all animate-[bounce_1s_infinite]"></div>
+<div class="w-1.5 h-8 bg-primary rounded-full transition-all animate-[bounce_1.2s_infinite]"></div>
+</div>
+<!-- Decorative Shader Overlay for depth -->
+
+</div>
+<!-- Main Voice Button -->
+<div class="relative flex flex-col items-center">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-32 h-32 rounded-full border-4 border-primary/20 voice-ripple"></div>
+<div class="w-32 h-32 rounded-full border-4 border-primary/10 voice-ripple" style="animation-delay: 0.5s;"></div>
+</div>
+<button class="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-full bg-primary flex items-center justify-center text-white shadow-xl hover:scale-105 active:scale-95 transition-all pulse-ai" id="voice-btn">
+<span class="material-symbols-outlined text-5xl font-bold" style="font-variation-settings: 'FILL' 1;">mic</span>
+</button>
+<p class="mt-lg font-label-sm text-label-sm text-on-surface-variant font-bold">HOLD TO SPEAK</p>
+</div>
+<!-- Playback Controls (Visible during/after response) -->
+<div class="glass-card px-xl py-md rounded-full flex items-center gap-xl shadow-lg border border-outline-variant animate-in fade-in slide-in-from-bottom-4">
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">skip_previous</span>
+</button>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">replay_10</span>
+</button>
+<button class="w-10 h-10 bg-secondary text-white rounded-full flex items-center justify-center hover:bg-primary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">forward_30</span>
+</button>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">skip_next</span>
+</button>
+<div class="h-6 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline">volume_up</span>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-primary"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer for Mobile -->
+<footer class="md:hidden sticky bottom-0 bg-surface shadow-lg flex justify-around items-center h-16 border-t border-outline-variant px-md z-50">
+<button class="flex flex-col items-center text-outline">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic</span>
+<span class="text-[10px] font-bold">Advisor</span>
+</button>
+<div class="w-12 h-12 -mt-8 bg-primary rounded-full flex items-center justify-center text-white border-4 border-background shadow-md">
+<span class="material-symbols-outlined">add</span>
+</div>
+<button class="flex flex-col items-center text-outline">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="text-[10px] font-bold">Trends</span>
+</button>
+<button class="flex flex-col items-center text-outline">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</footer>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        const voiceBtn = document.getElementById('voice-btn');
+        const transText = document.getElementById('transcription-text');
+        const transHint = document.getElementById('transcription-hint');
+
+        let isListening = false;
+
+        voiceBtn.addEventListener('mousedown', () => {
+            isListening = true;
+            voiceBtn.classList.remove('pulse-ai');
+            voiceBtn.classList.add('bg-error');
+            transHint.innerText = "RECORDING...";
+            transHint.classList.add('text-error');
+            transText.classList.add('opacity-50');
+        });
+
+        const stopListening = () => {
+            if(!isListening) return;
+            isListening = false;
+            voiceBtn.classList.add('pulse-ai');
+            voiceBtn.classList.remove('bg-error');
+            transHint.innerText = "ANALYZING...";
+            transHint.classList.remove('text-error');
+            transHint.classList.add('text-primary');
+            transText.classList.remove('opacity-50');
+            
+            // Mock dynamic transcription update
+            setTimeout(() => {
+                transHint.innerText = "RESPONSE READY";
+                transHint.classList.remove('text-primary');
+                transHint.classList.add('text-secondary');
+            }, 1500);
+        };
+
+        voiceBtn.addEventListener('mouseup', stopListening);
+        voiceBtn.addEventListener('mouseleave', stopListening);
+        
+        // Touch events for mobile
+        voiceBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            voiceBtn.dispatchEvent(new Event('mousedown'));
+        });
+        voiceBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopListening();
+        });
+    </script>
+</body></html>

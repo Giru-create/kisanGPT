@@ -2,39 +2,37 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FarmerDashboard.tsx
-// KisanGPT — Main Farmer Dashboard Feature Assembly (Production Ready)
-// Responsive: Mobile stacked → Desktop 12-column layout (8 cols feed + 4 cols sidebar)
+// KisanGPT — Main Farmer Dashboard Feature Assembly
+// Matches the design-reference layout: hero section, 7/12 + 5/12 grid
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { RefreshCcw, AlertTriangle } from "lucide-react";
+import { RefreshCcw, AlertTriangle, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useDashboard } from "../hooks/useDashboard";
-import { GreetingHeader } from "./GreetingHeader";
+import { DashboardTopBar } from "./DashboardTopBar";
 import { EmergencyAlertBanner } from "./EmergencyAlertBanner";
 import { WeatherSummaryWidget } from "./WeatherSummaryWidget";
-import { VoiceAssistantBar } from "./VoiceAssistantBar";
-import { AIChatShortcutWidget } from "./AIChatShortcutWidget";
-import { QuickActionsGrid } from "./QuickActionsGrid";
-import { CropHealthWidget } from "./CropHealthWidget";
-import { MandiPricesWidget } from "./MandiPricesWidget";
-import { GovtSchemesWidget } from "./GovtSchemesWidget";
-import { RecentActivityWidget } from "./RecentActivityWidget";
-import { NotificationsWidget } from "./NotificationsWidget";
+import { AIStrategicAdvisoryCard } from "./AIStrategicAdvisoryCard";
+import { CropHealthCard } from "./CropHealthCard";
+import { MarketTrendsCard } from "./MarketTrendsCard";
+import { RecentAIChatsCard } from "./RecentAIChatsCard";
+import { PriorityAlertsCard } from "./PriorityAlertsCard";
 import { DashboardSkeleton } from "./DashboardSkeleton";
 
 export const FarmerDashboard: React.FC = () => {
-  const {
-    dashboardState,
-    refresh,
-    markNotificationRead,
-    markAllNotificationsRead,
-  } = useDashboard();
+  const { dashboardState, refresh } = useDashboard();
 
   return (
-    <main id="main-content" className="min-h-screen bg-background pb-20 pt-6">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background">
+      {/* Dashboard-specific top bar */}
+      <DashboardTopBar />
+
+      <main
+        id="main-content"
+        className="flex-1 p-6 md:p-8 space-y-6 overflow-y-auto"
+      >
         <AnimatePresence mode="wait">
           {/* ── Loading State ── */}
           {(dashboardState.status === "idle" ||
@@ -82,7 +80,7 @@ export const FarmerDashboard: React.FC = () => {
             </motion.div>
           )}
 
-          {/* ── Success State: Responsive 12-Column Layout ── */}
+          {/* ── Success State ── */}
           {dashboardState.status === "success" && (
             <motion.div
               key="content"
@@ -92,24 +90,45 @@ export const FarmerDashboard: React.FC = () => {
               transition={{ duration: 0.3 }}
               className="flex flex-col gap-6"
             >
-              {/* Emergency Alert Banner (Spans full width if present) */}
+              {/* Emergency Alert Banner */}
               <EmergencyAlertBanner
                 alert={dashboardState.data.emergencyAlert}
               />
 
-              {/* Greeting & Location Context Header */}
-              <GreetingHeader profile={dashboardState.data.profile} />
+              {/* Welcome Header with Location */}
+              <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <h1 className="text-3xl font-semibold text-foreground tracking-tight">
+                    {dashboardState.data.profile.greetingPrefix},{" "}
+                    {dashboardState.data.profile.name}.
+                  </h1>
+                  <p className="text-base text-muted-foreground mt-1">
+                    Here&apos;s your farm overview for today.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 bg-card p-2.5 rounded-xl border border-border shadow-sm">
+                  <MapPin
+                    size={18}
+                    className="text-emerald-600 dark:text-emerald-400 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span className="text-sm font-medium text-foreground">
+                    {dashboardState.data.profile.village},{" "}
+                    {dashboardState.data.profile.state}
+                  </span>
+                </div>
+              </header>
 
-              {/* 12-Column Responsive Grid */}
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                {/* ═══ MAIN FEED COLUMN (8 cols on xl) ════════════════════ */}
-                <div className="xl:col-span-8 flex flex-col gap-6">
-                  {/* Section 2: Current Weather & Advisory */}
+              {/* Hero Section: Weather & AI Advisory */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                <div className="lg:col-span-1">
                   <WeatherSummaryWidget
                     temperatureC={
                       dashboardState.data.weatherSummary.temperatureC
                     }
-                    feelsLikeC={dashboardState.data.weatherSummary.feelsLikeC}
+                    feelsLikeC={
+                      dashboardState.data.weatherSummary.feelsLikeC
+                    }
                     condition={dashboardState.data.weatherSummary.condition}
                     humidity={dashboardState.data.weatherSummary.humidity}
                     windSpeedKmh={
@@ -120,77 +139,52 @@ export const FarmerDashboard: React.FC = () => {
                       dashboardState.data.weatherSummary.advisorySafe
                     }
                   />
-
-                  {/* Section 8: Multilingual Voice Assistant (Mobile View) */}
-                  <div className="xl:hidden">
-                    <VoiceAssistantBar />
-                  </div>
-
-                  {/* Section 3: AI Chat Shortcut */}
-                  <AIChatShortcutWidget />
-
-                  {/* Section 7: Quick Actions Grid (Mobile View) */}
-                  <div className="xl:hidden">
-                    <QuickActionsGrid />
-                  </div>
-
-                  {/* Section 4: Crop Health Diagnostics */}
-                  <CropHealthWidget fields={dashboardState.data.cropFields} />
-
-                  {/* Section 5: APMC Mandi Market Prices */}
-                  <MandiPricesWidget />
-
-                  {/* Section 6: Government Schemes & Subsidies */}
-                  <GovtSchemesWidget schemes={dashboardState.data.schemes} />
-
-                  {/* Section 10: Notifications (Mobile View) */}
-                  <div className="xl:hidden">
-                    <NotificationsWidget
-                      notifications={dashboardState.data.notifications}
-                      onMarkRead={markNotificationRead}
-                      onMarkAllRead={markAllNotificationsRead}
-                    />
-                  </div>
-
-                  {/* Section 9: Recent Activity Log (Mobile View) */}
-                  <div className="xl:hidden">
-                    <RecentActivityWidget
-                      activities={dashboardState.data.recentActivities}
-                    />
-                  </div>
                 </div>
+                <div className="lg:col-span-2">
+                  <AIStrategicAdvisoryCard />
+                </div>
+              </div>
 
-                {/* ═══ STICKY SIDEBAR (4 cols on xl, hidden on mobile) ══════ */}
-                <aside
-                  className="hidden xl:block xl:col-span-4"
-                  aria-label="Dashboard Sidebar Tools"
-                >
-                  <div className="sticky top-20 flex flex-col gap-6">
-                    {/* Section 8: Voice Assistant Bar */}
-                    <VoiceAssistantBar />
+              {/* Main Grid: Crop Health (7/12) + Market Trends (5/12) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <section className="lg:col-span-7">
+                  <CropHealthCard
+                    items={dashboardState.data.cropHealthCards}
+                  />
+                </section>
+                <section className="lg:col-span-5">
+                  <MarketTrendsCard
+                    trends={dashboardState.data.marketTrends}
+                  />
+                </section>
+              </div>
 
-                    {/* Section 7: Quick Actions 2×2 Grid */}
-                    <QuickActionsGrid />
-
-                    {/* Section 10: Notifications & Reminders */}
-                    <NotificationsWidget
-                      notifications={dashboardState.data.notifications}
-                      onMarkRead={markNotificationRead}
-                      onMarkAllRead={markAllNotificationsRead}
-                    />
-
-                    {/* Section 9: Recent Activity Log */}
-                    <RecentActivityWidget
-                      activities={dashboardState.data.recentActivities}
-                    />
-                  </div>
-                </aside>
+              {/* Bottom Row: Recent AI Chats + Priority Alerts */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pb-6">
+                <RecentAIChatsCard
+                  chats={dashboardState.data.aiAdvisorChats}
+                />
+                <PriorityAlertsCard
+                  alerts={dashboardState.data.priorityAlerts}
+                />
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </main>
+
+        {/* Floating Action Button */}
+        <button
+          type="button"
+          aria-label="Ask KisanGPT AI"
+          className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center transition-transform active:scale-90 z-50 group hover:bg-primary/90"
+        >
+          <MessageCircle size={24} className="group-hover:rotate-12 transition-transform" aria-hidden="true" />
+          <div className="absolute right-16 bg-foreground text-background px-3 py-1.5 rounded-lg whitespace-nowrap text-sm font-medium opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all pointer-events-none shadow-lg">
+            Ask KisanGPT AI
+          </div>
+        </button>
+      </main>
+    </div>
   );
 };
 

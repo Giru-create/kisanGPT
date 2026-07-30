@@ -4,8 +4,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export { FarmerDashboard } from "./components/FarmerDashboard";
+export { DashboardTopBar } from "./components/DashboardTopBar";
 export { GreetingHeader } from "./components/GreetingHeader";
 export { WeatherSummaryWidget } from "./components/WeatherSummaryWidget";
+export { AIStrategicAdvisoryCard } from "./components/AIStrategicAdvisoryCard";
+export { CropHealthCard } from "./components/CropHealthCard";
+export { MarketTrendsCard } from "./components/MarketTrendsCard";
+export { RecentAIChatsCard } from "./components/RecentAIChatsCard";
+export { PriorityAlertsCard } from "./components/PriorityAlertsCard";
 export { VoiceAssistantBar } from "./components/VoiceAssistantBar";
 export { AIChatShortcutWidget } from "./components/AIChatShortcutWidget";
 export { QuickActionsGrid } from "./components/QuickActionsGrid";
@@ -24,8 +30,12 @@ export type {
   FarmerProfile,
   EmergencyAlert,
   CropFieldStatus,
+  CropHealthItem,
   MandiPriceItem,
+  MarketTrendItem,
   GovtSchemeItem,
+  AIAdvisorChat,
+  PriorityAlert,
   ActivityItem,
   DashboardNotification,
   DashboardData,

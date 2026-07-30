@@ -1,0 +1,357 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>KisanGPT | Enterprise AI Advisor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9ff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); border: 1px border-outline-variant; }
+        .ai-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #bec9be; border-radius: 10px; }
+        .thought-block[open] summary .expand-icon { transform: rotate(180deg); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#005137",
+                        "on-surface": "#0c1d2b",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#80d9a0",
+                        "primary-container": "#1b7a4a",
+                        "surface": "#f7f9ff",
+                        "tertiary-fixed-dim": "#3ae0a3",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f7f9ff",
+                        "secondary-fixed-dim": "#7ed99e",
+                        "outline-variant": "#bec9be",
+                        "tertiary-container": "#007a55",
+                        "on-tertiary-container": "#a3ffd2",
+                        "on-tertiary-fixed": "#002114",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#97f3b5",
+                        "primary-fixed": "#9cf6ba",
+                        "surface-container-low": "#edf4ff",
+                        "on-primary-fixed": "#00210f",
+                        "on-secondary-fixed": "#00210f",
+                        "on-background": "#0c1d2b",
+                        "primary": "#006036",
+                        "secondary": "#006d3d",
+                        "surface-container": "#e3efff",
+                        "surface-variant": "#d3e4f8",
+                        "on-primary-fixed-variant": "#00522e",
+                        "on-secondary-container": "#047240",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#223241",
+                        "surface-tint": "#006d3e",
+                        "outline": "#6f7a70",
+                        "on-secondary-fixed-variant": "#00522d",
+                        "background": "#f7f9ff",
+                        "tertiary": "#005f41",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d3e4f8",
+                        "on-primary-container": "#abffc6",
+                        "inverse-on-surface": "#e8f2ff",
+                        "surface-dim": "#cbdcef",
+                        "primary-fixed-dim": "#80d9a0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#3f4941",
+                        "surface-container-high": "#d9eafe",
+                        "tertiary-fixed": "#5ffdbd",
+                        "secondary-fixed": "#9af6b8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "2xl": "48px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "3xl": "64px",
+                        "margin-desktop": "32px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex h-screen overflow-hidden text-on-surface">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full py-lg px-md bg-surface border-r border-outline-variant w-64 shrink-0">
+<div class="mb-3xl">
+<h1 class="font-title-md text-title-md font-bold text-primary">KisanGPT</h1>
+<p class="text-caption-xs text-on-surface-variant tracking-wider uppercase">Enterprise AI</p>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-body-md">Field Insights</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-body-md">Market Trends</span>
+</a>
+<!-- Active Tab: AI Advisor -->
+<a class="flex items-center gap-md p-sm text-primary font-bold border-r-4 border-primary bg-surface-container-low" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-body-md">AI Advisor</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md">Resource Hub</span>
+</a>
+</nav>
+<div class="pt-xl border-t border-outline-variant space-y-sm">
+<button class="w-full bg-primary text-on-primary py-sm px-md rounded-lg font-bold flex items-center justify-center gap-sm shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+<span>New Analysis</span>
+</button>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface-bright relative">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-40 flex justify-between items-center w-full px-lg h-16 bg-surface-bright border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-xl flex-1">
+<div class="relative w-full max-w-md hidden lg:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-xl py-xs focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="Search insights..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-primary text-on-primary font-label-sm px-md py-xs rounded-lg active:scale-95 transition-transform">
+                    Analyze Crop
+                </button>
+<div class="flex gap-sm">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-transform active:scale-90">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-transform active:scale-90">
+<span class="material-symbols-outlined">history</span>
+</button>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a middle-aged male agricultural enterprise manager in a clean white shirt, smiling confidently. The lighting is bright and natural, reflecting a high-end corporate agricultural setting with blurred greenery in the background. The overall aesthetic is clean, sharp, and trustworthy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZo2UmLcddumJnaHuPGVFT__eTGekObMhfUbU-bQQtLOuswnpofwhwW8jlfrq_KHfBYA8XO4xclzOT1A66M59oCB2RZinyqgXowpdpASZ27yJRtW0gzNInGnTE6m3i5TYJ3860BvILO3LmuLtVdyEy4mcDWMITCNWcg3VHYjIoaB4rJ4LfuMzwHzjqQFQM2kZ53jMdvovFjv_5CjBPMbXHVfsImz4DDTK9nQUqwrBUp-paHhDu6pcBQg">
+</div>
+</div>
+</header>
+<!-- Chat Canvas -->
+<section class="flex-1 overflow-y-auto custom-scrollbar px-lg pt-xl pb-3xl">
+<div class="max-w-3xl mx-auto space-y-xl">
+<!-- User Message -->
+<div class="flex flex-col items-end gap-sm">
+<div class="bg-surface-container-high px-lg py-md rounded-2xl rounded-tr-none max-w-[85%] text-on-surface shadow-sm">
+<p class="font-body-md">What are the early signs of yellow rust in wheat?</p>
+</div>
+<span class="text-caption-xs text-outline px-sm">10:42 AM</span>
+</div>
+<!-- AI Response -->
+<div class="flex gap-lg group">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center shrink-0 shadow-md">
+<span class="material-symbols-outlined text-on-primary-container text-[24px]">psychology</span>
+</div>
+<div class="flex-1 space-y-md">
+<!-- Thinking Block -->
+<details class="thought-block group/thought border border-outline-variant rounded-xl overflow-hidden bg-surface-container-lowest">
+<summary class="flex items-center justify-between px-md py-sm cursor-pointer list-none hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary-container ai-pulse">cognition</span>
+<span class="font-label-sm text-on-surface-variant">Reasoning with CropGPT-4o...</span>
+</div>
+<span class="material-symbols-outlined expand-icon transition-transform text-outline">expand_more</span>
+</summary>
+<div class="p-md text-caption-xs text-on-surface-variant border-t border-outline-variant space-y-sm bg-surface-container-lowest">
+<p>1. Analyzing recent humidity data in Indore region (85% avg past 4 days).</p>
+<p>2. Cross-referencing "Yellow Rust" (Puccinia striiformis) symptomatic database.</p>
+<p>3. Identifying visual indicators: Uredinia arrangements and color codes (Vibrant Yellow vs. Orange).</p>
+</div>
+</details>
+<!-- Main Content -->
+<div class="space-y-lg text-on-surface leading-relaxed font-body-md">
+<p>Early detection of <strong>Yellow Rust</strong> (Stripe Rust) is critical as it can reduce yields by up to 40% if left untreated. Here are the primary early symptoms to monitor:</p>
+<ul class="list-disc pl-lg space-y-sm">
+<li><strong>Chlorotic Streaks:</strong> Small, yellow or orange-yellow spots appearing in linear rows along the leaf veins.</li>
+<li><strong>Uredinia Development:</strong> As the infection progresses, these spots erupt into pustules (uredinia) that release powdery yellow spores.</li>
+<li><strong>Linear Arrangement:</strong> Unlike leaf rust, yellow rust pustules are strictly organized into distinct parallel stripes.</li>
+<li><strong>Infection Sites:</strong> Check the younger leaves first, particularly on the upper surface during cool, damp mornings.</li>
+</ul>
+<p>Based on your current field location (Indore Block B), the recent 18°C temperature and high dew point provide ideal incubation conditions.</p>
+<!-- Sources -->
+<div class="flex flex-wrap gap-sm pt-md">
+<div class="group/tip relative">
+<span class="bg-surface-container px-sm py-xs rounded text-caption-xs font-bold text-on-tertiary-container cursor-help border border-outline-variant">
+                                        Source: ICAR Report 2024
+                                    </span>
+<div class="absolute bottom-full left-0 mb-sm w-48 p-sm bg-inverse-surface text-inverse-on-surface text-caption-xs rounded shadow-xl opacity-0 group-hover/tip:opacity-100 transition-opacity pointer-events-none">
+                                        Comprehensive study on rust resistance in HD-2967 wheat varieties.
+                                    </div>
+</div>
+<div class="group/tip relative">
+<span class="bg-surface-container px-sm py-xs rounded text-caption-xs font-bold text-on-tertiary-container cursor-help border border-outline-variant">
+                                        Plant Pathology Journal
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex gap-md pt-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors text-[20px]">content_copy</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors text-[20px]">thumb_up</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors text-[20px]">thumb_down</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors text-[20px]">share</button>
+</div>
+</div>
+</div>
+<!-- Suggested Prompts -->
+<div class="pt-xl grid grid-cols-1 md:grid-cols-3 gap-sm">
+<button class="text-left p-md border border-outline-variant rounded-xl hover:border-primary hover:bg-primary-container/5 transition-all group">
+<p class="text-label-sm text-on-surface-variant group-hover:text-primary">How to treat yellow rust?</p>
+</button>
+<button class="text-left p-md border border-outline-variant rounded-xl hover:border-primary hover:bg-primary-container/5 transition-all group">
+<p class="text-label-sm text-on-surface-variant group-hover:text-primary">Weather forecast for next week</p>
+</button>
+<button class="text-left p-md border border-outline-variant rounded-xl hover:border-primary hover:bg-primary-container/5 transition-all group">
+<p class="text-label-sm text-on-surface-variant group-hover:text-primary">Current wheat price in Indore Mandi</p>
+</button>
+</div>
+</div>
+</section>
+<!-- Input Area Container -->
+<div class="p-lg bg-surface-bright/80 backdrop-blur-md border-t border-outline-variant">
+<div class="max-w-3xl mx-auto relative">
+<!-- Floating Voice Button -->
+<div class="absolute -top-xl right-0 translate-y-1/2">
+<button class="w-14 h-14 bg-tertiary text-on-tertiary rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all hover:bg-tertiary-container">
+<span class="material-symbols-outlined text-[32px]">mic</span>
+</button>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all p-md">
+<textarea class="w-full bg-transparent border-none focus:ring-0 resize-none min-h-[44px] max-h-48 font-body-md py-sm custom-scrollbar" placeholder="Ask KisanGPT about your crops, soil, or markets..."></textarea>
+<div class="flex items-center justify-between pt-sm">
+<div class="flex gap-xs">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined">image</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined">camera_enhance</span>
+</button>
+</div>
+<button class="bg-primary text-on-primary w-10 h-10 rounded-xl flex items-center justify-center hover:shadow-lg active:scale-90 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<p class="text-[11px] text-outline text-center mt-sm">AI-generated content can be incorrect. Please verify critical agricultural decisions with experts.</p>
+</div>
+</div>
+</main>
+<!-- Right Sidebar (Farm Context) -->
+<aside class="hidden xl:flex flex-col w-80 h-full border-l border-outline-variant bg-surface px-lg py-xl gap-xl shrink-0 overflow-y-auto">
+<div>
+<h3 class="font-label-sm text-outline uppercase tracking-widest mb-md">Farm Context</h3>
+<div class="bg-surface-container-low rounded-2xl p-md border border-outline-variant space-y-md">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">agriculture</span>
+</div>
+<div>
+<p class="font-title-md text-primary">GreenValley Farm</p>
+<p class="text-caption-xs text-on-surface-variant">Indore, Madhya Pradesh</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container px-sm py-xs rounded-lg">
+<p class="text-[10px] text-outline">Active Crop</p>
+<p class="font-label-sm">Wheat (SH-12)</p>
+</div>
+<div class="bg-surface-container px-sm py-xs rounded-lg">
+<p class="text-[10px] text-outline">Soil PH</p>
+<p class="font-label-sm">6.8 (Healthy)</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-label-sm text-outline uppercase tracking-widest mb-md">Conversation History</h3>
+<div class="space-y-sm">
+<a class="block p-sm rounded-lg hover:bg-surface-container-low transition-colors border-l-2 border-transparent hover:border-primary" href="#">
+<p class="text-label-sm truncate">NPK Fertilizer ratios for Rabi</p>
+<p class="text-[11px] text-outline">Yesterday</p>
+</a>
+<a class="block p-sm rounded-lg hover:bg-surface-container-low transition-colors border-l-2 border-transparent hover:border-primary" href="#">
+<p class="text-label-sm truncate">Soybean irrigation schedule</p>
+<p class="text-[11px] text-outline">2 days ago</p>
+</a>
+<a class="block p-sm rounded-lg hover:bg-surface-container-low transition-colors border-l-2 border-transparent hover:border-primary" href="#">
+<p class="text-label-sm truncate">Govt. subsidy for solar pumps</p>
+<p class="text-[11px] text-outline">Mar 12</p>
+</a>
+</div>
+</div>
+<div class="mt-auto">
+<div class="bg-primary-container/10 p-md rounded-2xl border border-primary-container/20">
+<p class="font-label-sm text-primary mb-xs">Pro Feature</p>
+<p class="text-caption-xs text-on-surface-variant mb-md">Enable real-time satellite field monitoring for accurate rust prediction.</p>
+<button class="w-full py-xs px-md bg-primary text-on-primary rounded-lg font-label-sm">Upgrade Plan</button>
+</div>
+</div>
+</aside>
+<script>
+        // Micro-interactions for the chat
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Add a simple "streaming" effect simulation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiContent = document.querySelector('.space-y-lg');
+            aiContent.style.opacity = '0';
+            setTimeout(() => {
+                aiContent.style.transition = 'opacity 1s ease';
+                aiContent.style.opacity = '1';
+            }, 500);
+        });
+    </script>
+</body></html>

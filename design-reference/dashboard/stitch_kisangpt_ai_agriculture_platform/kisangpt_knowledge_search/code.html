@@ -1,0 +1,448 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>KisanGPT Knowledge Search</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#bec9be",
+                    "on-background": "#0c1d2b",
+                    "on-secondary-fixed": "#00210f",
+                    "surface-dim": "#cbdcef",
+                    "surface-container": "#e3efff",
+                    "surface": "#f7f9ff",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#00210f",
+                    "on-surface": "#0c1d2b",
+                    "primary-container": "#1b7a4a",
+                    "on-secondary-fixed-variant": "#00522d",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#a3ffd2",
+                    "on-surface-variant": "#3f4941",
+                    "tertiary-fixed-dim": "#3ae0a3",
+                    "surface-container-low": "#edf4ff",
+                    "on-secondary-container": "#047240",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#d9eafe",
+                    "background": "#f7f9ff",
+                    "tertiary-container": "#007a55",
+                    "secondary-fixed-dim": "#7ed99e",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#97f3b5",
+                    "primary": "#006036",
+                    "on-primary-container": "#abffc6",
+                    "surface-container-highest": "#d3e4f8",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#223241",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#80d9a0",
+                    "primary-fixed": "#9cf6ba",
+                    "outline": "#6f7a70",
+                    "inverse-on-surface": "#e8f2ff",
+                    "surface-bright": "#f7f9ff",
+                    "inverse-primary": "#80d9a0",
+                    "tertiary-fixed": "#5ffdbd",
+                    "surface-variant": "#d3e4f8",
+                    "surface-tint": "#006d3e",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#9af6b8",
+                    "on-tertiary-fixed-variant": "#005137",
+                    "on-primary-fixed-variant": "#00522e",
+                    "secondary": "#006d3d",
+                    "tertiary": "#005f41",
+                    "on-tertiary-fixed": "#002114"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "base": "4px",
+                    "margin-desktop": "32px",
+                    "2xl": "48px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "gutter": "16px",
+                    "sm": "8px",
+                    "3xl": "64px",
+                    "lg": "24px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "title-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "caption-xs": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .bg-mesh {
+            background-color: #f7f9ff;
+            background-image: radial-gradient(at 0% 0%, rgba(27, 122, 74, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 0%, rgba(0, 201, 142, 0.05) 0px, transparent 50%);
+        }
+        .search-glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            box-shadow: 0 4px 24px -1px rgba(0, 96, 54, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-mesh min-h-screen font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="sticky top-0 z-40 flex justify-between items-center w-full px-lg max-w-full bg-surface-bright border-b border-outline-variant h-16 shadow-sm">
+<div class="flex items-center gap-md">
+<span class="font-title-md text-title-md font-black text-primary">KisanGPT</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-sm py-xs rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline mr-2 text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-sm font-label-sm w-48" placeholder="Global search..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="hidden md:flex items-center gap-xs px-md py-sm bg-primary text-on-primary rounded-lg font-label-sm text-label-sm scale-95 active:scale-90 transition-transform">
+                Analyze Crop
+            </button>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined">history</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a modern agronomist wearing a clean white lab coat, standing in a brightly lit research greenhouse. Soft natural lighting illuminates his friendly expression. The background features lush green rows of experimental wheat and high-tech irrigation sensors, conveying an atmosphere of scientific rigor and expertise in a clean, modern corporate UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU3j_lQL3mOWfCLaMALWbcbf4G7FLv1I97TL5zZBcBTshaEVDgaQmnui-0LxiFeIy3MLj8xaVdUN5uarV0_iL0mwakx2pcSOpH-uwFG9TqJuww8DYEXkkpCDXiQzdZunUn7k8cQC-1tavtSNnIZPXTEhro1rskcnWMTRCpgThi1dNViGy-iCeBFeqsjbfl4JUipwv_XVa2ilk3TadfXKZ8AIVmRk0ys7KXy4O_m0cWEjLlsoZ883Zv6g">
+</div>
+</div>
+</div>
+</nav>
+<div class="flex">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 border-r border-outline-variant bg-surface py-lg px-md sticky top-16">
+<div class="flex flex-col gap-xs flex-grow">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-body-md text-body-md">Field Insights</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary font-bold border-r-4 border-primary" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-body-md text-body-md">Market Trends</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-body-md text-body-md">AI Advisor</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Resource Hub</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-xs pt-lg border-t border-outline-variant/30">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-grow p-margin-mobile md:p-margin-desktop max-w-7xl mx-auto w-full">
+<!-- Hero Search Section -->
+<section class="mt-xl mb-3xl text-center">
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-sm">Agriculture Knowledge Hub</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-xl">
+                    Search through thousands of research papers, soil reports, and crop guides powered by RAG-AI.
+                </p>
+<!-- Search Bar -->
+<div class="relative max-w-3xl mx-auto group">
+<div class="search-glass rounded-2xl p-base flex items-center transition-all focus-within:ring-2 focus-within:ring-primary/20">
+<span class="material-symbols-outlined text-primary ml-lg text-[28px]">psychology</span>
+<input class="w-full bg-transparent border-none focus:ring-0 px-lg py-xl font-body-lg text-body-lg text-on-surface placeholder:text-outline" placeholder="Ask anything (e.g., 'Soil moisture retention for wheat in Punjab')" type="text">
+<button class="bg-primary text-on-primary px-xl py-lg rounded-xl font-title-md text-title-md mr-base hover:bg-primary-container transition-colors flex items-center gap-sm shadow-md">
+<span>Search</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Trending Topics -->
+<div class="mt-xl flex flex-wrap justify-center gap-sm">
+<span class="text-label-sm font-label-sm text-outline flex items-center mr-sm">
+<span class="material-symbols-outlined text-[16px] mr-1">trending_up</span> Trending:
+                    </span>
+<button class="px-md py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-sm font-label-sm border border-secondary-container/50 hover:bg-secondary-container transition-colors">Sustainable Irrigation</button>
+<button class="px-md py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-sm font-label-sm border border-secondary-container/50 hover:bg-secondary-container transition-colors">Pest Management</button>
+<button class="px-md py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-sm font-label-sm border border-secondary-container/50 hover:bg-secondary-container transition-colors">Carbon Sequestration</button>
+<button class="px-md py-xs bg-secondary-container/30 text-on-secondary-container rounded-full text-label-sm font-label-sm border border-secondary-container/50 hover:bg-secondary-container transition-colors">Millet Export Hubs</button>
+</div>
+</section>
+<!-- Research Grid -->
+<section>
+<div class="flex items-center justify-between mb-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">description</span>
+<h2 class="font-title-md text-title-md text-on-background">Recent Research &amp; Documents</h2>
+</div>
+<button class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-xs">
+                        View All Repository <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+<!-- Grid Layout (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Doc Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl hover:shadow-lg transition-all group flex flex-col h-full">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs bg-primary-container/10 text-primary text-caption-xs font-caption-xs rounded uppercase tracking-wider">Research Paper</span>
+<span class="text-outline text-caption-xs font-caption-xs">Jan 2024</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-sm group-hover:text-primary transition-colors line-clamp-2">Optimization of Nitrogen Fertilization for Late-Sown Wheat</h3>
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-6 h-6 rounded-sm bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">school</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Punjab Agricultural University</span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30 flex items-center justify-between">
+<a class="text-primary font-label-sm text-label-sm flex items-center gap-xs" href="#">
+                                View Details <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</div>
+</div>
+<!-- Doc Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl hover:shadow-lg transition-all group flex flex-col h-full">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs bg-tertiary-container/10 text-tertiary text-caption-xs font-caption-xs rounded uppercase tracking-wider">Government Report</span>
+<span class="text-outline text-caption-xs font-caption-xs">Dec 2023</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-sm group-hover:text-primary transition-colors line-clamp-2">Annual Soil Health Assessment: Indo-Gangetic Plains</h3>
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-6 h-6 rounded-sm bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">account_balance</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">ICAR - Central Soil Salinity Research</span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30 flex items-center justify-between">
+<a class="text-primary font-label-sm text-label-sm flex items-center gap-xs" href="#">
+                                View Details <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</div>
+</div>
+<!-- Doc Item 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl hover:shadow-lg transition-all group flex flex-col h-full">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs bg-secondary-container/10 text-secondary text-caption-xs font-caption-xs rounded uppercase tracking-wider">Technical Guide</span>
+<span class="text-outline text-caption-xs font-caption-xs">Mar 2024</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-sm group-hover:text-primary transition-colors line-clamp-2">Smart Drip Irrigation Systems: Implementation Guide</h3>
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-6 h-6 rounded-sm bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">settings_input_component</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">KisanGPT R&amp;D Division</span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30 flex items-center justify-between">
+<a class="text-primary font-label-sm text-label-sm flex items-center gap-xs" href="#">
+                                View Details <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</div>
+</div>
+<!-- Doc Item 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl hover:shadow-lg transition-all group flex flex-col h-full">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs bg-primary-container/10 text-primary text-caption-xs font-caption-xs rounded uppercase tracking-wider">Scientific Journal</span>
+<span class="text-outline text-caption-xs font-caption-xs">Feb 2024</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-sm group-hover:text-primary transition-colors line-clamp-2">Impact of Global Warming on Rice Yield in Southern India</h3>
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-6 h-6 rounded-sm bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">public</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Tamil Nadu Agricultural University</span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30 flex items-center justify-between">
+<a class="text-primary font-label-sm text-label-sm flex items-center gap-xs" href="#">
+                                View Details <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</div>
+</div>
+<!-- Doc Item 5 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl hover:shadow-lg transition-all group flex flex-col h-full">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs bg-error-container/10 text-error text-caption-xs font-caption-xs rounded uppercase tracking-wider">Policy Brief</span>
+<span class="text-outline text-caption-xs font-caption-xs">Apr 2024</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-sm group-hover:text-primary transition-colors line-clamp-2">New Minimum Support Price (MSP) Guidelines 2024-25</h3>
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-6 h-6 rounded-sm bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">gavel</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Ministry of Agriculture &amp; Farmers Welfare</span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30 flex items-center justify-between">
+<a class="text-primary font-label-sm text-label-sm flex items-center gap-xs" href="#">
+                                View Details <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</div>
+</div>
+<!-- Doc Item 6 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-lg rounded-xl hover:shadow-lg transition-all group flex flex-col h-full">
+<div class="flex justify-between items-start mb-md">
+<span class="px-sm py-xs bg-secondary-container/10 text-secondary text-caption-xs font-caption-xs rounded uppercase tracking-wider">Whitepaper</span>
+<span class="text-outline text-caption-xs font-caption-xs">Jan 2024</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-sm group-hover:text-primary transition-colors line-clamp-2">The Future of Precision Ag: AI &amp; IoT Integration</h3>
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-6 h-6 rounded-sm bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Indian Institute of Science (IISc)</span>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30 flex items-center justify-between">
+<a class="text-primary font-label-sm text-label-sm flex items-center gap-xs" href="#">
+                                View Details <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</a>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Stats / AI Pulse (Micro-interaction) -->
+<section class="mt-3xl grid grid-cols-1 md:grid-cols-3 gap-lg border-t border-outline-variant pt-2xl">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">database</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface">2.4M+</div>
+<div class="font-caption-xs text-caption-xs text-outline uppercase tracking-wider">Indexed Documents</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">speed</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface">&lt; 1.2s</div>
+<div class="font-caption-xs text-caption-xs text-outline uppercase tracking-wider">Average RAG Latency</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface">99.8%</div>
+<div class="font-caption-xs text-caption-xs text-outline uppercase tracking-wider">Source Credibility Score</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Mobile Bottom Navigation -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-bright shadow-[0_-4px_24px_rgba(0,0,0,0.05)] px-md py-sm flex justify-around items-center z-50">
+<button class="flex flex-col items-center gap-xs text-primary">
+<span class="material-symbols-outlined">search</span>
+<span class="text-caption-xs font-caption-xs">Search</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-outline">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="text-caption-xs font-caption-xs">Fields</span>
+</button>
+<div class="relative -top-6">
+<button class="bg-primary text-on-primary w-14 h-14 rounded-full shadow-lg flex items-center justify-center ring-4 ring-surface-bright">
+<span class="material-symbols-outlined text-[32px]">psychology</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-xs text-outline">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="text-caption-xs font-caption-xs">Trends</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-outline">
+<span class="material-symbols-outlined">person</span>
+<span class="text-caption-xs font-caption-xs">Profile</span>
+</button>
+</div>
+<script>
+        // Micro-interaction: Input Focus Glow
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = document.querySelector('.search-glass');
+
+        searchInput.addEventListener('focus', () => {
+            searchContainer.style.boxShadow = '0 8px 32px -4px rgba(0, 201, 142, 0.15)';
+        });
+
+        searchInput.addEventListener('blur', () => {
+            searchContainer.style.boxShadow = '0 4px 24px -1px rgba(0, 96, 54, 0.08)';
+        });
+
+        // Simple tab simulation
+        document.querySelectorAll('nav a, aside a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Not preventing default to allow real navigation if links were real
+                // Just showing UI feedback
+                document.querySelectorAll('aside a').forEach(l => {
+                    l.classList.remove('text-primary', 'font-bold', 'border-r-4', 'border-primary');
+                    l.classList.add('text-on-surface-variant');
+                });
+                link.classList.add('text-primary', 'font-bold', 'border-r-4', 'border-primary');
+                link.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>
