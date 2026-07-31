@@ -46,6 +46,26 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     label: "Voice Assistant",
     href: "/voice",
   },
+  {
+    id: "memory",
+    label: "Farm Memory",
+    href: "/memory",
+  },
+  {
+    id: "schemes",
+    label: "Government Schemes",
+    href: "/schemes",
+  },
+  {
+    id: "profile",
+    label: "Farmer Profile",
+    href: "/profile",
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    href: "/settings",
+  },
 ];
 
 export const NAV_SECTIONS: NavSection[] = [

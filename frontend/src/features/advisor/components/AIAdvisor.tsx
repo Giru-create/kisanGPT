@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // AIAdvisor.tsx
 // KisanGPT — Main AI Advisor feature assembly
-// Matches the design-reference layout: sidebar + topbar + chat + right sidebar
+// Premium AI conversation interface matching Dashboard design language
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from "react";

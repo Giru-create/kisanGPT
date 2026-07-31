@@ -12,6 +12,9 @@ export { TypingIndicator } from "./components/TypingIndicator";
 export { EmptyState } from "./components/EmptyState";
 export { AdvisorTopBar } from "./components/AdvisorTopBar";
 export { FarmContextSidebar } from "./components/FarmContextSidebar";
+export { ResponseCard } from "./components/ResponseCard";
+export { VoiceInput } from "./components/VoiceInput";
+export { ImageUpload } from "./components/ImageUpload";
 
 export { useAdvisor } from "./hooks/useAdvisor";
 export { useAdvisorChatMutation } from "./hooks/useAdvisorChat";
@@ -27,4 +30,19 @@ export type {
   ChatRequest,
   AgentResponse,
   ChatApiResponse,
+  ResponseCardType,
+  ResponseCardData,
+  WeatherCardData,
+  MarketCardData,
+  DiseaseCardData,
+  GovernmentSchemeCardData,
+  ChecklistCardData,
+  ActionPlanCardData,
+  WarningCardData,
+  NextStepsCardData,
+  RecommendedAction,
+  VoiceState,
+  VoiceStatus,
+  ImageUploadState,
+  ImageUploadStatus,
 } from "./types/advisor.types";

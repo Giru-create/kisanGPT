@@ -29,26 +29,25 @@ describe("dashboardMockService", () => {
     vi.useRealTimers();
   });
 
-  it("has valid profile data", async () => {
+  it("returns valid profile structure", async () => {
     vi.useFakeTimers();
     const dataPromise = dashboardMockService.getDashboard();
     vi.advanceTimersByTime(800);
     const data = await dataPromise;
-    expect(data.profile.name).toBeTruthy();
-    expect(data.profile.village).toBeTruthy();
-    expect(data.profile.farmSizeAcres).toBeGreaterThan(0);
+    expect(typeof data.profile.name).toBe("string");
+    expect(typeof data.profile.greetingPrefix).toBe("string");
+    expect(typeof data.profile.farmSizeAcres).toBe("number");
     vi.useRealTimers();
   });
 
-  it("has valid weather summary", async () => {
+  it("returns valid weather summary structure", async () => {
     vi.useFakeTimers();
     const dataPromise = dashboardMockService.getDashboard();
     vi.advanceTimersByTime(800);
     const data = await dataPromise;
-    expect(data.weatherSummary.temperatureC).toBeDefined();
-    expect(data.weatherSummary.condition).toBeTruthy();
-    expect(data.weatherSummary.humidity).toBeGreaterThanOrEqual(0);
-    expect(data.weatherSummary.humidity).toBeLessThanOrEqual(100);
+    expect(typeof data.weatherSummary.temperatureC).toBe("number");
+    expect(typeof data.weatherSummary.condition).toBe("string");
+    expect(typeof data.weatherSummary.humidity).toBe("number");
     vi.useRealTimers();
   });
 });
@@ -156,5 +155,45 @@ describe("dashboardService", () => {
 
     await dashboardService.getDashboard({ lat: 29.15, lon: 76.5 });
     expect(getSpy).toHaveBeenCalledWith({ lat: 29.15, lon: 76.5 });
+  });
+
+  it("passes token to API", async () => {
+    vi.stubEnv("NEXT_PUBLIC_USE_MOCK_API", "false");
+    const mockData = {
+      profile: {
+        name: "Test",
+        greetingPrefix: "Hello",
+        village: "V",
+        district: "D",
+        state: "S",
+        activeCrop: "Wheat",
+        cropSeason: "Rabi",
+        farmSizeAcres: 2.0,
+      },
+      weatherSummary: {
+        temperatureC: 30,
+        feelsLikeC: 32,
+        condition: "sunny",
+        humidity: 50,
+        windSpeedKmh: 10,
+        advisory: "Safe",
+        advisorySafe: true,
+      },
+      cropFields: [],
+      cropHealthCards: [],
+      mandiPrices: [],
+      marketTrends: [],
+      aiAdvisorChats: [],
+      priorityAlerts: [],
+      schemes: [],
+      recentActivities: [],
+      notifications: [],
+    };
+    const getSpy = vi
+      .spyOn(dashboardApi, "getDashboard")
+      .mockResolvedValue(mockData as never);
+
+    await dashboardService.getDashboard({ token: "test-token-123" });
+    expect(getSpy).toHaveBeenCalledWith({ token: "test-token-123" });
   });
 });

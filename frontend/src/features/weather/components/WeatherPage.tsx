@@ -4,22 +4,23 @@
 // WeatherPage.tsx
 // KisanGPT — Weather Intelligence top-level page assembly
 //
-// Orchestrates all weather components and drives state-based rendering:
-//   idle / loading → WeatherSkeleton
-//   success        → CurrentWeatherCard + ForecastStrip + FarmingRecommendationCard
-//   error          → WeatherError
-//
-// Location === null → WeatherEmpty (no location set yet)
+// Premium AI-powered weather experience for farmers.
+// Includes: Hero, AI Recommendation, Hourly, 7-Day, Risk Alerts, Farm Impact, History
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Thermometer } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useWeather } from "../hooks/useWeather";
 import { CurrentWeatherCard } from "./CurrentWeatherCard";
-import { ForecastStrip } from "./ForecastStrip";
+import { HourlyForecast } from "./HourlyForecast";
+import { ForecastDetail } from "./ForecastDetail";
 import { FarmingRecommendationCard } from "./FarmingRecommendationCard";
+import { RiskAlerts } from "./RiskAlerts";
+import { FarmImpact } from "./FarmImpact";
+import { WeatherHistory } from "./WeatherHistory";
 import { WeatherSkeleton } from "./WeatherSkeleton";
 import { WeatherError } from "./WeatherError";
 import { WeatherEmpty } from "./WeatherEmpty";
@@ -31,6 +32,7 @@ import { useWeatherStore } from "../store/weatherStore";
 // ---------------------------------------------------------------------------
 
 export const WeatherPage: React.FC = () => {
+  const router = useRouter();
   const {
     weatherState,
     unit,
@@ -43,7 +45,7 @@ export const WeatherPage: React.FC = () => {
 
   const location = useWeatherStore(selectLocation);
 
-  // ── No location set yet ──────────────────────────────────────────────────
+  // No location set yet
   if (weatherState.status === "idle" && !location) {
     return (
       <WeatherPageShell unit={unit} toggleUnit={toggleUnit}>
@@ -90,8 +92,9 @@ export const WeatherPage: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-5"
           >
+            {/* Hero Section */}
             <CurrentWeatherCard
               current={weatherState.data.current}
               location={weatherState.data.location}
@@ -100,20 +103,45 @@ export const WeatherPage: React.FC = () => {
               unitSymbol={unitSymbol}
               relativeTime={relativeTime}
               onRefresh={refresh}
+              summary={weatherState.data.summary}
             />
 
-            <ForecastStrip
+            {/* AI Farming Recommendation */}
+            <FarmingRecommendationCard
+              recommendation={weatherState.data.recommendation}
+              onChatRedirect={() => {
+                router.push("/advisor");
+              }}
+            />
+
+            {/* Hourly Forecast */}
+            <HourlyForecast
+              hourly={weatherState.data.hourly}
+              unit={unit}
+              convertTemp={convertTemp}
+              unitSymbol={unitSymbol}
+            />
+
+            {/* 7-Day Forecast with Rain Timeline and Temperature Trend */}
+            <ForecastDetail
               forecast={weatherState.data.forecast}
               unit={unit}
               convertTemp={convertTemp}
               unitSymbol={unitSymbol}
             />
 
-            <FarmingRecommendationCard
-              recommendation={weatherState.data.recommendation}
-              onChatRedirect={() => {
-                window.location.href = "/advisor";
-              }}
+            {/* Risk Alerts */}
+            <RiskAlerts alerts={weatherState.data.riskAlerts} />
+
+            {/* Farm Impact */}
+            <FarmImpact impacts={weatherState.data.farmImpact} />
+
+            {/* Weather History */}
+            <WeatherHistory
+              history={weatherState.data.history}
+              unit={unit}
+              convertTemp={convertTemp}
+              unitSymbol={unitSymbol}
             />
           </motion.div>
         )}
@@ -148,7 +176,7 @@ const WeatherPageShell: React.FC<WeatherPageShellProps> = ({
             Weather Intelligence
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Real-time conditions for your farm
+            AI-powered weather for your farm
           </p>
         </div>
 

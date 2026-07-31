@@ -76,6 +76,28 @@ function mapCondition(
   return CONDITION_MAP[main] ?? "partly-cloudy";
 }
 
+function degToCardinal(deg: number): string {
+  const dirs = [
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW",
+  ];
+  return dirs[Math.round(deg / 22.5) % 16] ?? "N";
+}
+
 function mapBackendLocation(
   city: string,
   country: string,
@@ -99,7 +121,11 @@ function mapBackendCurrent(data: BackendCurrentWeather): CurrentWeather {
     feelsLikeC: data.feels_like,
     humidity: data.humidity,
     windSpeedKmh: data.wind_speed * 3.6,
+    windDirection: degToCardinal(data.wind_deg),
     uvIndex: 5,
+    rainChancePercent: 0,
+    visibility: data.visibility / 1000,
+    pressure: data.pressure,
     sunriseTime,
     sunsetTime,
     updatedAt: new Date(),
@@ -113,6 +139,8 @@ function mapBackendForecast(data: BackendForecastResponse): ForecastDay[] {
     highC: day.temp_max,
     lowC: day.temp_min,
     rainChancePercent: Math.round(day.pop * 100),
+    humidity: day.humidity,
+    windSpeedKmh: day.wind_speed * 3.6,
   }));
 }
 
@@ -139,6 +167,7 @@ function mapBackendAdvice(
     alertMessage: alertAdvice?.message,
     irrigationWindow: { start: "06:00", end: "08:00" },
     cropTip: firstAdvice?.message,
+    confidence: 0.7,
     chatContextPayload: data.current_summary,
   };
 }
@@ -166,7 +195,17 @@ export const weatherService: IWeatherService = {
       const forecast = mapBackendForecast(forecastRes);
       const recommendation = mapBackendAdvice(adviceRes);
 
-      return { location, current, forecast, recommendation };
+      return {
+        location,
+        current,
+        forecast,
+        recommendation,
+        hourly: [],
+        riskAlerts: [],
+        farmImpact: [],
+        summary: { text: "", confidence: 0.7, generatedAt: new Date() },
+        history: [],
+      };
     } catch (err) {
       console.warn("Weather API error, falling back to mock:", err);
       return weatherMockService.getWeatherData();

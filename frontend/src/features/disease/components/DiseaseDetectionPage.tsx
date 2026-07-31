@@ -1,95 +1,168 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// DiseaseDetectionPage.tsx
-// KisanGPT — Main disease detection page component
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
-import React, { useCallback } from "react";
-import { useDiseaseStore, selectDiseaseState } from "../store/diseaseStore";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { useDiseaseDetection } from "../hooks/useDiseaseDetection";
-import { ImageUploader } from "./ImageUploader";
-import { ImagePreview } from "./ImagePreview";
-import { DetectionResultCard } from "./DetectionResultCard";
-import { DetectionSkeleton } from "./DetectionSkeleton";
+import { useDiseaseStore, selectDiseaseState } from "../store/diseaseStore";
+import { HeroSection } from "./HeroSection";
+import { ImageCapture } from "./ImageCapture";
+import { AIAnalysis } from "./AIAnalysis";
+import { DiagnosisResultCard } from "./DiagnosisResultCard";
+import { TreatmentPlan } from "./TreatmentPlan";
+import { AIExplanationCard } from "./AIExplanationCard";
+import { RelatedInfoCard } from "./RelatedInfoCard";
+import { FollowUpActions } from "./FollowUpActions";
+import { DiagnosisHistory } from "./DiagnosisHistory";
+import { DiseaseEmpty } from "./DiseaseEmpty";
+import { DiseaseSkeleton } from "./DiseaseSkeleton";
 import { DetectionError } from "./DetectionError";
-import { DetectionEmpty } from "./DetectionEmpty";
-import { PageContainer } from "@/components/layout/PageContainer";
-import { Button } from "@/components/ui/Button";
-
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
+import { MOCK_DIAGNOSIS_HISTORY } from "../constants/disease.constants";
 
 export const DiseaseDetectionPage: React.FC = () => {
+  const router = useRouter();
   const uiState = useDiseaseStore(selectDiseaseState);
-  const { detect, reset } = useDiseaseDetection();
-  const setFile = useDiseaseStore((s) => s.setFile);
-  const file = useDiseaseStore((s) => s.file);
+  const { detect } = useDiseaseDetection();
+  const resetStore = useDiseaseStore((s) => s.reset);
 
-  const handleFileSelected = useCallback(
-    (selectedFile: File) => {
-      setFile(selectedFile);
-      detect(selectedFile);
-    },
-    [setFile, detect],
-  );
+  const handleFileSelected = (file: File) => {
+    detect(file);
+  };
 
-  const handleRetry = useCallback(() => {
-    reset();
-  }, [reset]);
+  const handleRetry = () => {
+    resetStore();
+  };
 
   return (
-    <PageContainer
-      title="Crop Disease Detection"
-      description="Identify plant diseases and get treatment recommendations"
-    >
-      <div className="flex flex-col items-center gap-6 py-4">
-        {/* Idle state — show uploader */}
-        {uiState.status === "idle" && (
-          <>
-            <DetectionEmpty />
-            <ImageUploader onFileSelected={handleFileSelected} />
-          </>
-        )}
+    <main className="min-h-screen bg-background">
+      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
+        {/* Page header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">
+              Disease Detection
+            </h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              AI-powered crop diagnosis
+            </p>
+          </div>
+        </div>
 
-        {/* Uploading */}
-        {uiState.status === "uploading" && <DetectionSkeleton />}
+        {/* Content */}
+        <AnimatePresence mode="wait">
+          {/* Idle */}
+          {uiState.status === "idle" && (
+            <motion.div
+              key="idle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex flex-col gap-5"
+            >
+              <HeroSection
+                recentDiagnosis={MOCK_DIAGNOSIS_HISTORY[0]}
+                onStartDiagnosis={() => {
+                  document.getElementById("disease-upload-trigger")?.click();
+                }}
+              />
+              <ImageCapture onFileSelected={handleFileSelected} />
+              <DiseaseEmpty />
+              <DiagnosisHistory history={MOCK_DIAGNOSIS_HISTORY} />
+            </motion.div>
+          )}
 
-        {/* Analyzing */}
-        {uiState.status === "analyzing" && (
-          <>
-            <ImagePreview src={uiState.previewUrl} onRemove={handleRetry} />
-            <DetectionSkeleton />
-          </>
-        )}
+          {/* Uploading */}
+          {uiState.status === "uploading" && (
+            <motion.div
+              key="uploading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex flex-col gap-5"
+            >
+              <DiseaseSkeleton />
+            </motion.div>
+          )}
 
-        {/* Success */}
-        {uiState.status === "success" && (
-          <>
-            <ImagePreview
-              src={uiState.previewUrl}
-              fileName={file?.name}
-              onRemove={handleRetry}
-            />
-            <DetectionResultCard result={uiState.data} />
-            <Button variant="outline" onClick={handleRetry} className="mt-2">
-              Scan Another Plant
-            </Button>
-          </>
-        )}
+          {/* Analyzing */}
+          {uiState.status === "analyzing" && (
+            <motion.div
+              key="analyzing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex flex-col gap-5"
+            >
+              <AIAnalysis previewUrl={uiState.previewUrl} />
+            </motion.div>
+          )}
 
-        {/* Error */}
-        {uiState.status === "error" && (
-          <>
-            {uiState.previewUrl && (
-              <ImagePreview src={uiState.previewUrl} onRemove={handleRetry} />
-            )}
-            <DetectionError message={uiState.message} onRetry={handleRetry} />
-          </>
-        )}
+          {/* Success */}
+          {uiState.status === "success" && (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col gap-5"
+            >
+              {/* Diagnosis result */}
+              <DiagnosisResultCard result={uiState.data} />
+
+              {/* Treatment plan */}
+              {uiState.data.treatments.length > 0 && (
+                <TreatmentPlan
+                  treatments={uiState.data.treatments.map((t, i) => ({
+                    ...t,
+                    id: `treatment-${i}`,
+                  }))}
+                />
+              )}
+
+              {/* AI Explanation */}
+              {uiState.data.ai_explanation && (
+                <AIExplanationCard explanation={uiState.data.ai_explanation} />
+              )}
+
+              {/* Related info */}
+              {uiState.data.related_info && (
+                <RelatedInfoCard info={uiState.data.related_info} />
+              )}
+
+              {/* Follow-up actions */}
+              <FollowUpActions
+                onAskAI={() => {
+                  router.push("/advisor");
+                }}
+                onScanAnother={handleRetry}
+              />
+
+              {/* Diagnosis history */}
+              <DiagnosisHistory history={MOCK_DIAGNOSIS_HISTORY} />
+            </motion.div>
+          )}
+
+          {/* Error */}
+          {uiState.status === "error" && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="flex flex-col gap-5"
+            >
+              <DetectionError message={uiState.message} onRetry={handleRetry} />
+              <ImageCapture onFileSelected={handleFileSelected} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </PageContainer>
+    </main>
   );
 };
 

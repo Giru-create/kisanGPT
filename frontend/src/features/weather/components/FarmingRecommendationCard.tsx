@@ -2,7 +2,7 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FarmingRecommendationCard.tsx
-// KisanGPT — AI-driven farming advice card
+// KisanGPT — AI-driven farming advice card with confidence and reasoning
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from "react";
@@ -10,10 +10,15 @@ import { motion } from "framer-motion";
 import {
   Sprout,
   Droplets,
+  Droplet,
   Lightbulb,
   ArrowUpRight,
   AlertTriangle,
   CheckCircle2,
+  Brain,
+  Leaf,
+  Scissors,
+  Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -56,7 +61,12 @@ export const FarmingRecommendationCard: React.FC<
     severity,
     alertMessage,
     irrigationWindow,
+    fertilizerTiming,
+    sprayingAdvice,
+    harvestGuidance,
     cropTip,
+    confidence,
+    reasoning,
     chatContextPayload,
   } = recommendation;
 
@@ -82,7 +92,7 @@ export const FarmingRecommendationCard: React.FC<
       )}
     >
       <div className="p-5">
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
@@ -96,17 +106,28 @@ export const FarmingRecommendationCard: React.FC<
             </p>
           </div>
 
-          {severity !== "none" && (
-            <Badge
-              variant={SEVERITY_BADGE_VARIANT[severity]}
-              className="shrink-0"
-            >
-              {SEVERITY_LABEL[severity]}
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            {confidence > 0 && (
+              <Badge
+                variant="default"
+                className="text-[10px] px-2 py-0.5 gap-1"
+              >
+                <Brain size={10} aria-hidden="true" />
+                {confidence}%
+              </Badge>
+            )}
+            {severity !== "none" && (
+              <Badge
+                variant={SEVERITY_BADGE_VARIANT[severity]}
+                className="shrink-0"
+              >
+                {SEVERITY_LABEL[severity]}
+              </Badge>
+            )}
+          </div>
         </div>
 
-        {/* ── Alert message ── */}
+        {/* Alert message */}
         {alertMessage && (
           <div
             className={cn(
@@ -126,55 +147,132 @@ export const FarmingRecommendationCard: React.FC<
           </div>
         )}
 
-        {/* ── Irrigation window ── */}
-        {irrigationWindow && (
-          <div className="flex gap-2.5 mb-4">
-            <CheckCircle2
-              size={16}
-              className="shrink-0 mt-0.5 text-emerald-500"
-              aria-hidden="true"
-            />
-            <div className="text-sm">
-              <p className="font-medium text-foreground">
-                Best irrigation window:
-              </p>
-              <p className="text-muted-foreground">
-                {irrigationWindow.start} – {irrigationWindow.end}
-              </p>
+        {/* Recommendation Items */}
+        <div className="space-y-3 mb-5">
+          {/* Irrigation Window */}
+          {irrigationWindow && (
+            <div className="flex gap-2.5">
+              <CheckCircle2
+                size={16}
+                className="shrink-0 mt-0.5 text-blue-500"
+                aria-hidden="true"
+              />
+              <div className="text-sm">
+                <p className="font-medium text-foreground">
+                  Best irrigation window:
+                </p>
+                <p className="text-muted-foreground">
+                  {irrigationWindow.start} – {irrigationWindow.end}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Fertilizer Timing */}
+          {fertilizerTiming && (
+            <div className="flex gap-2.5">
+              <Leaf
+                size={16}
+                className="shrink-0 mt-0.5 text-emerald-500"
+                aria-hidden="true"
+              />
+              <div className="text-sm">
+                <p className="font-medium text-foreground">
+                  Fertilizer timing:
+                </p>
+                <p className="text-muted-foreground">{fertilizerTiming}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Spraying Advice */}
+          {sprayingAdvice && (
+            <div className="flex gap-2.5">
+              <Droplet
+                size={16}
+                className="shrink-0 mt-0.5 text-purple-500"
+                aria-hidden="true"
+              />
+              <div className="text-sm">
+                <p className="font-medium text-foreground">
+                  Spraying recommendation:
+                </p>
+                <p className="text-muted-foreground">{sprayingAdvice}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Harvest Guidance */}
+          {harvestGuidance && (
+            <div className="flex gap-2.5">
+              <Scissors
+                size={16}
+                className="shrink-0 mt-0.5 text-orange-500"
+                aria-hidden="true"
+              />
+              <div className="text-sm">
+                <p className="font-medium text-foreground">Harvest guidance:</p>
+                <p className="text-muted-foreground">{harvestGuidance}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Crop Tip */}
+          {cropTip && (
+            <div className="flex gap-2.5">
+              <Lightbulb
+                size={16}
+                className="shrink-0 mt-0.5 text-secondary"
+                aria-hidden="true"
+              />
+              <div className="text-sm">
+                <p className="font-medium text-foreground">Crop tip:</p>
+                <p className="text-muted-foreground">{cropTip}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Default if no specific tips */}
+          {!alertMessage &&
+            !cropTip &&
+            !fertilizerTiming &&
+            !sprayingAdvice &&
+            !harvestGuidance && (
+              <div className="flex gap-2.5">
+                <Droplets
+                  size={16}
+                  className="shrink-0 mt-0.5 text-blue-400"
+                  aria-hidden="true"
+                />
+                <p className="text-sm text-muted-foreground">
+                  Conditions are good. No urgent actions required.
+                </p>
+              </div>
+            )}
+        </div>
+
+        {/* Reasoning */}
+        {reasoning && (
+          <div className="mb-4 p-3 rounded-lg bg-muted/50 border border-border">
+            <div className="flex items-start gap-2">
+              <Info
+                size={14}
+                className="shrink-0 mt-0.5 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground mb-1">
+                  Why this recommendation?
+                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {reasoning}
+                </p>
+              </div>
             </div>
           </div>
         )}
 
-        {/* ── Crop tip ── */}
-        {cropTip && (
-          <div className="flex gap-2.5 mb-5">
-            <Lightbulb
-              size={16}
-              className="shrink-0 mt-0.5 text-secondary"
-              aria-hidden="true"
-            />
-            <div className="text-sm">
-              <p className="font-medium text-foreground">Crop tip:</p>
-              <p className="text-muted-foreground">{cropTip}</p>
-            </div>
-          </div>
-        )}
-
-        {/* ── Irrigation tip if no specific tip ── */}
-        {!alertMessage && !cropTip && (
-          <div className="flex gap-2.5 mb-5">
-            <Droplets
-              size={16}
-              className="shrink-0 mt-0.5 text-blue-400"
-              aria-hidden="true"
-            />
-            <p className="text-sm text-muted-foreground">
-              Conditions are good. No urgent actions required.
-            </p>
-          </div>
-        )}
-
-        {/* ── CTA ── */}
+        {/* CTA */}
         <Button
           variant="outline"
           size="md"

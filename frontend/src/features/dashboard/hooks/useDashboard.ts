@@ -11,14 +11,19 @@ import { useDashboardQuery } from "./useDashboardData";
 import { announceToScreenReader } from "@/utils/a11y";
 import type { DashboardData } from "../types/dashboard.types";
 
-export function useDashboard() {
+export function useDashboard(options?: {
+  lat?: number;
+  lon?: number;
+  city?: string;
+  token?: string;
+}) {
   const {
     data: apiData,
     isLoading,
     isError,
     error,
     refetch,
-  } = useDashboardQuery();
+  } = useDashboardQuery(options);
 
   const {
     dismissedEmergencyAlertId,

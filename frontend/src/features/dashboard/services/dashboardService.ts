@@ -13,6 +13,7 @@ export interface IDashboardService {
     lat?: number;
     lon?: number;
     city?: string;
+    token?: string;
   }) => Promise<DashboardData>;
 }
 

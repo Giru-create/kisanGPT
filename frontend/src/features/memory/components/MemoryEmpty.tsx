@@ -1,20 +1,43 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// MemoryEmpty.tsx
-// KisanGPT — Onboarding Empty State for Farm Memory
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
 import React from "react";
-import { BookOpen, Plus, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  BookOpen,
+  Plus,
+  Sparkles,
+  MessageCircle,
+  Wheat,
+  Cloud,
+} from "lucide-react";
 
 interface MemoryEmptyProps {
   onAddClick: () => void;
 }
 
+const SUGGESTED_PROMPTS = [
+  {
+    icon: <Wheat size={14} className="text-emerald-600" />,
+    text: "Record my wheat harvest yield",
+  },
+  {
+    icon: <Cloud size={14} className="text-sky-600" />,
+    text: "Log today's irrigation schedule",
+  },
+  {
+    icon: <MessageCircle size={14} className="text-primary" />,
+    text: "Save this AI advice about soil health",
+  },
+];
+
 export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-md mx-auto space-y-5 bg-card/40 rounded-3xl border border-border/40 my-6 shadow-xs">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-md mx-auto space-y-5 bg-card/40 rounded-3xl border border-border/40 my-6 shadow-xs"
+    >
       <div className="relative">
         <div className="w-18 h-18 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-inner">
           <BookOpen size={32} />
@@ -26,12 +49,30 @@ export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
 
       <div className="space-y-1.5">
         <h3 className="text-lg font-bold text-foreground tracking-tight">
-          आपकी कोई याद दर्ज नहीं है (No Farm Memories)
+          No memories yet
         </h3>
         <p className="text-xs text-muted-foreground leading-relaxed">
-          अपनी मिट्टी की जांच, फसल की पैदावार, बीमारी का इतिहास और उर्वरक का
-          रिकॉर्ड यहां जोड़ें। किसानजीपीटी एआई आपको व्यक्तिगत सुझाव देगा।
+          Start building your farm&apos;s AI memory. KisanGPT will remember soil
+          tests, crop yields, disease history, and every conversation you have.
         </p>
+      </div>
+
+      {/* Suggested prompts */}
+      <div className="w-full space-y-2">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+          Try saying
+        </p>
+        {SUGGESTED_PROMPTS.map((prompt) => (
+          <div
+            key={prompt.text}
+            className="flex items-center gap-2.5 p-2.5 rounded-xl bg-muted/50 text-left"
+          >
+            {prompt.icon}
+            <span className="text-[11px] text-muted-foreground">
+              &quot;{prompt.text}&quot;
+            </span>
+          </div>
+        ))}
       </div>
 
       <button
@@ -40,9 +81,9 @@ export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary"
       >
         <Plus size={16} />
-        <span>पहला रिकॉर्ड जोड़ें (Add First Record)</span>
+        <span>Add First Memory</span>
       </button>
-    </div>
+    </motion.div>
   );
 };
 

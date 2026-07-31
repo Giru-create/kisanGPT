@@ -12,9 +12,12 @@ export const dashboardApi = {
     lat?: number;
     lon?: number;
     city?: string;
+    token?: string;
   }): Promise<DashboardData> => {
+    const { token, ...params } = options ?? {};
     return apiClient.get<DashboardData>("/dashboard", {
-      params: options,
+      params,
+      token,
     });
   },
 };

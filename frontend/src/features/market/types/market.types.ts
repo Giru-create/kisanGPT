@@ -11,6 +11,27 @@ export type TrendDirection = "rising" | "falling" | "stable" | "volatile";
 
 export type AlertCondition = "above" | "below";
 
+export type MarketSentiment = "bullish" | "neutral" | "bearish";
+
+export type CommodityCategory =
+  | "cereals"
+  | "pulses"
+  | "oilseeds"
+  | "vegetables"
+  | "fruits"
+  | "cash_crops"
+  | "spices";
+
+export type InsightCategory =
+  | "market_summary"
+  | "demand_analysis"
+  | "supply_analysis"
+  | "export_opportunities"
+  | "government_procurement"
+  | "festival_impact"
+  | "weather_impact"
+  | "future_forecast";
+
 // ---------------------------------------------------------------------------
 // Commodity price
 // ---------------------------------------------------------------------------
@@ -82,7 +103,7 @@ export type RecommendationType =
 export interface AIRecommendation {
   type: RecommendationType;
   commodity: string;
-  confidence: number; // 0-100
+  confidence: number;
   headline: string;
   rationale: string;
   net_gain_per_quintal?: number;
@@ -246,3 +267,140 @@ export type AdviceUIState =
   | { status: "loading" }
   | { status: "success"; data: MarketAdviceResponse }
   | { status: "error"; message: string };
+
+// ═══════════════════════════════════════════════════════════════════════════
+// NEW TYPES — Market Intelligence Feature
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ---------------------------------------------------------------------------
+// Hero — AI Market Brief
+// ---------------------------------------------------------------------------
+
+export interface HeroMarketBrief {
+  sentiment: MarketSentiment;
+  sentimentLabel: string;
+  bestCommodity: string;
+  bestCommodityChange: number;
+  estimatedProfitOpportunity: string;
+  confidenceScore: number;
+  headline: string;
+  lastUpdated: string;
+}
+
+// ---------------------------------------------------------------------------
+// Enhanced AI Recommendation (premium card)
+// ---------------------------------------------------------------------------
+
+export interface PremiumAIRecommendation {
+  type: RecommendationType;
+  commodity: string;
+  confidence: number;
+  headline: string;
+  rationale: string;
+  expectedPriceMovement: string;
+  profitEstimate: number;
+  riskFactors: string[];
+  suggestedNextAction: string;
+  netGainPerQuintal?: number;
+  sellWithinDays?: number;
+  suggestedMandi?: string;
+  generatedAt: string;
+}
+
+// ---------------------------------------------------------------------------
+// Market Trend (enhanced)
+// ---------------------------------------------------------------------------
+
+export type TrendTimeframe = "7d" | "30d" | "seasonal";
+
+export interface MarketTrendData {
+  commodity: string;
+  timeframe: TrendTimeframe;
+  dates: string[];
+  prices: number[];
+  historicalAvg: number[];
+  demandTrend: number[];
+  supplyTrend: number[];
+  forecastedPrice: number[];
+  direction: TrendDirection;
+  avgPrice: number;
+  minPrice: number;
+  maxPrice: number;
+}
+
+// ---------------------------------------------------------------------------
+// Price Comparison (enhanced mandi comparison)
+// ---------------------------------------------------------------------------
+
+export interface MandiComparison {
+  mandiName: string;
+  district: string;
+  state: string;
+  pricePerQuintal: number;
+  transportCostEstimate: number;
+  netExpectedEarnings: number;
+  travelDistanceKm: number;
+  sellingRecommendation: "best" | "good" | "avoid";
+  profitRank: number;
+  changePercent: number;
+  isRise: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// AI Insight Card
+// ---------------------------------------------------------------------------
+
+export interface AIInsight {
+  id: string;
+  category: InsightCategory;
+  title: string;
+  summary: string;
+  details: string;
+  impact: "positive" | "negative" | "neutral";
+  relevantCommodities: string[];
+  generatedAt: string;
+}
+
+// ---------------------------------------------------------------------------
+// Farmer Quick Action
+// ---------------------------------------------------------------------------
+
+export interface FarmerAction {
+  id: string;
+  label: string;
+  description: string;
+  icon: string;
+  href?: string;
+  onClick?: string;
+  variant: "primary" | "secondary" | "ghost";
+}
+
+// ---------------------------------------------------------------------------
+// Commodity Explorer Filter
+// ---------------------------------------------------------------------------
+
+export interface CommodityFilter {
+  search: string;
+  category: CommodityCategory | "all";
+  state: string;
+  district: string;
+  mandi: string;
+  priceRange: [number, number] | null;
+  trending: boolean;
+  highestProfit: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Watched Commodity
+// ---------------------------------------------------------------------------
+
+export interface WatchedCommodity {
+  id: string;
+  commodity: string;
+  currentPrice: number;
+  targetPrice: number;
+  condition: AlertCondition;
+  changePercent: number;
+  isRising: boolean;
+  addedAt: string;
+}

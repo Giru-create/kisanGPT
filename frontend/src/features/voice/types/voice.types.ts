@@ -3,7 +3,16 @@
 // KisanGPT — Voice Assistant feature types
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type VoiceLanguage = "hi-IN" | "pa-IN" | "en-US";
+export type VoiceLanguage =
+  | "hi-IN"
+  | "pa-IN"
+  | "en-US"
+  | "gu-IN"
+  | "mr-IN"
+  | "ta-IN"
+  | "te-IN"
+  | "kn-IN"
+  | "bn-IN";
 
 export type VoiceStatus =
   "idle" | "listening" | "processing" | "speaking" | "error";
@@ -69,6 +78,58 @@ export interface VoiceMessage {
   audio_base64?: string;
   intent?: string;
   suggested_actions?: string[];
+  confidence?: number;
+}
+
+// ---------------------------------------------------------------------------
+// Quick action
+// ---------------------------------------------------------------------------
+
+export interface QuickVoiceAction {
+  id: string;
+  label: string;
+  description: string;
+  icon: string;
+  prompt: string;
+  color: string;
+}
+
+// ---------------------------------------------------------------------------
+// AI Context
+// ---------------------------------------------------------------------------
+
+export interface AIContextData {
+  currentCrop: string;
+  location: string;
+  weatherSummary: string;
+  recentRecommendation: string;
+  conversationSummary: string;
+}
+
+// ---------------------------------------------------------------------------
+// Voice settings
+// ---------------------------------------------------------------------------
+
+export interface VoiceSettingsData {
+  voiceSpeed: number;
+  voiceGender: "male" | "female";
+  autoSpeak: boolean;
+  wakeWord: boolean;
+  noiseReduction: boolean;
+  offlineMode: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// Recent conversation
+// ---------------------------------------------------------------------------
+
+export interface RecentConversation {
+  id: string;
+  title: string;
+  lastMessage: string;
+  timestamp: Date;
+  messageCount: number;
+  language: VoiceLanguage;
 }
 
 // ---------------------------------------------------------------------------

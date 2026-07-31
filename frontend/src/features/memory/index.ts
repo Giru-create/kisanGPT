@@ -7,9 +7,13 @@
 export { MemoryPage } from "./components/MemoryPage";
 
 // Components
-export { MemoryCard } from "./components/MemoryCard";
-export { MemoryCategoryFilter } from "./components/MemoryCategoryFilter";
+export { HeroSection } from "./components/HeroSection";
+export { MemorySummaryCard } from "./components/MemorySummaryCard";
+export { AIMemoryInsights } from "./components/AIMemoryInsights";
+export { MemorySearchBar } from "./components/MemorySearchBar";
 export { MemoryTimeline } from "./components/MemoryTimeline";
+export { MemoryCard } from "./components/MemoryCard";
+export { MemoryDetailModal } from "./components/MemoryDetailModal";
 export { PersonalizedRecommendations } from "./components/PersonalizedRecommendations";
 export { AddMemoryModal } from "./components/AddMemoryModal";
 export { MemoryEmpty } from "./components/MemoryEmpty";
@@ -33,6 +37,9 @@ export {
   selectSelectedCategory,
   selectIsAddModalOpen,
   selectSearchQuery,
+  selectFilterTab,
+  selectSelectedMemory,
+  selectIsDetailModalOpen,
 } from "./store/memoryStore";
 
 // Services
@@ -47,4 +54,12 @@ export type {
   FarmMemoryItem,
   PersonalizedRecommendation,
   AddMemoryInput,
+  MemoryImportance,
+  MemorySource,
+  FilterTab,
+  MemoryFilters,
+  MemoryHeroStats,
+  AIMemoryInsight,
+  MemoryCategoryConfig,
+  MemoryTimelineGroup,
 } from "./types/memory.types";

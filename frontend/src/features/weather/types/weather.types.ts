@@ -37,6 +37,17 @@ export interface FarmLocation {
 }
 
 // ---------------------------------------------------------------------------
+// Air Quality
+// ---------------------------------------------------------------------------
+
+export interface AirQuality {
+  aqi: number;
+  label: string;
+  color: string;
+  description: string;
+}
+
+// ---------------------------------------------------------------------------
 // Current conditions
 // ---------------------------------------------------------------------------
 
@@ -44,12 +55,30 @@ export interface CurrentWeather {
   condition: WeatherCondition;
   temperatureC: number;
   feelsLikeC: number;
-  humidity: number; // percentage 0–100
+  humidity: number;
   windSpeedKmh: number;
+  windDirection: string;
   uvIndex: number;
-  sunriseTime: string; // "06:02"
-  sunsetTime: string; // "19:14"
+  rainChancePercent: number;
+  visibility: number;
+  pressure: number;
+  sunriseTime: string;
+  sunsetTime: string;
+  airQuality?: AirQuality;
   updatedAt: Date;
+}
+
+// ---------------------------------------------------------------------------
+// Hourly forecast
+// ---------------------------------------------------------------------------
+
+export interface HourlyForecast {
+  hour: number;
+  temperatureC: number;
+  condition: WeatherCondition;
+  rainChancePercent: number;
+  humidity: number;
+  windSpeedKmh: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -61,7 +90,62 @@ export interface ForecastDay {
   condition: WeatherCondition;
   highC: number;
   lowC: number;
-  rainChancePercent: number; // 0–100
+  rainChancePercent: number;
+  humidity: number;
+  windSpeedKmh: number;
+}
+
+// ---------------------------------------------------------------------------
+// Risk alerts
+// ---------------------------------------------------------------------------
+
+export type RiskType =
+  | "heavy-rain"
+  | "heatwave"
+  | "frost"
+  | "strong-wind"
+  | "storm"
+  | "high-uv"
+  | "fog";
+
+export type RiskSeverity = "low" | "moderate" | "high" | "extreme";
+
+export interface RiskAlert {
+  id: string;
+  type: RiskType;
+  severity: RiskSeverity;
+  title: string;
+  description: string;
+  action: string;
+  validFrom: string;
+  validUntil: string;
+}
+
+// ---------------------------------------------------------------------------
+// Farm impact
+// ---------------------------------------------------------------------------
+
+export type FarmImpactArea =
+  "crop-health" | "soil-moisture" | "pest-risk" | "irrigation" | "harvest";
+
+export type FarmImpactLevel = "positive" | "neutral" | "negative" | "critical";
+
+export interface FarmImpactItem {
+  area: FarmImpactArea;
+  level: FarmImpactLevel;
+  title: string;
+  description: string;
+  action?: string;
+}
+
+// ---------------------------------------------------------------------------
+// AI Weather summary
+// ---------------------------------------------------------------------------
+
+export interface WeatherSummary {
+  text: string;
+  confidence: number;
+  generatedAt: Date;
 }
 
 // ---------------------------------------------------------------------------
@@ -69,17 +153,33 @@ export interface ForecastDay {
 // ---------------------------------------------------------------------------
 
 export interface IrrigationWindow {
-  start: string; // "06:00"
-  end: string; // "08:00"
+  start: string;
+  end: string;
 }
 
 export interface FarmingRecommendation {
   severity: RecommendationSeverity;
   alertMessage?: string;
   irrigationWindow?: IrrigationWindow;
+  fertilizerTiming?: string;
+  sprayingAdvice?: string;
+  harvestGuidance?: string;
   cropTip?: string;
-  /** Pre-filled text to send to /chat when the CTA is clicked */
+  confidence: number;
+  reasoning?: string;
   chatContextPayload?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Weather history
+// ---------------------------------------------------------------------------
+
+export interface WeatherHistoryDay {
+  date: Date;
+  highC: number;
+  lowC: number;
+  rainfall: number;
+  humidity: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -89,12 +189,17 @@ export interface FarmingRecommendation {
 export interface WeatherData {
   location: FarmLocation;
   current: CurrentWeather;
-  forecast: ForecastDay[]; // exactly 7 items
+  hourly: HourlyForecast[];
+  forecast: ForecastDay[];
   recommendation: FarmingRecommendation;
+  riskAlerts: RiskAlert[];
+  farmImpact: FarmImpactItem[];
+  summary: WeatherSummary;
+  history: WeatherHistoryDay[];
 }
 
 // ---------------------------------------------------------------------------
-// UI state (discriminated union — drives loading / success / error rendering)
+// UI state (discriminated union)
 // ---------------------------------------------------------------------------
 
 export type WeatherUIState =

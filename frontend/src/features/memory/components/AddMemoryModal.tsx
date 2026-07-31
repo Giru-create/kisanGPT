@@ -66,7 +66,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
     }
   };
 
-  const validCategories = MEMORY_CATEGORIES.filter((c) => c.id !== "all");
+  const validCategories = MEMORY_CATEGORIES;
 
   return (
     <div
@@ -106,15 +106,19 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Category Dropdown */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground block">
+            <label
+              htmlFor="memory-category"
+              className="text-xs font-semibold text-foreground block"
+            >
               Category (श्रेणी)
             </label>
             <select
+              id="memory-category"
               value={category}
               onChange={(e) =>
                 setCategory(e.target.value as Exclude<MemoryCategory, "all">)
               }
-              className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+              className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
             >
               {validCategories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -126,59 +130,75 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
 
           {/* Title Input */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground block">
+            <label
+              htmlFor="memory-title"
+              className="text-xs font-semibold text-foreground block"
+            >
               Title (शीर्षक) *
             </label>
             <input
+              id="memory-title"
               type="text"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Soil NPK Test Result or Drip Irrigation Log"
-              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
             />
           </div>
 
           {/* Crop & Season Row */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-foreground block">
+              <label
+                htmlFor="memory-crop"
+                className="text-xs font-semibold text-foreground block"
+              >
                 Crop (फसल)
               </label>
               <input
+                id="memory-crop"
                 type="text"
                 value={cropName}
                 onChange={(e) => setCropName(e.target.value)}
                 placeholder="Wheat / Paddy / Mustard"
-                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-foreground block">
+              <label
+                htmlFor="memory-season"
+                className="text-xs font-semibold text-foreground block"
+              >
                 Season (मौसम)
               </label>
               <input
+                id="memory-season"
                 type="text"
                 value={season}
                 onChange={(e) => setSeason(e.target.value)}
                 placeholder="Kharif 2026"
-                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
               />
             </div>
           </div>
 
           {/* Description Textarea */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground block">
+            <label
+              htmlFor="memory-description"
+              className="text-xs font-semibold text-foreground block"
+            >
               Details & Notes (विवरण) *
             </label>
             <textarea
+              id="memory-description"
               required
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter detailed observations, doses applied, yield harvested, or disease symptoms..."
-              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             />
           </div>
 

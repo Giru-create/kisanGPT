@@ -1,20 +1,17 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// MarketEmpty.tsx
-// KisanGPT — Market Intelligence empty state with quick-pick crop chips
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
 import React from "react";
-import { BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
+import { Search } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { COMMODITY_EMOJI } from "../constants/market.constants";
 
 interface MarketEmptyProps {
   commodity?: string;
-  onSelectCommodity?: (c: string) => void;
+  onSelectCommodity?: (commodity: string) => void;
 }
 
-const QUICK_CROPS = ["Wheat", "Mustard", "Paddy", "Cotton", "Onion"];
+const SUGGESTED_SEARCHES = ["Wheat", "Rice", "Tomato", "Cotton", "Maize"];
 
 export const MarketEmpty: React.FC<MarketEmptyProps> = ({
   commodity,
@@ -24,52 +21,78 @@ export const MarketEmpty: React.FC<MarketEmptyProps> = ({
     <motion.div
       role="status"
       aria-live="polite"
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className="rounded-2xl border border-dashed border-border bg-card p-8 flex flex-col items-center gap-4 text-center"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="rounded-2xl border border-border bg-card p-8 text-center"
     >
-      <div className="h-14 w-14 rounded-2xl bg-muted/50 flex items-center justify-center">
-        <BarChart3
-          size={28}
-          className="text-muted-foreground"
-          aria-hidden="true"
-        />
+      {/* Icon cluster */}
+      <div className="flex items-center justify-center gap-2 mb-4">
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+          className="text-3xl"
+        >
+          {COMMODITY_EMOJI["Wheat"]}
+        </motion.span>
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          className="text-2xl opacity-60"
+        >
+          {COMMODITY_EMOJI["Tomato"]}
+        </motion.span>
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+          className="text-3xl"
+        >
+          {COMMODITY_EMOJI["Cotton"]}
+        </motion.span>
       </div>
 
-      <div>
-        <p className="text-base font-semibold text-foreground">
-          {commodity
-            ? `No prices found for "${commodity}"`
-            : "No market data available"}
-        </p>
-        <p className="text-sm text-muted-foreground mt-1 max-w-xs">
-          {commodity
-            ? "Try selecting a different crop or check back shortly."
-            : "Select a commodity above to view current mandi prices and trends."}
-        </p>
+      {/* Title */}
+      <h3 className="text-base font-bold text-foreground mb-2">
+        {commodity
+          ? `No data found for "${commodity}"`
+          : "Explore Commodity Markets"}
+      </h3>
+      <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed mb-5">
+        {commodity
+          ? "Try a different commodity or clear your search to browse all available markets."
+          : "Search for any crop to see live mandi prices, AI recommendations, and price trends across India."}
+      </p>
+
+      {/* Suggested searches */}
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+        <span className="text-[10px] text-muted-foreground">
+          Try searching:
+        </span>
+        {SUGGESTED_SEARCHES.map((search) => (
+          <button
+            key={search}
+            onClick={() => onSelectCommodity?.(search)}
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-border bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors"
+          >
+            {COMMODITY_EMOJI[search] ?? "\uD83C\uDF3E"} {search}
+          </button>
+        ))}
       </div>
 
-      {/* Quick-pick crop chips */}
+      {/* CTA */}
       {onSelectCommodity && (
-        <div className="flex flex-col items-center gap-2 mt-1">
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-            Popular crops
-          </p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {QUICK_CROPS.map((crop) => (
-              <button
-                key={crop}
-                type="button"
-                onClick={() => onSelectCommodity(crop)}
-                aria-label={`View prices for ${crop}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 min-h-[44px] text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:border-primary/40 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                {crop}
-              </button>
-            ))}
-          </div>
-        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onSelectCommodity("Wheat")}
+          leftIcon={<Search size={14} />}
+          className="text-xs"
+        >
+          Browse All Commodities
+        </Button>
       )}
     </motion.div>
   );

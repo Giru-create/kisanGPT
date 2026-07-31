@@ -45,6 +45,42 @@ const LOCALIZED_RESPONSES: Record<
       "Check Weather Forecast",
     ],
   },
+  "gu-IN": {
+    defaultResponse:
+      "આજ કરનાલ મંડીમાં ઘઉં (PBW 550) ના ભાવ ₹2,275 પ્રતિ ક્વિન્ટલ છે, જે MSP (₹2,250) કરતાં વધુ છે.",
+    intent: "market_price",
+    suggested: ["ભાવ એલર્ટ સેટ કરો", "મૌસમ જાણકારી"],
+  },
+  "mr-IN": {
+    defaultResponse:
+      "आज करणाल मंडीत गहू (PBW 550) चा भाव ₹2,275 प्रति क्विंटल आहे, जो MSP (₹2,250) पेक्षा जास्त आहे.",
+    intent: "market_price",
+    suggested: ["भाव अलर्ट सेट करा", "हवामान माहिती"],
+  },
+  "ta-IN": {
+    defaultResponse:
+      "இன்று கர்நால் மண்டியில் கோதுமை (PBW 550) விலை ₹2,275 கிலோவுக்கு, இது MSP (₹2,250) விட அதிகம்.",
+    intent: "market_price",
+    suggested: ["விலை எச்சரிக்கை", "வானிலை தகவல்"],
+  },
+  "te-IN": {
+    defaultResponse:
+      "ఈ రోజు కర్నాల్ మండిలో గోధుమ (PBW 550) ధర ₹2,275 క్వింటాల్‌కు, ఇది MSP (₹2,250) కంటే ఎక్కువ.",
+    intent: "market_price",
+    suggested: ["ధర హెచ్చరిక", "వాతావరణ సమాచారం"],
+  },
+  "kn-IN": {
+    defaultResponse:
+      "ಇಂದು ಕರ್ನಾಲ್ ಮಂಡಿಯಲ್ಲಿ ಗೋಧಿ (PBW 550) ಬೆಲೆ ₹2,275 ಪ್ರತಿ ಕ್ವಿಂಟಲ್, ಇದು MSP (₹2,250) ಗಿಂತ ಹೆಚ್ಚು.",
+    intent: "market_price",
+    suggested: ["ಬೆಲೆ ಎಚ್ಚರಿಕೆ", "ಹವಾಮಾನ ಮಾಹಿತಿ"],
+  },
+  "bn-IN": {
+    defaultResponse:
+      "আজ করনাল মন্ডিতে গম (PBW 550) দাম ₹2,275 প্রতি কুইন্টাল, যা MSP (₹2,250) এর চেয়ে বেশি।",
+    intent: "market_price",
+    suggested: ["দাম সতর্কতা", "আবহাওয়ার তথ্য"],
+  },
 };
 
 export const voiceMockService = {

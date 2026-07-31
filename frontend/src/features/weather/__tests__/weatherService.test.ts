@@ -85,7 +85,11 @@ describe("weatherService", () => {
         feelsLikeC: 33,
         humidity: 60,
         windSpeedKmh: 10,
+        windDirection: "N",
         uvIndex: 5,
+        rainChancePercent: 10,
+        visibility: 10,
+        pressure: 1013,
         sunriseTime: "06:00",
         sunsetTime: "19:00",
         updatedAt: new Date(),
@@ -96,10 +100,18 @@ describe("weatherService", () => {
         highC: 30,
         lowC: 20,
         rainChancePercent: 10,
+        humidity: 60,
+        windSpeedKmh: 10,
       })),
       recommendation: {
         severity: "none" as const,
+        confidence: 0.7,
       },
+      hourly: [],
+      riskAlerts: [],
+      farmImpact: [],
+      summary: { text: "", confidence: 0.7, generatedAt: new Date() },
+      history: [],
     };
     const spy = vi
       .spyOn(weatherService, "getWeatherData")

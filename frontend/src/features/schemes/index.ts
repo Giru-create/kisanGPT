@@ -7,11 +7,16 @@
 export { SchemesPage } from "./components/SchemesPage";
 
 // Components
-export { SchemeListCard } from "./components/SchemeListCard";
-export { SchemeFiltersBar } from "./components/SchemeFiltersBar";
-export { SchemeDetailPanel } from "./components/SchemeDetailPanel";
-export { SchemeSkeleton } from "./components/SchemeSkeleton";
-export { SchemeEmpty } from "./components/SchemeEmpty";
+export { HeroSection } from "./components/HeroSection";
+export { AIRecommendationCard } from "./components/AIRecommendationCard";
+export { SchemeExplorer } from "./components/SchemeExplorer";
+export { SchemeCard } from "./components/SchemeCard";
+export { SchemeDetailView } from "./components/SchemeDetailView";
+export { ApplicationTracker } from "./components/ApplicationTracker";
+export { AIAssistant } from "./components/AIAssistant";
+export { SchemeNotifications } from "./components/SchemeNotifications";
+export { SchemesEmpty } from "./components/SchemesEmpty";
+export { SchemesSkeleton } from "./components/SchemesSkeleton";
 export { SchemeError } from "./components/SchemeError";
 
 // Hooks
@@ -42,4 +47,12 @@ export type {
   SchemeDetailResponse,
   SchemeFilters,
   SchemesUIState,
+  HeroSchemeBrief,
+  AIRecommendation,
+  ApplicationStatus,
+  ApplicationTrackerItem,
+  NotificationType,
+  SchemeNotification,
+  AIQuestion,
+  SavedScheme,
 } from "./types/schemes.types";

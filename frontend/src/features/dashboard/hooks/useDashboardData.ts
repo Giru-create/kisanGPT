@@ -14,6 +14,7 @@ export function useDashboardQuery(options?: {
   lat?: number;
   lon?: number;
   city?: string;
+  token?: string;
 }) {
   return useQuery({
     queryKey: [...DASHBOARD_QUERY_KEY, options],

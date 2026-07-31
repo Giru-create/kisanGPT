@@ -2,27 +2,52 @@
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ChatInput.tsx
-// KisanGPT — Chat input area with voice button and attachments
+// KisanGPT — Chat input area with voice, image, camera, document support
+// Includes character counter, send animation, and suggested prompts
 // ─────────────────────────────────────────────────────────────────────────────
 
-import React, { useRef, useEffect } from "react";
-import { Send, Mic, ImageIcon, Paperclip, Camera } from "lucide-react";
+import React, { useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Send,
+  Mic,
+  ImageIcon,
+  Paperclip,
+  Camera,
+  X,
+  Loader2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAdvisorStore } from "../store/advisorStore";
 
 interface ChatInputProps {
   value: string;
   onChange: (value: string) => void;
   onSend: () => void;
+  onImageSelect?: (file: File) => void;
+  onVoiceToggle?: () => void;
   disabled?: boolean;
 }
+
+const MAX_CHARS = 2000;
 
 export const ChatInput: React.FC<ChatInputProps> = ({
   value,
   onChange,
   onSend,
+  onImageSelect,
+  onVoiceToggle,
   disabled = false,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { voiceStatus, imageUploadStatus, imagePreview, resetImageUpload } =
+    useAdvisorStore();
+
+  const isListening = voiceStatus === "listening";
+  const isSending = disabled;
+  const charCount = value.length;
+  const isOverLimit = charCount > MAX_CHARS;
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -31,32 +56,96 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     }
   }, [value]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      onSend();
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        if (value.trim() && !isOverLimit && !isSending) {
+          onSend();
+        }
+      }
+    },
+    [value, isOverLimit, isSending, onSend],
+  );
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file && onImageSelect) {
+        onImageSelect(file);
+      }
+      e.target.value = "";
+    },
+    [onImageSelect],
+  );
+
+  const handleVoiceClick = useCallback(() => {
+    if (onVoiceToggle) {
+      onVoiceToggle();
     }
-  };
+  }, [onVoiceToggle]);
 
   return (
-    <div className="p-4 bg-background/80 backdrop-blur-md border-t border-border">
+    <div className="p-3 md:p-4 bg-background/80 backdrop-blur-md border-t border-border">
       <div className="max-w-3xl mx-auto relative">
+        {/* Image Preview */}
+        <AnimatePresence>
+          {imagePreview && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              className="mb-3 relative inline-block"
+            >
+              <div className="relative rounded-xl overflow-hidden border border-border">
+                <img
+                  src={imagePreview}
+                  alt="Upload preview"
+                  className="w-24 h-24 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={resetImageUpload}
+                  className="absolute top-1 right-1 w-6 h-6 rounded-full bg-foreground/80 text-background flex items-center justify-center hover:bg-foreground transition-colors"
+                  aria-label="Remove image"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+              {imageUploadStatus === "uploading" && (
+                <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+                  <Loader2 size={20} className="text-primary animate-spin" />
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Floating Voice Button */}
-        <div className="absolute -top-7 right-0 translate-y-1/2">
-          <button
+        <div className="absolute -top-7 right-0 translate-y-1/2 z-10">
+          <motion.button
             type="button"
-            className="w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all hover:bg-primary/90"
-            aria-label="Voice input"
+            onClick={handleVoiceClick}
+            whileTap={{ scale: 0.9 }}
+            className={cn(
+              "w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all",
+              isListening
+                ? "bg-emerald-500 text-white animate-pulse"
+                : "bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105",
+            )}
+            aria-label={isListening ? "Stop listening" : "Start voice input"}
           >
             <Mic size={28} />
-          </button>
+          </motion.button>
         </div>
 
         {/* Input Container */}
         <div
           className={cn(
-            "bg-card border border-border rounded-2xl shadow-sm transition-all",
-            "focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary",
+            "bg-card border rounded-2xl shadow-sm transition-all",
+            isOverLimit
+              ? "border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
+              : "border-border focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary",
           )}
         >
           <textarea
@@ -69,17 +158,25 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             disabled={disabled}
             className="w-full bg-transparent border-none focus:ring-0 resize-none min-h-[44px] max-h-48 text-sm py-3 px-4 custom-scrollbar placeholder:text-muted-foreground"
             aria-label="Chat message input"
+            aria-describedby="char-count"
           />
 
           {/* Action Bar */}
           <div className="flex items-center justify-between px-4 pb-3">
             <div className="flex gap-1">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+                aria-hidden="true"
+              />
               <button
                 type="button"
+                onClick={() => fileInputRef.current?.click()}
                 className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
                 aria-label="Attach image"
-                disabled
-                title="Image attachment coming soon"
               >
                 <ImageIcon size={18} />
               </button>
@@ -103,20 +200,41 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={onSend}
-              disabled={!value.trim() || disabled}
-              className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
-                value.trim() && !disabled
-                  ? "bg-primary text-primary-foreground hover:shadow-lg active:scale-90"
-                  : "bg-muted text-muted-foreground cursor-not-allowed",
+            <div className="flex items-center gap-3">
+              {/* Character Counter */}
+              {charCount > 0 && (
+                <span
+                  id="char-count"
+                  className={cn(
+                    "text-[11px] font-medium tabular-nums",
+                    isOverLimit ? "text-red-500" : "text-muted-foreground",
+                  )}
+                >
+                  {charCount.toLocaleString()}/{MAX_CHARS.toLocaleString()}
+                </span>
               )}
-              aria-label="Send message"
-            >
-              <Send size={18} />
-            </button>
+
+              {/* Send Button */}
+              <motion.button
+                type="button"
+                onClick={onSend}
+                disabled={!value.trim() || disabled || isOverLimit}
+                whileTap={{ scale: 0.9 }}
+                className={cn(
+                  "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
+                  value.trim() && !disabled && !isOverLimit
+                    ? "bg-primary text-primary-foreground hover:shadow-lg active:scale-90"
+                    : "bg-muted text-muted-foreground cursor-not-allowed",
+                )}
+                aria-label="Send message"
+              >
+                {isSending ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <Send size={18} />
+                )}
+              </motion.button>
+            </div>
           </div>
         </div>
 

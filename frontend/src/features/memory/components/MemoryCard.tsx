@@ -1,107 +1,175 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// MemoryCard.tsx
-// KisanGPT — Individual Farm Memory Item Card Component
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import {
   Calendar,
   MapPin,
-  Tag,
   CheckCircle2,
   Trash2,
+  Pin,
+  Bookmark,
+  Share2,
+  ArrowUpRight,
+  Layers,
   Wheat,
   Bug,
   Droplets,
   FlaskConical,
+  Cloud,
+  TrendingUp,
+  Shield,
+  Mic,
   FileText,
-  Layers,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/Badge";
+import {
+  MEMORY_CATEGORIES,
+  SOURCE_CONFIG,
+  IMPORTANCE_CONFIG,
+} from "../constants/memory.constants";
 import type { FarmMemoryItem } from "../types/memory.types";
 
 interface MemoryCardProps {
   item: FarmMemoryItem;
+  index?: number;
   onDelete?: (id: string) => void;
+  onPin?: (id: string) => void;
+  onSave?: (id: string) => void;
+  onSelect?: (item: FarmMemoryItem) => void;
 }
 
-export const MemoryCard: React.FC<MemoryCardProps> = ({ item, onDelete }) => {
-  const formattedDate = new Date(item.timestamp).toLocaleDateString(undefined, {
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  soil: Layers,
+  crop_yield: Wheat,
+  disease_history: Bug,
+  irrigation: Droplets,
+  fertilizer: FlaskConical,
+  weather_decisions: Cloud,
+  market_decisions: TrendingUp,
+  govt_schemes: Shield,
+  voice_conversations: Mic,
+  saved_ai_advice: Bookmark,
+  custom_note: FileText,
+};
+
+export const MemoryCard: React.FC<MemoryCardProps> = ({
+  item,
+  index = 0,
+  onDelete,
+  onPin,
+  onSave,
+  onSelect,
+}) => {
+  const formattedDate = new Date(item.timestamp).toLocaleDateString("en-IN", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 
-  const getCategoryIcon = () => {
-    switch (item.category) {
-      case "soil":
-        return (
-          <Layers size={16} className="text-amber-600 dark:text-amber-400" />
-        );
-      case "crop_yield":
-        return (
-          <Wheat size={16} className="text-emerald-600 dark:text-emerald-400" />
-        );
-      case "disease_history":
-        return <Bug size={16} className="text-red-500" />;
-      case "irrigation":
-        return <Droplets size={16} className="text-blue-500" />;
-      case "fertilizer":
-        return <FlaskConical size={16} className="text-purple-500" />;
-      default:
-        return <FileText size={16} className="text-gray-500" />;
-    }
-  };
+  const CategoryIcon = CATEGORY_ICONS[item.category] ?? FileText;
+  const categoryCfg = MEMORY_CATEGORIES.find((c) => c.id === item.category);
+  const sourceCfg = item.source ? SOURCE_CONFIG[item.source] : undefined;
+  const importanceCfg = item.importance
+    ? IMPORTANCE_CONFIG[item.importance]
+    : undefined;
 
   return (
-    <div className="p-5 rounded-2xl bg-card border border-border/60 hover:border-primary/40 transition-all shadow-xs space-y-3">
+    <motion.article
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.04, ease: "easeOut" }}
+      className={cn(
+        "p-4 rounded-2xl border bg-card hover:border-primary/30 transition-all shadow-xs space-y-3 cursor-pointer group",
+        item.isPinned
+          ? "border-amber-500/30 bg-amber-500/5"
+          : "border-border/60",
+      )}
+      onClick={() => onSelect?.(item)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect?.(item);
+        }
+      }}
+      aria-label={`Memory: ${item.title}`}
+    >
       {/* Header Badges */}
       <div className="flex items-center justify-between gap-2 flex-wrap">
-        <div className="flex items-center gap-2">
-          <span className="p-1.5 rounded-xl bg-muted/60 flex items-center justify-center shrink-0">
-            {getCategoryIcon()}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span
+            className={cn(
+              "p-1.5 rounded-xl flex items-center justify-center shrink-0",
+              categoryCfg?.bg ?? "bg-muted/60",
+            )}
+          >
+            <CategoryIcon
+              size={14}
+              className={categoryCfg?.color ?? "text-muted-foreground"}
+            />
           </span>
-          <span className="px-2.5 py-0.5 text-[11px] font-bold rounded-full bg-primary/10 text-primary capitalize">
-            {item.category.replace("_", " ")}
-          </span>
+          <Badge
+            className={cn(
+              "text-[9px] px-2 py-0",
+              categoryCfg?.color,
+              categoryCfg?.bg,
+            )}
+          >
+            {categoryCfg?.label ?? item.category}
+          </Badge>
           {item.isVerified && (
-            <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-              <CheckCircle2 size={12} /> Verified
+            <span className="flex items-center gap-1 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400">
+              <CheckCircle2 size={10} /> Verified
+            </span>
+          )}
+          {item.isPinned && (
+            <span className="flex items-center gap-1 text-[9px] font-semibold text-amber-600 dark:text-amber-400">
+              <Pin size={10} /> Pinned
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
-            <Calendar size={12} />
-            {formattedDate}
-          </span>
-
-          {onDelete && (
-            <button
-              type="button"
-              onClick={() => onDelete(item.id)}
-              aria-label={`Delete record ${item.title}`}
-              className="p-1 text-muted-foreground hover:text-destructive transition-colors rounded-lg min-h-[32px] min-w-[32px] flex items-center justify-center"
+        <div className="flex items-center gap-2">
+          {importanceCfg && (
+            <span
+              className={cn(
+                "text-[9px] font-semibold px-1.5 py-0.5 rounded-full",
+                importanceCfg.bg,
+                importanceCfg.color,
+              )}
             >
-              <Trash2 size={14} />
-            </button>
+              {importanceCfg.label}
+            </span>
           )}
         </div>
       </div>
 
       {/* Main Content */}
       <div className="space-y-1">
-        <h3 className="text-sm font-bold text-foreground leading-tight">
+        <h3 className="text-sm font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
           {item.title}
         </h3>
-        <p className="text-xs text-muted-foreground leading-relaxed">
+        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
           {item.description}
         </p>
       </div>
 
-      {/* Metrics Row if present */}
+      {/* AI Explanation */}
+      {item.aiExplanation && (
+        <div className="p-2.5 rounded-xl bg-primary/5 border border-primary/10">
+          <p className="text-[10px] font-semibold text-primary mb-1">
+            AI Insight
+          </p>
+          <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">
+            {item.aiExplanation}
+          </p>
+        </div>
+      )}
+
+      {/* Metrics Row */}
       {item.metrics && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-2.5 rounded-xl bg-muted/40 text-xs font-medium">
           {item.metrics.ph !== undefined && (
@@ -117,7 +185,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ item, onDelete }) => {
           {item.metrics.yield_quintals !== undefined && (
             <div>
               <span className="text-[10px] text-muted-foreground block">
-                Yield (qtl/acre)
+                Yield
               </span>
               <span className="font-bold text-emerald-600 dark:text-emerald-400">
                 {item.metrics.yield_quintals} qtl
@@ -127,51 +195,144 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ item, onDelete }) => {
           {item.metrics.water_liters !== undefined && (
             <div>
               <span className="text-[10px] text-muted-foreground block">
-                Water Volume
+                Water
               </span>
               <span className="font-bold text-blue-600 dark:text-blue-400">
-                {item.metrics.water_liters} L
+                {item.metrics.water_liters.toLocaleString()} L
               </span>
             </div>
           )}
           {item.metrics.nitrogen !== undefined && (
             <div>
               <span className="text-[10px] text-muted-foreground block">
-                N-P-K Ratio
+                N-P-K
               </span>
               <span className="font-bold text-foreground">
-                {item.metrics.nitrogen}-{item.metrics.phosphorus}-
-                {item.metrics.potassium}
+                {item.metrics.nitrogen}-{item.metrics.phosphorus ?? 0}-
+                {item.metrics.potassium ?? 0}
               </span>
             </div>
           )}
         </div>
       )}
 
-      {/* Footer Location & Tags */}
-      <div className="flex items-center justify-between pt-1 border-t border-border/40 text-[11px]">
-        {item.location && (
-          <span className="flex items-center gap-1 font-medium text-muted-foreground">
-            <MapPin size={12} />
-            {item.location}
-          </span>
-        )}
+      {/* Tags */}
+      {item.tags && item.tags.length > 0 && (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {item.tags.slice(0, 4).map((tag) => (
+            <span
+              key={tag}
+              className="text-[9px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium"
+            >
+              {tag}
+            </span>
+          ))}
+          {item.tags.length > 4 && (
+            <span className="text-[9px] text-muted-foreground">
+              +{item.tags.length - 4} more
+            </span>
+          )}
+        </div>
+      )}
 
-        {item.tags && item.tags.length > 0 && (
-          <div className="flex items-center gap-1 flex-wrap">
-            <Tag size={11} className="text-muted-foreground shrink-0" />
-            {item.tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="px-2 py-0.5 rounded-md bg-muted/70 text-[10px] font-medium text-muted-foreground"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-2.5 border-t border-border/30">
+        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <Calendar size={11} />
+            {formattedDate}
+          </span>
+          {item.location && (
+            <span className="flex items-center gap-1">
+              <MapPin size={11} />
+              {item.location}
+            </span>
+          )}
+          {sourceCfg && (
+            <span
+              className={cn(
+                "flex items-center gap-1 px-1.5 py-0.5 rounded-full font-semibold",
+                sourceCfg.bg,
+                sourceCfg.color,
+              )}
+            >
+              {sourceCfg.label}
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-1">
+          {onPin && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onPin(item.id);
+              }}
+              className={cn(
+                "p-1.5 rounded-lg transition-colors",
+                item.isPinned
+                  ? "text-amber-600 bg-amber-500/10"
+                  : "text-muted-foreground hover:bg-muted",
+              )}
+              aria-label={item.isPinned ? "Unpin memory" : "Pin memory"}
+            >
+              <Pin size={13} className={item.isPinned ? "fill-current" : ""} />
+            </button>
+          )}
+          {onSave && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onSave(item.id);
+              }}
+              className={cn(
+                "p-1.5 rounded-lg transition-colors",
+                item.isSaved
+                  ? "text-violet-600 bg-violet-500/10"
+                  : "text-muted-foreground hover:bg-muted",
+              )}
+              aria-label={item.isSaved ? "Unsave memory" : "Save memory"}
+            >
+              <Bookmark
+                size={13}
+                className={item.isSaved ? "fill-current" : ""}
+              />
+            </button>
+          )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className="p-1.5 rounded-lg text-muted-foreground hover:bg-muted transition-colors"
+            aria-label="Share memory"
+          >
+            <Share2 size={13} />
+          </button>
+          {onDelete && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(item.id);
+              }}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-red-600 hover:bg-red-500/10 transition-colors"
+              aria-label={`Delete memory: ${item.title}`}
+            >
+              <Trash2 size={13} />
+            </button>
+          )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect?.(item);
+            }}
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors"
+            aria-label="View details"
+          >
+            <ArrowUpRight size={13} />
+          </button>
+        </div>
       </div>
-    </div>
+    </motion.article>
   );
 };
 

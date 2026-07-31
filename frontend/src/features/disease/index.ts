@@ -7,13 +7,19 @@
 export { DiseaseDetectionPage } from "./components/DiseaseDetectionPage";
 
 // Components
-export { ImageUploader } from "./components/ImageUploader";
-export { ImagePreview } from "./components/ImagePreview";
-export { DetectionResultCard } from "./components/DetectionResultCard";
+export { HeroSection } from "./components/HeroSection";
+export { ImageCapture } from "./components/ImageCapture";
+export { AIAnalysis } from "./components/AIAnalysis";
+export { DiagnosisResultCard } from "./components/DiagnosisResultCard";
+export { TreatmentPlan } from "./components/TreatmentPlan";
+export { AIExplanationCard } from "./components/AIExplanationCard";
+export { RelatedInfoCard } from "./components/RelatedInfoCard";
+export { FollowUpActions } from "./components/FollowUpActions";
+export { DiagnosisHistory } from "./components/DiagnosisHistory";
+export { DiseaseEmpty } from "./components/DiseaseEmpty";
+export { DiseaseSkeleton } from "./components/DiseaseSkeleton";
 export { TreatmentList } from "./components/TreatmentList";
-export { DetectionSkeleton } from "./components/DetectionSkeleton";
 export { DetectionError } from "./components/DetectionError";
-export { DetectionEmpty } from "./components/DetectionEmpty";
 
 // Hooks
 export { useDiseaseDetection } from "./hooks/useDiseaseDetection";
@@ -40,4 +46,13 @@ export type {
   TreatmentUrgency,
   DiagnosisHistoryItem,
   DiseaseUIState,
+  DiseaseCategory,
+  PlantPart,
+  SpreadRisk,
+  DiagnosisStatus,
+  EnhancedTreatment,
+  AIExplanation,
+  RelatedInfo,
+  ScanningStep,
+  SupportedCrop,
 } from "./types/disease.types";
