@@ -1,66 +1,283 @@
-# KisanGPT
+# 🌾 KisanGPT
 
-AI-powered farming assistant for Indian farmers.
+> **An AI-powered operating system for farmers.**
 
-## Tech Stack
+KisanGPT is a modern, production-ready AI platform designed to help farmers make smarter agricultural decisions through artificial intelligence. It combines conversational AI, weather intelligence, market insights, disease detection, government schemes, voice interaction, and personalized farm memory into a single, intuitive platform.
 
-**Frontend:** Next.js, React, TypeScript, Tailwind CSS
+---
 
-**Backend:** FastAPI, Python, Pydantic
+# 🚀 Features
 
-**AI:** Google Gemini, RAG with ChromaDB
+### 🤖 AI Advisor
 
-**Database:** Firebase Firestore
+* Conversational AI assistant for farming guidance
+* Context-aware responses
+* Image-assisted queries
+* AI recommendations
 
-**Auth:** Firebase Authentication
+### 🌦 Weather Intelligence
 
-## Getting Started
+* Current weather conditions
+* Multi-day forecasts
+* Weather alerts
+* Farming recommendations based on weather
 
-### Prerequisites
+### 📈 Market Intelligence
 
-- Node.js 20+
-- Python 3.11+
-- pip
+* Crop price monitoring
+* Market trends
+* Price comparison
+* Market insights
 
-### Installation
+### 🌱 Disease Detection
+
+* Upload crop images
+* AI-powered disease analysis
+* Treatment recommendations
+* Confidence scoring
+
+### 🏛 Government Schemes
+
+* Search government schemes
+* Eligibility information
+* Benefits overview
+* Application guidance
+
+### 🎙 Voice Assistant
+
+* Voice interaction
+* Speech-to-text
+* Text-to-speech
+* Hands-free farming assistance
+
+### 🧠 AI Memory
+
+* Conversation history
+* Saved recommendations
+* Personalized farming context
+* Long-term memory
+
+### 👤 Farmer Profile
+
+* Personal information
+* Farm details
+* Crop preferences
+* Location settings
+
+### ⚙ Settings
+
+* AI personalization
+* Notification preferences
+* Appearance
+* Privacy & security
+* Voice configuration
+
+---
+
+# 🏗 Project Architecture
+
+```
+KisanGPT
+│
+├── frontend/
+│   ├── Next.js App Router
+│   ├── React
+│   ├── TypeScript
+│   ├── Tailwind CSS
+│   ├── shadcn/ui
+│   ├── React Query
+│   └── Zustand
+│
+├── backend/
+│   ├── FastAPI
+│   ├── Pydantic
+│   ├── Python
+│   ├── REST API
+│   └── AI Services
+│
+└── shared/
+```
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+* Next.js 15
+* React
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+* Zustand
+* TanStack React Query
+* Framer Motion
+* Lucide Icons
+* Vitest
+
+## Backend
+
+* FastAPI
+* Python
+* Pydantic
+* Uvicorn
+* Ruff
+* Pytest
+
+---
+
+# 📂 Project Structure
+
+```
+frontend/
+backend/
+shared/
+docs/
+```
+
+---
+
+# ⚡ Getting Started
+
+## Clone
 
 ```bash
-make setup
+git clone https://github.com/Giru-create/kisanGPT.git
+cd kisanGPT
 ```
 
-### Development
+---
+
+## Frontend
 
 ```bash
-make dev-frontend   # Start frontend (port 3000)
-make dev-backend    # Start backend (port 8000)
+cd frontend
+pnpm install
+pnpm dev
 ```
 
-### Commands
+Runs on:
+
+```
+http://localhost:3000
+```
+
+---
+
+## Backend
 
 ```bash
-make help           # Show all commands
-make lint           # Run linters
-make format         # Format code
-make test           # Run tests
-make typecheck      # Type check
+cd backend
+uvicorn app.main:app --reload
 ```
 
-## Project Structure
+Runs on:
 
 ```
-kisangpt/
-  frontend/          # Next.js app
-  backend/           # FastAPI app
-  shared/            # Shared types
-  docs/              # Documentation
-  scripts/           # Dev scripts
-  .github/           # CI/CD
+http://127.0.0.1:8000
 ```
 
-## Environment Variables
+---
 
-Copy `.env.example` to `.env.local` in each stack directory and fill in the values.
+# 🧪 Development Commands
 
-## License
+## Frontend
 
-Private
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+## Backend
+
+```bash
+ruff check .
+ruff format .
+pytest
+```
+
+---
+
+# ✨ UI Highlights
+
+* Premium AI-first interface
+* Responsive design
+* Dark mode ready
+* Modern dashboard
+* Skeleton loading states
+* Error handling
+* Empty states
+* Smooth animations
+* Accessible components
+* Component-driven architecture
+
+---
+
+# 📊 Quality Status
+
+✅ TypeScript
+
+✅ React Query
+
+✅ Zustand
+
+✅ Production Build
+
+✅ Unit Tests
+
+✅ Responsive Layout
+
+✅ API Integration
+
+---
+
+# 📌 Future Roadmap
+
+* Authentication & Authorization
+* Multi-language support
+* Offline mode
+* Real-time weather updates
+* Advanced RAG knowledge base
+* Multi-agent orchestration
+* Farm analytics dashboard
+* Mobile application
+* Push notifications
+* AI voice improvements
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Push the branch.
+5. Open a Pull Request.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+**Grish Kumar**
+
+B.Tech Artificial Intelligence & Machine Learning Student
+
+Building AI solutions for real-world agriculture.
+
+GitHub: https://github.com/Giru-create
+
+---
+
+# 🌟 Vision
+
+Our vision is to empower every farmer with an intelligent AI companion capable of delivering timely insights, personalized recommendations, and accessible agricultural knowledge—helping improve productivity, sustainability, and decision-making through technology.
