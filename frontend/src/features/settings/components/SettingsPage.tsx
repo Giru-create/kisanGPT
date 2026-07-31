@@ -51,15 +51,15 @@ export const SettingsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground">
+      <main className="min-h-screen bg-background">
         <SettingsSkeleton />
-      </div>
+      </main>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground items-center justify-center p-8">
+      <main className="min-h-screen bg-background flex items-center justify-center p-8">
         <div className="text-center space-y-4">
           <div className="h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto">
             <span className="text-2xl">⚠️</span>
@@ -71,7 +71,7 @@ export const SettingsPage: React.FC = () => {
             {error ?? "An unexpected error occurred."}
           </p>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -129,14 +129,14 @@ export const SettingsPage: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground">
+    <main className="min-h-screen bg-background">
       <LiveRegion>
         {isLoading
           ? "Loading settings..."
           : `Settings - ${activeCategoryInfo?.label ?? ""}`}
       </LiveRegion>
 
-      <main className="flex-1 p-4 max-w-5xl mx-auto w-full">
+      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -144,7 +144,7 @@ export const SettingsPage: React.FC = () => {
           className="mb-6"
         >
           <h1 className="text-xl font-bold text-foreground">Settings</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             Personalize your KisanGPT experience
           </p>
         </motion.div>
@@ -228,8 +228,8 @@ export const SettingsPage: React.FC = () => {
             )}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 };
 

@@ -1,10 +1,5 @@
 "use client";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// EmergencyAlertBanner.tsx
-// KisanGPT — Section 11: Emergency Hazard Alerts Banner
-// ─────────────────────────────────────────────────────────────────────────────
-
 import React from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, X, ShieldAlert } from "lucide-react";
@@ -33,32 +28,46 @@ export const EmergencyAlertBanner: React.FC<EmergencyAlertBannerProps> = ({
     <motion.aside
       role="alert"
       aria-live="assertive"
-      initial={{ opacity: 0, y: -12 }}
+      initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      className={`relative w-full rounded-xl border border-l-4 p-4 shadow-sm transition-all ${
+      exit={{ opacity: 0, y: -8 }}
+      className={`relative w-full rounded-2xl border p-4 sm:p-5 shadow-sm ${
         isCritical
-          ? "border-red-500/40 border-l-red-600 bg-red-500/10 text-red-950 dark:text-red-200"
-          : "border-amber-500/40 border-l-amber-500 bg-amber-500/10 text-amber-950 dark:text-amber-200"
+          ? "border-red-500/25 bg-red-500/5 dark:bg-red-500/10"
+          : "border-amber-500/25 bg-amber-500/5 dark:bg-amber-500/10"
       }`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-start gap-3">
-          <div className="shrink-0 mt-0.5" aria-hidden="true">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3.5">
+          <div
+            className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
+              isCritical ? "bg-red-500/10" : "bg-amber-500/10"
+            }`}
+          >
             {isCritical ? (
-              <ShieldAlert className="h-5 w-5 text-red-600 dark:text-red-400 motion-safe:animate-pulse" />
+              <ShieldAlert
+                size={20}
+                className="text-red-500 motion-safe:animate-pulse"
+                aria-hidden="true"
+              />
             ) : (
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <AlertTriangle
+                size={20}
+                className="text-amber-500"
+                aria-hidden="true"
+              />
             )}
           </div>
 
-          <div className="flex flex-col gap-1">
-            <h3 className="font-semibold text-base leading-tight">
+          <div className="flex flex-col gap-1.5">
+            <h3 className="font-semibold text-sm text-foreground">
               {alert.title}
             </h3>
-            <p className="text-sm opacity-90 leading-normal">{alert.message}</p>
-            <p className="text-xs font-semibold mt-1 opacity-100 bg-black/5 dark:bg-white/10 p-2 rounded-lg inline-block">
-              👉 Action Needed: {alert.actionAdvice}
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {alert.message}
+            </p>
+            <p className="text-xs font-medium text-foreground bg-muted/50 px-3 py-1.5 rounded-lg inline-block mt-1">
+              {alert.actionAdvice}
             </p>
           </div>
         </div>
@@ -69,9 +78,9 @@ export const EmergencyAlertBanner: React.FC<EmergencyAlertBannerProps> = ({
             size="sm"
             onClick={() => dismiss(alert.id)}
             aria-label="Dismiss emergency alert"
-            className="h-9 w-9 p-0 rounded-full shrink-0 text-foreground hover:bg-black/10 dark:hover:bg-white/10"
+            className="h-8 w-8 p-0 rounded-lg shrink-0 text-muted-foreground hover:text-foreground"
           >
-            <X size={18} />
+            <X size={16} />
           </Button>
         )}
       </div>

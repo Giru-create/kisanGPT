@@ -32,15 +32,15 @@ export const ProfilePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground">
+      <main className="min-h-screen bg-background">
         <ProfileSkeleton />
-      </div>
+      </main>
     );
   }
 
   if (error || !profileData) {
     return (
-      <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground items-center justify-center p-8">
+      <main className="min-h-screen bg-background flex items-center justify-center p-8">
         <div className="text-center space-y-3 max-w-sm">
           <p className="text-sm font-semibold text-foreground">
             Failed to load profile
@@ -55,7 +55,7 @@ export const ProfilePage: React.FC = () => {
             Retry
           </button>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -127,7 +127,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground">
+    <main className="min-h-screen bg-background">
       <LiveRegion>
         {isLoading
           ? "Loading farmer profile"
@@ -135,7 +135,7 @@ export const ProfilePage: React.FC = () => {
       </LiveRegion>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 space-y-5 max-w-4xl mx-auto w-full">
+      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6 flex flex-col gap-5">
         {/* Hero (always visible) */}
         <ProfileHero profile={profile} onEdit={() => setIsEditing(true)} />
 
@@ -166,7 +166,7 @@ export const ProfilePage: React.FC = () => {
 
         {/* Tab content */}
         <AnimatePresence mode="wait">{renderTabContent()}</AnimatePresence>
-      </main>
+      </div>
 
       {/* Delete Account Modal */}
       {isDeleteModalOpen && (
@@ -218,7 +218,7 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

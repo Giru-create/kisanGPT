@@ -46,7 +46,7 @@ export const MemoryPage: React.FC = () => {
   const savedCount = memories.filter((m) => m.isSaved).length;
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-background text-foreground">
+    <main className="min-h-screen bg-background">
       <LiveRegion>
         {isLoading
           ? "Loading farm memory records"
@@ -63,7 +63,7 @@ export const MemoryPage: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 p-4 space-y-5 max-w-5xl mx-auto w-full">
+      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6 flex flex-col gap-5">
         {/* Hero Section — Stats & Overview */}
         <HeroSection />
 
@@ -103,7 +103,7 @@ export const MemoryPage: React.FC = () => {
 
         {/* Personalized AI Recommendations Section */}
         <PersonalizedRecommendations recommendations={recommendations} />
-      </main>
+      </div>
 
       {/* Add Record Form Modal */}
       <AddMemoryModal
@@ -121,7 +121,7 @@ export const MemoryPage: React.FC = () => {
         onPin={handleTogglePin}
         onSave={handleToggleSave}
       />
-    </div>
+    </main>
   );
 };
 

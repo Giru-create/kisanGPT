@@ -36,7 +36,7 @@ export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-md mx-auto space-y-5 bg-card/40 rounded-3xl border border-border/40 my-6 shadow-xs"
+      className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-md mx-auto space-y-5 rounded-2xl border border-border bg-card p-8"
     >
       <div className="relative">
         <div className="w-18 h-18 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-inner">
@@ -48,10 +48,10 @@ export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
       </div>
 
       <div className="space-y-1.5">
-        <h3 className="text-lg font-bold text-foreground tracking-tight">
+        <h3 className="text-base font-bold text-foreground mb-2">
           No memories yet
         </h3>
-        <p className="text-xs text-muted-foreground leading-relaxed">
+        <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed mb-5">
           Start building your farm&apos;s AI memory. KisanGPT will remember soil
           tests, crop yields, disease history, and every conversation you have.
         </p>
@@ -78,7 +78,7 @@ export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
       <button
         type="button"
         onClick={onAddClick}
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         <Plus size={16} />
         <span>Add First Memory</span>

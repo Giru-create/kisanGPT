@@ -1,10 +1,5 @@
 "use client";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// DashboardSkeleton.tsx
-// KisanGPT — Loading Skeleton state for Farmer Dashboard
-// ─────────────────────────────────────────────────────────────────────────────
-
 import React from "react";
 import { Skeleton } from "@/components/ui/Skeleton";
 
@@ -14,49 +9,48 @@ export const DashboardSkeleton: React.FC = () => {
       role="status"
       aria-busy="true"
       aria-label="Loading farmer dashboard"
-      className="w-full flex flex-col gap-6"
+      className="max-w-7xl mx-auto w-full flex flex-col gap-8"
     >
       <span className="sr-only">Loading farmer dashboard data...</span>
 
-      {/* Greeting Skeleton */}
       <div className="flex justify-between items-end py-2">
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-9 w-72" />
-          <Skeleton className="h-5 w-56" />
-        </div>
-        <Skeleton className="h-10 w-40 rounded-xl" />
-      </div>
-
-      {/* Hero Section: Weather + AI Advisory */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <Skeleton className="h-56 rounded-xl" />
-        <Skeleton className="h-56 rounded-xl" />
-      </div>
-
-      {/* Crop Health + Market Trends */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div className="lg:col-span-7 flex flex-col gap-4">
-          <Skeleton className="h-5 w-48" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Skeleton className="h-48 rounded-xl" />
-            <Skeleton className="h-48 rounded-xl" />
-          </div>
-        </div>
-        <div className="lg:col-span-5 flex flex-col gap-4">
-          <Skeleton className="h-5 w-36" />
-          <Skeleton className="h-64 rounded-xl" />
-        </div>
-      </div>
-
-      {/* Recent Chats + Priority Alerts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <Skeleton className="h-48 rounded-xl" />
         <div className="flex flex-col gap-3">
-          <Skeleton className="h-5 w-32" />
-          <Skeleton className="h-20 rounded-xl" />
-          <Skeleton className="h-20 rounded-xl" />
+          <Skeleton className="h-9 w-72 rounded-xl" />
+          <Skeleton className="h-4 w-48 rounded-lg" />
+        </div>
+        <Skeleton className="h-10 w-36 rounded-xl" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <Skeleton className="h-72 rounded-2xl" />
+        <Skeleton className="h-72 rounded-2xl" />
+      </div>
+
+      <div className="flex flex-col gap-5">
+        <div className="flex items-center gap-3">
+          <Skeleton className="w-1 h-6 rounded-full" />
+          <Skeleton className="h-5 w-32 rounded-lg" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Skeleton className="h-48 rounded-2xl" />
+          <Skeleton className="h-48 rounded-2xl" />
         </div>
       </div>
+
+      <div className="flex flex-col gap-5">
+        <div className="flex items-center gap-3">
+          <Skeleton className="w-1 h-6 rounded-full" />
+          <Skeleton className="h-5 w-40 rounded-lg" />
+        </div>
+        <Skeleton className="h-64 rounded-2xl" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Skeleton className="h-64 rounded-2xl" />
+        <Skeleton className="h-64 rounded-2xl" />
+      </div>
+
+      <Skeleton className="h-20 rounded-2xl" />
     </div>
   );
 };

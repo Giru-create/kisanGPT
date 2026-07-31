@@ -1,28 +1,33 @@
 "use client";
 
 import React from "react";
-import { Lightbulb } from "lucide-react";
+import Link from "next/link";
+import { TrendingUp, TrendingDown, ArrowUpRight } from "lucide-react";
 import type { MarketTrendItem } from "../types/dashboard.types";
 
 interface MarketTrendsCardProps {
   trends: MarketTrendItem[];
 }
 
-const MiniBarChart: React.FC = () => {
-  const bars = [40, 55, 45, 60, 75, 85, 100];
+const MiniSparkline: React.FC<{ isRise: boolean }> = ({ isRise }) => {
+  const points = "M0,20 L8,16 L16,18 L24,12 L32,14 L40,8 L48,4 L56,6 L64,2";
   return (
-    <div className="w-32 h-12 flex items-end gap-1" aria-hidden="true">
-      {bars.map((height, i) => (
-        <div
-          key={i}
-          className="w-2 rounded-t-sm bg-primary"
-          style={{
-            height: `${height}%`,
-            opacity: 0.2 + (i / bars.length) * 0.8,
-          }}
-        />
-      ))}
-    </div>
+    <svg
+      width="64"
+      height="24"
+      viewBox="0 0 64 24"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0"
+    >
+      <path
+        d={points}
+        stroke={isRise ? "#10b981" : "#ef4444"}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 };
 
@@ -35,54 +40,73 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
     <section
       role="region"
       aria-label="Market Trends"
-      className="bg-card border border-border rounded-xl p-5 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-6 shadow-sm"
     >
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="font-semibold text-base text-foreground">
-          Market Trends
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          Market Prices
         </h2>
-        <span className="text-xs text-muted-foreground">
-          Live from MCX/NCDEX
+        <span className="text-[11px] text-muted-foreground font-medium">
+          Live MCX/NCDEX
         </span>
       </div>
 
       {primary && (
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-5 p-4 rounded-xl bg-muted/30 border border-border/40">
           <div>
-            <h4 className="font-bold text-foreground">{primary.commodity}</h4>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-2xl font-bold text-primary">
+            <p className="text-xs text-muted-foreground font-medium mb-1">
+              Featured Commodity
+            </p>
+            <h4 className="font-bold text-foreground text-lg">
+              {primary.commodity}
+            </h4>
+            <div className="flex items-center gap-2 mt-1.5">
+              <span className="text-2xl font-bold text-foreground tabular-nums">
                 {primary.price}
               </span>
               <span
-                className={`text-xs font-medium ${
+                className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-md ${
                   primary.isRise
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : "text-red-600 dark:text-red-400"
+                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                    : "bg-red-500/10 text-red-600 dark:text-red-400"
                 }`}
               >
+                {primary.isRise ? (
+                  <TrendingUp size={12} aria-hidden="true" />
+                ) : (
+                  <TrendingDown size={12} aria-hidden="true" />
+                )}
                 {primary.isRise ? "+" : ""}
                 {primary.changePercent}%
               </span>
             </div>
           </div>
-          <MiniBarChart />
+          <MiniSparkline isRise={primary.isRise} />
         </div>
       )}
 
-      <div className="space-y-1">
+      <div className="flex flex-col gap-1">
         {trends.slice(1).map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between p-2.5 hover:bg-muted rounded-lg transition-colors"
+            className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-xl transition-colors"
           >
-            <span className="text-sm font-medium text-foreground">
-              {item.commodity}
-            </span>
-            <span className="text-sm font-bold text-foreground">
-              {item.price}{" "}
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  item.isRise ? "bg-emerald-500" : "bg-red-500"
+                }`}
+              />
+              <span className="text-sm font-medium text-foreground">
+                {item.commodity}
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-semibold text-foreground tabular-nums">
+                {item.price}
+              </span>
               <span
-                className={`font-medium text-[10px] ml-1 ${
+                className={`text-xs font-semibold tabular-nums ${
                   item.isRise
                     ? "text-emerald-600 dark:text-emerald-400"
                     : "text-red-600 dark:text-red-400"
@@ -91,20 +115,19 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
                 {item.isRise ? "+" : ""}
                 {item.changePercent}%
               </span>
-            </span>
+            </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 pt-4 border-t border-border">
-        <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-          <Lightbulb
-            size={14}
-            className="text-amber-500 shrink-0"
-            aria-hidden="true"
-          />
-          AI Insight: Market liquidity suggests a peak in 10-14 days.
-        </p>
+      <div className="mt-4 pt-4 border-t border-border/60">
+        <Link
+          href="/market"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+        >
+          View Full Market
+          <ArrowUpRight size={13} aria-hidden="true" />
+        </Link>
       </div>
     </section>
   );

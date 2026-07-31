@@ -7,6 +7,7 @@
 
 import React from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 interface MemoryErrorProps {
   message: string;
@@ -21,33 +22,31 @@ export const MemoryError: React.FC<MemoryErrorProps> = ({
     <div
       role="alert"
       aria-live="assertive"
-      className="p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive-foreground flex items-start gap-3 my-4 max-w-xl mx-auto shadow-xs"
+      className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center flex flex-col items-center gap-4"
     >
-      <div className="p-2 rounded-full bg-background/80 shrink-0 shadow-xs text-destructive">
-        <AlertTriangle size={20} />
+      <div className="rounded-full bg-destructive/10 p-4">
+        <AlertTriangle size={40} className="text-destructive" />
       </div>
 
-      <div className="flex-1 space-y-1">
-        <h4 className="text-sm font-bold text-foreground">
+      <div className="flex flex-col gap-1.5">
+        <h2 className="text-lg font-semibold text-foreground">
           Farm Memory Load Failure
-        </h4>
-        <p className="text-xs text-muted-foreground leading-relaxed">
+        </h2>
+        <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
           {message}
         </p>
-
-        {onRetry && (
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={onRetry}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs min-h-[36px] focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <RefreshCw size={14} />
-              Retry Loading
-            </button>
-          </div>
-        )}
       </div>
+
+      {onRetry && (
+        <Button
+          variant="primary"
+          size="md"
+          leftIcon={<RefreshCw size={16} />}
+          onClick={onRetry}
+        >
+          Retry Loading
+        </Button>
+      )}
     </div>
   );
 };

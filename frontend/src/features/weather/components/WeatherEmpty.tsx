@@ -17,7 +17,7 @@ export const WeatherEmpty: React.FC<WeatherEmptyProps> = ({
   onSetLocation,
 }) => {
   return (
-    <div className="flex flex-col items-center text-center gap-6 rounded-2xl border border-border bg-card px-6 py-12">
+    <div className="flex flex-col items-center text-center gap-6 rounded-2xl border border-border bg-card p-8">
       {/* Illustration */}
       <div className="rounded-full bg-primary/10 p-5">
         <MapPin size={44} className="text-primary" aria-hidden="true" />
@@ -25,10 +25,10 @@ export const WeatherEmpty: React.FC<WeatherEmptyProps> = ({
 
       {/* Copy */}
       <div className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold text-foreground">
+        <h3 className="text-base font-bold text-foreground">
           Tell us where your farm is
-        </h2>
-        <p className="text-sm text-muted-foreground max-w-xs">
+        </h3>
+        <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
           We&apos;ll show you accurate weather conditions and farming advice
           tailored to your exact location.
         </p>

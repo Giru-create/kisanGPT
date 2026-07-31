@@ -2,62 +2,69 @@
 
 import React from "react";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ArrowRight, Check, Clock } from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
 
 export const AIStrategicAdvisoryCard: React.FC = () => {
   return (
     <section
       role="region"
       aria-label="AI Strategic Advisory"
-      className="bg-primary text-primary-foreground rounded-xl p-6 shadow-md relative overflow-hidden flex flex-col justify-between min-h-[220px]"
+      className="relative rounded-2xl overflow-hidden min-h-[280px] flex flex-col"
     >
-      <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
-            <Sparkles
-              size={20}
-              className="text-emerald-300"
-              aria-hidden="true"
-            />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/70" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.15)_0%,_transparent_50%)]" />
+      <div className="absolute -right-12 -top-12 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
+      <div className="absolute -left-8 -bottom-8 w-32 h-32 bg-white/5 rounded-full blur-xl" />
+
+      <div className="relative z-10 flex flex-col justify-between h-full p-6 sm:p-8 text-primary-foreground">
+        <div>
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+              <Sparkles size={18} className="text-emerald-300" aria-hidden="true" />
+            </div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-semibold">AI Advisory</h3>
+              <Badge variant="success" className="text-[10px] font-bold bg-white/15 text-emerald-200 border-white/20">
+                Live
+              </Badge>
+            </div>
           </div>
-          <h3 className="text-lg font-semibold">AI Strategic Advisory</h3>
+
+          <p className="text-base sm:text-lg leading-relaxed max-w-2xl opacity-95 font-medium">
+            &quot;Ideal window for wheat sowing in{" "}
+            <span className="font-bold underline decoration-2 underline-offset-4 decoration-emerald-400/80">
+              Block A
+            </span>{" "}
+            opens tomorrow. Upcoming rain on Saturday (approx 12mm) will provide
+            optimal soil moisture. Postpone urea application until Monday to
+            prevent leaching.&quot;
+          </p>
         </div>
-        <p className="text-base leading-relaxed max-w-2xl opacity-95">
-          &quot;Ideal window for wheat sowing in{" "}
-          <span className="font-bold underline decoration-2 underline-offset-4 decoration-emerald-400">
-            Block A
-          </span>{" "}
-          opens tomorrow. Upcoming rain on Saturday (approx 12mm) will provide
-          optimal soil moisture. Postpone urea application until Monday to
-          prevent leaching.&quot;
-        </p>
-      </div>
 
-      <div className="relative z-10 mt-6 flex flex-wrap gap-3">
-        <Link
-          href="/advisor"
-          className="bg-white/10 hover:bg-white/20 border border-white/20 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors"
-        >
-          Generate Sowing Plan
-        </Link>
-        <button
-          type="button"
-          className="bg-white text-primary px-5 py-2.5 rounded-lg text-sm font-bold shadow-lg transition-transform active:scale-95"
-          disabled
-          title="Scheduling coming soon"
-        >
-          Accept &amp; Schedule
-        </button>
+        <div className="flex flex-wrap items-center gap-3 mt-8">
+          <Link
+            href="/advisor"
+            className="inline-flex items-center gap-2 bg-white text-primary px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all active:scale-95"
+          >
+            Generate Sowing Plan
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 border border-white/20 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors backdrop-blur-sm"
+            disabled
+            title="Scheduling coming soon"
+          >
+            <Clock size={14} aria-hidden="true" />
+            Schedule
+          </button>
+          <div className="hidden sm:flex items-center gap-1.5 ml-auto text-xs text-white/60">
+            <Check size={14} aria-hidden="true" />
+            <span>Based on real-time weather + soil data</span>
+          </div>
+        </div>
       </div>
-
-      <div
-        aria-hidden="true"
-        className="absolute -right-8 -top-8 w-40 h-40 bg-white/5 rounded-full"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute -left-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full"
-      />
     </section>
   );
 };
