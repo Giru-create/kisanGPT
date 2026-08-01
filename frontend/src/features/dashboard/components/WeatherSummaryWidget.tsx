@@ -93,7 +93,9 @@ export const WeatherSummaryWidget: React.FC<WeatherSummaryWidgetProps> = ({
             <p className="text-lg font-bold text-foreground leading-none tabular-nums">
               {windSpeedKmh}
             </p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">km/h Wind</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              km/h Wind
+            </p>
           </div>
         </div>
       </div>

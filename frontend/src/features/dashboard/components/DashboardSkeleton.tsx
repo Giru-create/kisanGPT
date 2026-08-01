@@ -9,7 +9,7 @@ export const DashboardSkeleton: React.FC = () => {
       role="status"
       aria-busy="true"
       aria-label="Loading farmer dashboard"
-      className="w-full flex flex-col gap-8"
+      className="ds-page-content-wide ds-section-wide"
     >
       <span className="sr-only">Loading farmer dashboard data...</span>
 
@@ -18,7 +18,7 @@ export const DashboardSkeleton: React.FC = () => {
         <div className="flex flex-col sm:flex-row justify-between gap-6">
           <div className="flex-1 flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <Skeleton className="h-10 w-10 rounded-2xl" />
+              <Skeleton className="w-10 h-10 rounded-xl" />
               <Skeleton className="h-6 w-36 rounded-lg" />
             </div>
             <Skeleton className="h-4 w-64 rounded-lg" />
@@ -35,12 +35,9 @@ export const DashboardSkeleton: React.FC = () => {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="rounded-2xl border border-border bg-card p-5"
-          >
+          <div key={i} className="ds-card p-5">
             <div className="flex justify-between items-start mb-4">
-              <Skeleton className="h-10 w-10 rounded-xl" />
+              <Skeleton className="w-11 h-11 rounded-2xl" />
               <Skeleton className="h-5 w-12 rounded-lg" />
             </div>
             <Skeleton className="h-8 w-20 rounded-lg mb-2" />
@@ -50,8 +47,8 @@ export const DashboardSkeleton: React.FC = () => {
       </div>
 
       {/* Crop health */}
-      <div className="flex flex-col gap-5">
-        <div className="flex items-center gap-3">
+      <div className="ds-section">
+        <div className="ds-section-header">
           <Skeleton className="w-1 h-6 rounded-full" />
           <Skeleton className="h-5 w-28 rounded-lg" />
         </div>
@@ -62,8 +59,8 @@ export const DashboardSkeleton: React.FC = () => {
       </div>
 
       {/* Market intelligence */}
-      <div className="flex flex-col gap-5">
-        <div className="flex items-center gap-3">
+      <div className="ds-section">
+        <div className="ds-section-header">
           <Skeleton className="w-1 h-6 rounded-full" />
           <Skeleton className="h-5 w-40 rounded-lg" />
         </div>
@@ -71,54 +68,49 @@ export const DashboardSkeleton: React.FC = () => {
       </div>
 
       {/* Tasks timeline */}
-      <div className="flex items-center justify-between mb-1">
-        <div className="flex items-center gap-3">
+      <div className="ds-section">
+        <div className="ds-section-header">
           <Skeleton className="w-1 h-6 rounded-full" />
           <Skeleton className="h-5 w-32 rounded-lg" />
         </div>
-        <Skeleton className="h-4 w-16 rounded-lg" />
-      </div>
-      <div className="rounded-2xl border border-border bg-card overflow-hidden">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className={`flex items-start gap-4 px-5 py-4 ${
-              i < 2 ? "border-b border-border/40" : ""
-            }`}
-          >
-            <Skeleton className="w-3 h-3 rounded-full mt-1" />
-            <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
-            <div className="flex-1 flex flex-col gap-2">
-              <Skeleton className="h-4 w-40 rounded-lg" />
-              <Skeleton className="h-3 w-56 rounded-lg" />
+        <div className="ds-card overflow-hidden">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className={`flex items-start gap-4 px-5 py-4 ${
+                i < 2 ? "border-b border-border/40" : ""
+              }`}
+            >
+              <Skeleton className="w-3 h-3 rounded-full mt-1" />
+              <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+              <div className="flex-1 flex flex-col gap-2">
+                <Skeleton className="h-4 w-40 rounded-lg" />
+                <Skeleton className="h-3 w-56 rounded-lg" />
+              </div>
+              <Skeleton className="w-4 h-4 rounded-full mt-1" />
             </div>
-            <Skeleton className="w-4 h-4 rounded-full mt-1" />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Insights */}
-      <div className="flex items-center justify-between mb-1">
-        <div className="flex items-center gap-3">
+      <div className="ds-section">
+        <div className="ds-section-header">
           <Skeleton className="w-1 h-6 rounded-full" />
           <Skeleton className="h-5 w-32 rounded-lg" />
         </div>
-        <Skeleton className="h-4 w-16 rounded-lg" />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="rounded-2xl border border-border bg-card p-5"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <Skeleton className="w-9 h-9 rounded-xl" />
-              <Skeleton className="h-3 w-28 rounded-lg" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="ds-card p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <Skeleton className="w-9 h-9 rounded-xl" />
+                <Skeleton className="h-3 w-28 rounded-lg" />
+              </div>
+              <Skeleton className="h-4 w-full rounded-lg mb-2" />
+              <Skeleton className="h-3 w-full rounded-lg" />
             </div>
-            <Skeleton className="h-4 w-full rounded-lg mb-2" />
-            <Skeleton className="h-3 w-full rounded-lg" />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -58,8 +58,11 @@ export const PriorityAlertsCard: React.FC<PriorityAlertsCardProps> = ({
 
       <div className="px-3 pb-3 flex flex-col gap-1">
         {alerts.map((alert) => {
-          const { icon: Icon, color, bg } =
-            ALERT_ICON_MAP[alert.type] ?? ALERT_ICON_MAP.frost;
+          const {
+            icon: Icon,
+            color,
+            bg,
+          } = ALERT_ICON_MAP[alert.type] ?? ALERT_ICON_MAP.frost;
 
           return (
             <div

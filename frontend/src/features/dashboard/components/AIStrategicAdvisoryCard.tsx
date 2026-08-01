@@ -21,11 +21,18 @@ export const AIStrategicAdvisoryCard: React.FC = () => {
         <div>
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
-              <Sparkles size={18} className="text-emerald-300" aria-hidden="true" />
+              <Sparkles
+                size={18}
+                className="text-emerald-300"
+                aria-hidden="true"
+              />
             </div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">AI Advisory</h3>
-              <Badge variant="success" className="text-[10px] font-bold bg-white/15 text-emerald-200 border-white/20">
+              <Badge
+                variant="success"
+                className="text-[10px] font-bold bg-white/15 text-emerald-200 border-white/20"
+              >
                 Live
               </Badge>
             </div>

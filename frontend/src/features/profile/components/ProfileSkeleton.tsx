@@ -59,10 +59,7 @@ export const ProfileSkeleton: React.FC = () => {
 
         {/* Cards */}
         {[1, 2].map((i) => (
-          <div
-            key={i}
-            className="rounded-2xl border border-border bg-card p-5"
-          >
+          <div key={i} className="rounded-2xl border border-border bg-card p-5">
             <div className="flex items-center gap-2 mb-4">
               <Skeleton className="h-8 w-8 rounded-lg" />
               <div className="space-y-1.5">

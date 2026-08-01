@@ -1,19 +1,40 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-xl border border-border bg-card text-card-foreground shadow-sm transition-all",
-      className,
-    )}
-    {...props}
-  />
-));
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: "default" | "interactive" | "muted" | "elevated";
+  padding?: "none" | "sm" | "md" | "lg";
+}
+
+const variantStyles = {
+  default: "border-border bg-card shadow-sm",
+  interactive:
+    "border-border bg-card shadow-sm hover:shadow-md hover:border-border/80 cursor-pointer",
+  muted: "border-border bg-muted/30 shadow-none",
+  elevated: "border-border bg-card shadow-md",
+};
+
+const paddingStyles = {
+  none: "p-0",
+  sm: "p-4",
+  md: "p-5",
+  lg: "p-6",
+};
+
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = "default", padding, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl border transition-all",
+        variantStyles[variant],
+        padding !== undefined && paddingStyles[padding],
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 Card.displayName = "Card";
 
 export const CardHeader = React.forwardRef<

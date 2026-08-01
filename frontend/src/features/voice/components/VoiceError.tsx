@@ -47,9 +47,7 @@ export const VoiceError: React.FC<VoiceErrorProps> = ({
       aria-live="assertive"
       className="rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center flex flex-col items-center gap-4"
     >
-      <div className="rounded-full bg-destructive/10 p-4">
-        {getIcon()}
-      </div>
+      <div className="rounded-full bg-destructive/10 p-4">{getIcon()}</div>
 
       <div className="flex flex-col gap-1.5">
         <h2 className="text-lg font-semibold text-foreground">

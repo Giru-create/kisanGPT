@@ -51,9 +51,7 @@ export const VoiceSkeleton: React.FC = () => {
               <div
                 className={`max-w-[70%] space-y-2 ${i % 2 === 0 ? "items-end" : "items-start"}`}
               >
-                {i % 2 !== 0 && (
-                  <Skeleton className="h-7 w-7 rounded-full" />
-                )}
+                {i % 2 !== 0 && <Skeleton className="h-7 w-7 rounded-full" />}
                 <div className="p-3 rounded-2xl bg-muted/50">
                   <Skeleton className="h-3 rounded w-48 mb-1" />
                   <Skeleton className="h-3 rounded w-32" />

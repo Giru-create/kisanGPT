@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { AlertTriangle, RefreshCcw } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { AnimatePresence } from "framer-motion";
+import { RefreshCcw } from "lucide-react";
+import { Button, ErrorMessage } from "@/components/ui";
 import { useDashboard } from "../hooks/useDashboard";
+import { motionPresets } from "@/lib/motion";
 import { TopBar } from "./TopBar";
 import { DashboardHero } from "./DashboardHero";
 import { StatCardsGrid } from "./StatCardsGrid";
@@ -17,71 +18,38 @@ import { PriorityAlertsCard } from "./PriorityAlertsCard";
 import { EmergencyAlertBanner } from "./EmergencyAlertBanner";
 import { DashboardSkeleton } from "./DashboardSkeleton";
 
-const stagger = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-};
-
 export const FarmerDashboard: React.FC = () => {
   const { dashboardState, refresh } = useDashboard();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="ds-page">
       <AnimatePresence mode="wait">
         {dashboardState.status === "loading" && (
-          <motion.div
-            key="skeleton"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div key="skeleton" className="animate-fade-in">
             <DashboardSkeleton />
-          </motion.div>
+          </div>
         )}
 
         {dashboardState.status === "error" && (
-          <motion.div
+          <div
             key="error"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+            className="ds-page-content-wide flex items-center justify-center py-16"
           >
-            <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-8 text-center flex flex-col items-center gap-5 max-w-md mx-auto">
-              <div className="rounded-2xl bg-destructive/10 p-5">
-                <AlertTriangle
-                  size={32}
-                  className="text-destructive"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold text-foreground">
-                  Dashboard Unavailable
-                </h2>
-                <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-                  {dashboardState.message}
-                </p>
-              </div>
-              <Button
-                variant="primary"
-                size="md"
-                leftIcon={<RefreshCcw size={16} aria-hidden="true" />}
-                onClick={refresh}
-              >
-                Try Again
-              </Button>
-            </div>
-          </motion.div>
+            <ErrorMessage
+              title="Dashboard Unavailable"
+              message={dashboardState.message}
+              action={
+                <Button
+                  variant="primary"
+                  size="md"
+                  leftIcon={<RefreshCcw size={16} aria-hidden="true" />}
+                  onClick={refresh}
+                >
+                  Try Again
+                </Button>
+              }
+            />
+          </div>
         )}
 
         {dashboardState.status === "success" && (
@@ -93,76 +61,67 @@ export const FarmerDashboard: React.FC = () => {
               advisorySafe={dashboardState.data.weatherSummary.advisorySafe}
             />
 
-            <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-              <motion.div
-                key="content"
-                variants={stagger}
-                initial="hidden"
-                animate="show"
-                className="flex flex-col gap-8"
+            <main id="main-content" className="ds-page-content-wide">
+              <div
+                className="ds-section-wide"
+                {...motionPresets.staggerContainer}
               >
-              <EmergencyAlertBanner
-                alert={dashboardState.data.emergencyAlert}
-              />
-
-              <TopBar
-                profile={dashboardState.data.profile}
-                temperatureC={dashboardState.data.weatherSummary.temperatureC}
-                condition={dashboardState.data.weatherSummary.condition}
-                advisorySafe={dashboardState.data.weatherSummary.advisorySafe}
-              />
-
-              <DashboardHero />
-
-              <StatCardsGrid
-                weather={dashboardState.data.weatherSummary}
-                marketTrends={dashboardState.data.marketTrends}
-                cropHealthCards={dashboardState.data.cropHealthCards}
-                schemes={dashboardState.data.schemes}
-              />
-
-              <motion.div variants={fadeUp}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-1 h-6 rounded-full bg-primary" />
-                  <h2 className="text-lg font-semibold text-foreground">
-                    Crop Health
-                  </h2>
-                </div>
-                <CropHealthCard items={dashboardState.data.cropHealthCards} />
-              </motion.div>
-
-              <motion.div variants={fadeUp}>
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-1 h-6 rounded-full bg-primary" />
-                  <h2 className="text-lg font-semibold text-foreground">
-                    Market Intelligence
-                  </h2>
-                </div>
-                <MarketTrendsCard trends={dashboardState.data.marketTrends} />
-              </motion.div>
-
-              <motion.div variants={fadeUp}>
-                <TasksTimeline chats={dashboardState.data.aiAdvisorChats} />
-              </motion.div>
-
-              <motion.div variants={fadeUp} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <RecentAIChatsCard chats={dashboardState.data.aiAdvisorChats} />
-                <PriorityAlertsCard
-                  alerts={dashboardState.data.priorityAlerts}
+                <EmergencyAlertBanner
+                  alert={dashboardState.data.emergencyAlert}
                 />
-              </motion.div>
 
-              <motion.div variants={fadeUp}>
-                <InsightsSection
+                <DashboardHero />
+
+                <StatCardsGrid
+                  weather={dashboardState.data.weatherSummary}
                   marketTrends={dashboardState.data.marketTrends}
-                  priorityAlerts={dashboardState.data.priorityAlerts}
+                  cropHealthCards={dashboardState.data.cropHealthCards}
+                  schemes={dashboardState.data.schemes}
                 />
-              </motion.div>
-            </motion.div>
+
+                <div {...motionPresets.staggerItem}>
+                  <div className="ds-section-header">
+                    <div className="ds-section-header-bar" />
+                    <h2>Crop Health</h2>
+                  </div>
+                  <CropHealthCard items={dashboardState.data.cropHealthCards} />
+                </div>
+
+                <div {...motionPresets.staggerItem}>
+                  <div className="ds-section-header">
+                    <div className="ds-section-header-bar" />
+                    <h2>Market Intelligence</h2>
+                  </div>
+                  <MarketTrendsCard trends={dashboardState.data.marketTrends} />
+                </div>
+
+                <div {...motionPresets.staggerItem}>
+                  <TasksTimeline chats={dashboardState.data.aiAdvisorChats} />
+                </div>
+
+                <div
+                  {...motionPresets.staggerItem}
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                >
+                  <RecentAIChatsCard
+                    chats={dashboardState.data.aiAdvisorChats}
+                  />
+                  <PriorityAlertsCard
+                    alerts={dashboardState.data.priorityAlerts}
+                  />
+                </div>
+
+                <div {...motionPresets.staggerItem}>
+                  <InsightsSection
+                    marketTrends={dashboardState.data.marketTrends}
+                    priorityAlerts={dashboardState.data.priorityAlerts}
+                  />
+                </div>
+              </div>
             </main>
           </>
-          )}
-        </AnimatePresence>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -36,9 +36,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                      isAlert
-                        ? "bg-red-500/10"
-                        : "bg-emerald-500/10"
+                      isAlert ? "bg-red-500/10" : "bg-emerald-500/10"
                     }`}
                   >
                     {isAlert ? (

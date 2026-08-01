@@ -31,11 +31,26 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142 72% 37%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 142 72% 37%;
 
     --radius: 0.75rem;
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md:
+      0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg:
+      0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
   .dark {
@@ -66,9 +81,23 @@
     --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142 70% 45%;
+    --success-foreground: 222 47% 7%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 7%;
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 142 70% 45%;
+
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+    --shadow-md:
+      0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg:
+      0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
   }
 }
 
@@ -88,6 +117,121 @@
   /* Accessibility Focus Rings */
   :focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* Design System: Page Layout */
+  .ds-page {
+    @apply min-h-screen bg-background;
+  }
+
+  .ds-page-content {
+    @apply max-w-2xl mx-auto px-4 pb-10 pt-6;
+  }
+
+  .ds-page-content-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8;
+  }
+
+  /* Design System: Section */
+  .ds-section {
+    @apply flex flex-col gap-5;
+  }
+
+  .ds-section-wide {
+    @apply flex flex-col gap-8;
+  }
+
+  /* Design System: Section Header (vertical accent bar + title) */
+  .ds-section-header {
+    @apply flex items-center gap-3 mb-5;
+  }
+
+  .ds-section-header-bar {
+    @apply w-1 h-6 rounded-full bg-primary;
+  }
+
+  .ds-section-header h2 {
+    @apply text-lg font-semibold text-foreground;
+  }
+
+  /* Design System: Card Variants */
+  .ds-card {
+    @apply rounded-2xl border border-border bg-card shadow-sm transition-all;
+  }
+
+  .ds-card-interactive {
+    @apply ds-card hover:shadow-md hover:border-border/80 cursor-pointer;
+  }
+
+  .ds-card-muted {
+    @apply rounded-2xl border border-border bg-muted/30;
+  }
+
+  /* Design System: Page Title */
+  .ds-page-title {
+    @apply text-xl font-bold text-foreground tracking-tight;
+  }
+
+  .ds-page-subtitle {
+    @apply text-xs text-muted-foreground mt-1;
+  }
+
+  /* Design System: Empty State */
+  .ds-empty-state {
+    @apply rounded-2xl border border-border bg-card p-8 flex flex-col items-center justify-center text-center;
+  }
+
+  /* Design System: Error State */
+  .ds-error-state {
+    @apply rounded-2xl border border-destructive/20 bg-destructive/5 p-8 flex flex-col items-center justify-center text-center;
+  }
+
+  /* Design System: Success State */
+  .ds-success-state {
+    @apply rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 flex flex-col items-center justify-center text-center;
+  }
+}
+
+@layer utilities {
+  /* Design System: Icon Sizes */
+  .ds-icon-xs {
+    @apply w-3 h-3;
+  }
+
+  .ds-icon-sm {
+    @apply w-4 h-4;
+  }
+
+  .ds-icon-md {
+    @apply w-5 h-5;
+  }
+
+  .ds-icon-lg {
+    @apply w-6 h-6;
+  }
+
+  .ds-icon-xl {
+    @apply w-8 h-8;
+  }
+
+  /* Design System: Icon Containers */
+  .ds-icon-container-sm {
+    @apply w-8 h-8 rounded-lg flex items-center justify-center shrink-0;
+  }
+
+  .ds-icon-container-md {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center shrink-0;
+  }
+
+  .ds-icon-container-lg {
+    @apply w-12 h-12 rounded-2xl flex items-center justify-center shrink-0;
+  }
+
+  /* Design System: Touch Targets (WCAG 2.1 AA - min 44px) */
+  .ds-touch-target {
+    @apply min-h-[44px] min-w-[44px];
   }
 }
 

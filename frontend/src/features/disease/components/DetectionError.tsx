@@ -38,7 +38,11 @@ export const DetectionError: React.FC<DetectionErrorProps> = ({
       role="alert"
     >
       <div className="rounded-full bg-destructive/10 p-4">
-        <AlertCircle size={40} className="text-destructive" aria-hidden="true" />
+        <AlertCircle
+          size={40}
+          className="text-destructive"
+          aria-hidden="true"
+        />
       </div>
 
       <div className="space-y-1.5">
