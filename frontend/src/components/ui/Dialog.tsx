@@ -65,7 +65,7 @@ export const Dialog: React.FC<DialogProps> = ({
               size="sm"
               onClick={onClose}
               aria-label="Close dialog"
-              className="h-8 w-8 p-0 rounded-full"
+              className="min-h-[44px] min-w-[44px] p-0 rounded-full flex items-center justify-center"
             >
               ✕
             </Button>

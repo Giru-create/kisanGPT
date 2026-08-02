@@ -236,7 +236,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2.5 border-t border-border/30">
+      <div className="flex flex-wrap items-center justify-between pt-2.5 border-t border-border/30 gap-1">
         <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
           <span className="flex items-center gap-1">
             <Calendar size={11} />

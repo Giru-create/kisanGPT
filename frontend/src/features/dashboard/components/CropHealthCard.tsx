@@ -54,7 +54,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
                     )}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground text-sm">
+                    <h4 className="font-semibold text-foreground text-sm truncate">
                       {item.cropName}
                     </h4>
                     <p className="text-xs text-muted-foreground">

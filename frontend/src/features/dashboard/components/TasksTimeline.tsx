@@ -59,7 +59,7 @@ export const TasksTimeline: React.FC<TasksTimelineProps> = ({ chats }) => {
             >
               <Link
                 href="/advisor"
-                className={`group flex items-start gap-4 px-5 py-4 hover:bg-muted/30 transition-colors ${
+                className={`group flex items-start gap-3 sm:gap-4 px-3 sm:px-5 py-4 hover:bg-muted/30 transition-colors ${
                   !isLast ? "border-b border-border/40" : ""
                 }`}
               >

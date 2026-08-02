@@ -78,8 +78,8 @@ export const ProfileHero: React.FC<ProfileHeroProps> = ({
           {/* Info */}
           <div className="flex-1 min-w-0 space-y-2">
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <h1 className="ds-heading-lg text-foreground">
+              <div className="min-w-0">
+                <h1 className="ds-heading-lg text-foreground truncate">
                   {profile.name}
                 </h1>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -100,6 +100,7 @@ export const ProfileHero: React.FC<ProfileHeroProps> = ({
                 size="sm"
                 leftIcon={<Edit3 size={14} />}
                 onClick={onEdit}
+                className="shrink-0"
               >
                 Edit Profile
               </Button>

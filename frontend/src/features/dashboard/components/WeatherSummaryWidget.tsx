@@ -40,7 +40,7 @@ export const WeatherSummaryWidget: React.FC<WeatherSummaryWidgetProps> = ({
       aria-label="Current Weather & Spraying Advisory"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl border border-border bg-card p-6 shadow-sm h-full flex flex-col"
+      className="rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-sm h-full flex flex-col"
     >
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
@@ -73,7 +73,7 @@ export const WeatherSummaryWidget: React.FC<WeatherSummaryWidgetProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
         <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-muted/40">
           <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
             <Droplets size={15} className="text-blue-500" aria-hidden="true" />

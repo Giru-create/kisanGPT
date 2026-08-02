@@ -232,7 +232,7 @@ export const StatCardsGrid: React.FC<StatCardsGridProps> = ({
           <p className="text-xs text-muted-foreground mt-1 font-medium">
             Schemes Available
           </p>
-          <div className="mt-4 pt-3 border-t border-border/40 flex gap-1.5">
+          <div className="mt-4 pt-3 border-t border-border/40 flex flex-wrap gap-1.5">
             {schemes.slice(0, 3).map((s) => (
               <Chip
                 key={s.id}

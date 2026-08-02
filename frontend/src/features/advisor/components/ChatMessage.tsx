@@ -204,7 +204,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = React.memo(
                   <span className="bg-muted px-2.5 py-1 rounded text-xs font-bold text-primary cursor-help border border-border">
                     Source: {source.title}
                   </span>
-                  <div className="absolute bottom-full left-0 mb-2 w-48 p-2 bg-foreground text-background text-xs rounded shadow-xl opacity-0 group-hover/tip:opacity-100 transition-opacity pointer-events-none z-50">
+                  <div className="absolute bottom-full left-0 mb-2 w-48 max-w-[calc(100vw-2rem)] p-2 bg-foreground text-background text-xs rounded shadow-xl opacity-0 group-hover/tip:opacity-100 transition-opacity pointer-events-none z-50">
                     {source.tooltip}
                   </div>
                 </div>
@@ -213,7 +213,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = React.memo(
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-1 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex flex-wrap gap-1 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               type="button"
               onClick={handleCopy}

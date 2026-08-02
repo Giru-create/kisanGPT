@@ -97,7 +97,7 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
                   item.isRise ? "bg-emerald-500" : "bg-red-500"
                 }`}
               />
-              <span className="text-sm font-medium text-foreground">
+              <span className="text-sm font-medium text-foreground truncate min-w-0">
                 {item.commodity}
               </span>
             </div>
