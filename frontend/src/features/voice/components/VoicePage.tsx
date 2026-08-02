@@ -49,7 +49,7 @@ export const VoicePage: React.FC = () => {
       sendTextQuery(speechRecognition.transcript);
       speechRecognition.resetTranscript();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     speechRecognition.isSupported,
     speechRecognition.transcript,
