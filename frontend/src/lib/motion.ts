@@ -98,10 +98,15 @@ export const motionPresets = {
 
   /** Card hover with shadow elevation */
   cardLift: {
-    rest: { y: 0, boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)" },
+    rest: {
+      y: 0,
+      boxShadow:
+        "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+    },
     hover: {
       y: -2,
-      boxShadow: "0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
+      boxShadow:
+        "0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
       transition: { duration: 0.2, ease: "easeOut" },
     },
   },
