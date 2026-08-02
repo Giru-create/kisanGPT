@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
-import { Footer } from "./Footer";
 
 export interface AppShellProps {
   children: React.ReactNode;
@@ -14,7 +13,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
-      {/* Top Navigation Header */}
+      {/* Top Header */}
       <Header onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
 
       {/* Main Body Shell */}
@@ -31,9 +30,6 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
           {children}
         </main>
       </div>
-
-      {/* Site Footer */}
-      <Footer />
     </div>
   );
 };

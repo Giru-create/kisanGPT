@@ -37,49 +37,71 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose }) => {
         aria-modal="true"
         role="dialog"
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-72 bg-card p-6 shadow-2xl border-r border-border flex flex-col justify-between transition-transform duration-200 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 w-72 bg-card shadow-2xl border-r border-border flex flex-col transition-transform duration-200 ease-in-out",
         )}
       >
-        <div>
-          <div className="flex items-center justify-between pb-6 border-b border-border">
-            <div className="flex items-center space-x-2">
-              <div className="h-7 w-7 rounded-md bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
-                K
-              </div>
-              <span className="font-bold text-lg text-foreground">
+        {/* Logo */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-base shadow-sm">
+              🌾
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-lg leading-none tracking-tight text-foreground">
                 KisanGPT
               </span>
+              <span className="text-[10px] font-medium tracking-widest uppercase text-muted-foreground mt-0.5">
+                AI Farming
+              </span>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              aria-label="Close navigation menu"
-              className="h-8 w-8 p-0 rounded-full"
-            >
-              ✕
-            </Button>
           </div>
-
-          <nav
-            className="mt-6 flex flex-col space-y-2"
-            aria-label="Mobile Main Navigation"
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            aria-label="Close navigation menu"
+            className="h-9 w-9 p-0 rounded-lg"
           >
-            {MAIN_NAV_ITEMS.map((item) => (
-              <NavLink
-                key={item.id}
-                href={item.href}
-                onClick={onClose}
-                className="w-full text-base py-3 px-4 rounded-md"
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </nav>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 4l8 8M12 4l-8 8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </Button>
         </div>
 
-        <div className="pt-6 border-t border-border text-xs text-muted-foreground text-center">
-          KisanGPT Foundation v0.1.0
+        {/* Navigation */}
+        <nav
+          className="flex-1 overflow-y-auto px-3 py-3 space-y-0.5"
+          aria-label="Mobile Main Navigation"
+        >
+          {MAIN_NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.id}
+              href={item.href}
+              icon={item.icon}
+              onClick={onClose}
+              className="w-full py-3"
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div className="px-5 py-4 border-t border-border shrink-0">
+          <p className="text-xs text-muted-foreground text-center">
+            KisanGPT v1.0
+          </p>
         </div>
       </aside>
     </div>
