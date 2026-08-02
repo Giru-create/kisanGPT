@@ -55,7 +55,7 @@ export const MarketEmpty: React.FC<MarketEmptyProps> = ({
       </div>
 
       {/* Title */}
-      <h3 className="text-base font-bold text-foreground mb-2">
+      <h3 className="ds-heading-sm text-foreground mb-2">
         {commodity
           ? `No data found for "${commodity}"`
           : "Explore Commodity Markets"}

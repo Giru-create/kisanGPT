@@ -95,10 +95,10 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onQuestionSelect }) => {
         transition={{ delay: 0.1 }}
         className="text-center mb-10"
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+        <h2 className="ds-heading-md text-foreground mb-3">
           Ask KisanGPT Anything
         </h2>
-        <p className="text-muted-foreground text-sm md:text-base max-w-lg leading-relaxed">
+        <p className="ds-body-sm text-muted-foreground max-w-lg leading-relaxed">
           Your AI farming expert is ready. Ask about crops, soil health, market
           prices, weather, or government schemes.
         </p>

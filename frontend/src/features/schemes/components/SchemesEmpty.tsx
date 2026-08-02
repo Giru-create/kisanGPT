@@ -49,7 +49,7 @@ export const SchemesEmpty: React.FC<SchemesEmptyProps> = ({ onSearch }) => {
       </div>
 
       {/* Title */}
-      <h3 className="text-base font-bold text-foreground mb-2">
+      <h3 className="ds-heading-sm text-foreground mb-2">
         Discover Government Schemes
       </h3>
       <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed mb-5">

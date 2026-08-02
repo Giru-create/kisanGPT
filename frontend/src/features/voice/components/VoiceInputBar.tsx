@@ -72,6 +72,7 @@ export const VoiceInputBar: React.FC<VoiceInputBarProps> = ({
         <input
           type="text"
           value={text}
+          aria-label="Type your question"
           onChange={(e) => setText(e.target.value)}
           placeholder={
             language === "hi-IN"
@@ -80,7 +81,7 @@ export const VoiceInputBar: React.FC<VoiceInputBarProps> = ({
                 ? "ਜਾਂ ਇੱਥੇ ਟਾਈਪ ਕਰੋ..."
                 : "Or type your question here..."
           }
-          className="flex-1 px-4 py-2.5 rounded-full bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+          className="flex-1 px-4 py-2.5 rounded-full bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
         />
         <button
           type="submit"

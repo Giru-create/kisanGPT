@@ -48,9 +48,7 @@ export const MemoryEmpty: React.FC<MemoryEmptyProps> = ({ onAddClick }) => {
       </div>
 
       <div className="space-y-1.5">
-        <h3 className="text-base font-bold text-foreground mb-2">
-          No memories yet
-        </h3>
+        <h3 className="ds-heading-sm text-foreground mb-2">No memories yet</h3>
         <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed mb-5">
           Start building your farm&apos;s AI memory. KisanGPT will remember soil
           tests, crop yields, disease history, and every conversation you have.

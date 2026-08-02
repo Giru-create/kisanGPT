@@ -64,7 +64,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
                 </div>
 
                 <span
-                  className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                  className={`ds-status ${
                     isAlert
                       ? "bg-red-500/10 text-red-600 dark:text-red-400"
                       : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
@@ -113,6 +113,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
                 {isAlert ? (
                   <button
                     type="button"
+                    aria-label={`View treatment protocol for ${item.cropName}`}
                     className="shrink-0 bg-red-500 text-white text-[10px] font-bold px-3.5 py-1.5 rounded-lg hover:bg-red-600 transition-colors"
                   >
                     View Protocol

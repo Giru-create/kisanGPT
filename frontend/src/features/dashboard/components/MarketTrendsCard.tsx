@@ -22,7 +22,7 @@ const MiniSparkline: React.FC<{ isRise: boolean }> = ({ isRise }) => {
     >
       <path
         d={points}
-        stroke={isRise ? "#10b981" : "#ef4444"}
+        stroke={isRise ? "hsl(142, 72%, 37%)" : "hsl(0, 84.2%, 60.2%)"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

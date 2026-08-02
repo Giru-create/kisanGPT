@@ -46,7 +46,7 @@ export const MemoryPage: React.FC = () => {
   const savedCount = memories.filter((m) => m.isSaved).length;
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <LiveRegion>
         {isLoading
           ? "Loading farm memory records"
@@ -121,7 +121,7 @@ export const MemoryPage: React.FC = () => {
         onPin={handleTogglePin}
         onSave={handleToggleSave}
       />
-    </main>
+    </section>
   );
 };
 

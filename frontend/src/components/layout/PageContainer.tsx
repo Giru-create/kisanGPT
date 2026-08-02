@@ -24,15 +24,11 @@ export const PageContainer: React.FC<PageContainerProps> = ({
       )}
     >
       {(title || description || action) && (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 ds-divider">
           <div className="space-y-1">
-            {title && (
-              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                {title}
-              </h1>
-            )}
+            {title && <h1 className="ds-heading-xl">{title}</h1>}
             {description && (
-              <p className="text-base text-muted-foreground max-w-3xl">
+              <p className="ds-body-lg text-muted-foreground max-w-3xl">
                 {description}
               </p>
             )}

@@ -1,24 +1,23 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// app/disease/page.tsx
-// KisanGPT — /disease route entry point
-// ─────────────────────────────────────────────────────────────────────────────
-
 import type { Metadata } from "next";
-import { DiseaseDetectionPage } from "@/features/disease";
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/ui/Spinner";
 
-// ---------------------------------------------------------------------------
-// SEO metadata
-// ---------------------------------------------------------------------------
+const DiseaseDetectionPage = dynamic(
+  () => import("@/features/disease").then((m) => m.DiseaseDetectionPage),
+  {
+    loading: () => (
+      <div className="ds-page flex items-center justify-center">
+        <Spinner size="md" />
+      </div>
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: "Crop Disease Detection | KisanGPT",
   description:
     "Upload a photo of your crop to identify diseases and get AI-powered treatment recommendations.",
 };
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
 
 export default function DiseaseRoute() {
   return <DiseaseDetectionPage />;

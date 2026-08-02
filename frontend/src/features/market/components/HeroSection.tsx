@@ -43,9 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Sparkles size={16} className="text-primary" aria-hidden="true" />
-          <h2 className="text-sm font-semibold text-foreground">
-            AI Market Brief
-          </h2>
+          <h2 className="ds-heading-sm text-foreground">AI Market Brief</h2>
         </div>
         <div className="flex items-center gap-2">
           <Badge

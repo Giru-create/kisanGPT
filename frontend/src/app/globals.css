@@ -15,11 +15,11 @@
     --popover-foreground: 222 47% 11%;
 
     /* KisanGPT Emerald Primary Palette */
-    --primary: 142 72% 37%; /* #16a34a - Emerald 600 */
+    --primary: 142 72% 37%;
     --primary-foreground: 0 0% 100%;
 
     /* Harvest Amber Secondary Accent */
-    --secondary: 38 92% 50%; /* #f59e0b - Amber 500 */
+    --secondary: 38 92% 50%;
     --secondary-foreground: 222 47% 11%;
 
     --muted: 210 40% 96.1%;
@@ -51,6 +51,8 @@
       0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg:
       0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl:
+      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .dark {
@@ -65,7 +67,7 @@
     --popover-foreground: 210 40% 98%;
 
     /* Vibrant Dark Mode Emerald */
-    --primary: 142 70% 45%; /* #22c55e - Emerald 500 */
+    --primary: 142 70% 45%;
     --primary-foreground: 222 47% 7%;
 
     /* Vibrant Dark Mode Amber */
@@ -98,6 +100,8 @@
       0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     --shadow-lg:
       0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl:
+      0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
   }
 }
 
@@ -169,6 +173,10 @@
     @apply rounded-2xl border border-border bg-muted/30;
   }
 
+  .ds-card-elevated {
+    @apply ds-card shadow-md;
+  }
+
   /* Design System: Page Title */
   .ds-page-title {
     @apply text-xl font-bold text-foreground tracking-tight;
@@ -176,6 +184,55 @@
 
   .ds-page-subtitle {
     @apply text-xs text-muted-foreground mt-1;
+  }
+
+  /* Design System: Typography Presets */
+  .ds-heading-xl {
+    @apply text-3xl font-bold tracking-tight text-foreground sm:text-4xl;
+  }
+
+  .ds-heading-lg {
+    @apply text-xl font-semibold tracking-tight text-foreground;
+  }
+
+  .ds-heading-md {
+    @apply text-lg font-semibold text-foreground;
+  }
+
+  .ds-heading-sm {
+    @apply text-base font-semibold text-foreground;
+  }
+
+  .ds-body-lg {
+    @apply text-base text-foreground leading-relaxed;
+  }
+
+  .ds-body-md {
+    @apply text-sm text-foreground;
+  }
+
+  .ds-body-sm {
+    @apply text-xs text-foreground;
+  }
+
+  .ds-label {
+    @apply text-sm font-medium text-foreground select-none;
+  }
+
+  .ds-label-sm {
+    @apply text-xs font-medium text-muted-foreground select-none;
+  }
+
+  .ds-caption {
+    @apply text-xs text-muted-foreground;
+  }
+
+  .ds-stat-value {
+    @apply text-3xl font-bold text-foreground tracking-tight;
+  }
+
+  .ds-stat-label {
+    @apply text-xs font-medium text-muted-foreground;
   }
 
   /* Design System: Empty State */
@@ -191,6 +248,164 @@
   /* Design System: Success State */
   .ds-success-state {
     @apply rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 flex flex-col items-center justify-center text-center;
+  }
+
+  /* Design System: Button Base */
+  .ds-btn {
+    @apply inline-flex items-center justify-center font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 select-none;
+  }
+
+  .ds-btn-primary {
+    @apply ds-btn bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm rounded-xl;
+  }
+
+  .ds-btn-secondary {
+    @apply ds-btn bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm rounded-xl;
+  }
+
+  .ds-btn-outline {
+    @apply ds-btn border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-xl;
+  }
+
+  .ds-btn-ghost {
+    @apply ds-btn hover:bg-accent hover:text-accent-foreground rounded-xl;
+  }
+
+  .ds-btn-danger {
+    @apply ds-btn bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm rounded-xl;
+  }
+
+  /* Design System: Button Sizes */
+  .ds-btn-sm {
+    @apply h-10 min-h-[44px] px-4 text-sm gap-2 rounded-lg;
+  }
+
+  .ds-btn-md {
+    @apply h-12 min-h-[48px] px-5 text-base gap-2.5;
+  }
+
+  .ds-btn-lg {
+    @apply h-14 min-h-[56px] px-6 text-lg gap-3 font-semibold;
+  }
+
+  /* Design System: Input Base */
+  .ds-input {
+    @apply flex h-12 min-h-[48px] w-full rounded-xl border border-input bg-background px-4 py-3 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors;
+  }
+
+  /* Design System: Search Bar */
+  .ds-search {
+    @apply w-full bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-colors;
+  }
+
+  /* Design System: Table */
+  .ds-table {
+    @apply relative w-full overflow-auto rounded-lg border border-border;
+  }
+
+  .ds-table-header {
+    @apply [&_tr]:border-b bg-muted/40;
+  }
+
+  .ds-table-row {
+    @apply border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted;
+  }
+
+  .ds-table-head {
+    @apply h-10 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0;
+  }
+
+  .ds-table-cell {
+    @apply p-4 align-middle [&:has([role=checkbox])]:pr-0;
+  }
+
+  /* Design System: Skeleton */
+  .ds-skeleton {
+    @apply animate-pulse rounded-md bg-muted/60;
+  }
+
+  /* Design System: Skeleton Patterns */
+  .ds-skeleton-text {
+    @apply ds-skeleton h-4 rounded-md;
+  }
+
+  .ds-skeleton-heading {
+    @apply ds-skeleton h-6 rounded-md;
+  }
+
+  .ds-skeleton-circle {
+    @apply ds-skeleton rounded-full;
+  }
+
+  .ds-skeleton-card {
+    @apply ds-card p-5 space-y-4;
+  }
+
+  /* Design System: Hero Section */
+  .ds-hero {
+    @apply rounded-2xl border border-border bg-card p-6 sm:p-8;
+  }
+
+  .ds-hero-title {
+    @apply text-2xl font-bold tracking-tight text-foreground sm:text-3xl;
+  }
+
+  .ds-hero-subtitle {
+    @apply text-sm text-muted-foreground mt-1;
+  }
+
+  /* Design System: Status Badge */
+  .ds-status {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .ds-status-success {
+    @apply ds-status bg-emerald-500/15 text-emerald-700 dark:text-emerald-300;
+  }
+
+  .ds-status-warning {
+    @apply ds-status bg-amber-500/15 text-amber-700 dark:text-amber-300;
+  }
+
+  .ds-status-error {
+    @apply ds-status bg-red-500/15 text-red-700 dark:text-red-300;
+  }
+
+  .ds-status-info {
+    @apply ds-status bg-blue-500/15 text-blue-700 dark:text-blue-300;
+  }
+
+  .ds-status-neutral {
+    @apply ds-status bg-muted text-muted-foreground;
+  }
+
+  /* Design System: Chip */
+  .ds-chip {
+    @apply inline-flex items-center font-medium rounded-full transition-colors select-none;
+  }
+
+  /* Design System: Toggle */
+  .ds-toggle {
+    @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .ds-toggle-thumb {
+    @apply inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition-transform;
+  }
+
+  /* Design System: Divider */
+  .ds-divider {
+    @apply border-t border-border;
+  }
+
+  /* Design System: Link */
+  .ds-link {
+    @apply text-primary underline underline-offset-4 hover:text-primary/80 transition-colors;
+  }
+
+  /* Design System: Kbd */
+  .ds-kbd {
+    @apply inline-flex items-center rounded-md border border-border bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground;
   }
 }
 
@@ -232,6 +447,25 @@
   /* Design System: Touch Targets (WCAG 2.1 AA - min 44px) */
   .ds-touch-target {
     @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Design System: Focus Ring */
+  .ds-focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* Design System: Truncate */
+  .ds-truncate {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  /* Design System: Line Clamp */
+  .ds-line-clamp-2 {
+    @apply overflow-hidden display-[-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2];
+  }
+
+  .ds-line-clamp-3 {
+    @apply overflow-hidden display-[-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3];
   }
 }
 

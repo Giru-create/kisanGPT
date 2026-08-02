@@ -26,7 +26,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         <main
           id="main-content"
           tabIndex={-1}
-          className="flex-1 overflow-y-auto outline-none focus:ring-0"
+          className="flex-1 overflow-y-auto focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           {children}
         </main>

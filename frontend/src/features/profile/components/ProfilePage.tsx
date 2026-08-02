@@ -32,15 +32,15 @@ export const ProfilePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
         <ProfileSkeleton />
-      </main>
+      </section>
     );
   }
 
   if (error || !profileData) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center p-8">
+      <section className="min-h-screen bg-background flex items-center justify-center p-8">
         <div className="text-center space-y-3 max-w-sm">
           <p className="text-sm font-semibold text-foreground">
             Failed to load profile
@@ -55,7 +55,7 @@ export const ProfilePage: React.FC = () => {
             Retry
           </button>
         </div>
-      </main>
+      </section>
     );
   }
 
@@ -127,7 +127,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <LiveRegion>
         {isLoading
           ? "Loading farmer profile"
@@ -152,7 +152,7 @@ export const ProfilePage: React.FC = () => {
               aria-selected={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "shrink-0 px-3.5 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all min-h-[36px] flex items-center gap-1.5",
+                "shrink-0 px-3.5 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all min-h-[44px] flex items-center gap-1.5",
                 activeTab === tab.id
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted",
@@ -204,13 +204,13 @@ export const ProfilePage: React.FC = () => {
             <div className="flex items-center gap-3 justify-end">
               <button
                 onClick={() => setDeleteModalOpen(false)}
-                className="px-4 py-2.5 text-xs font-semibold rounded-xl bg-muted hover:bg-muted/80 transition-colors min-h-[40px]"
+                className="px-4 py-2.5 text-xs font-semibold rounded-xl bg-muted hover:bg-muted/80 transition-colors min-h-[44px]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteAccount}
-                className="px-4 py-2.5 text-xs font-semibold rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors min-h-[40px]"
+                className="px-4 py-2.5 text-xs font-semibold rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors min-h-[44px]"
               >
                 Delete Everything
               </button>
@@ -218,7 +218,7 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
       )}
-    </main>
+    </section>
   );
 };
 

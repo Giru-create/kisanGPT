@@ -11,7 +11,7 @@ export interface SearchBarProps extends Omit<
 }
 
 const sizeStyles = {
-  sm: "h-10 min-h-[40px] px-3 pl-9 text-sm rounded-xl",
+  sm: "h-10 min-h-[44px] px-3 pl-9 text-sm rounded-xl",
   md: "h-12 min-h-[48px] px-4 pl-11 text-base rounded-xl",
   lg: "h-14 min-h-[56px] px-5 pl-12 text-lg rounded-2xl",
 };
@@ -34,13 +34,7 @@ export const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
         ref={ref}
         type="search"
         value={value}
-        className={cn(
-          "w-full bg-card border border-border text-foreground placeholder:text-muted-foreground",
-          "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
-          "transition-colors",
-          sizeStyles[size],
-          className,
-        )}
+        className={cn("ds-search", sizeStyles[size], className)}
         {...props}
       />
       {onClear && value && (

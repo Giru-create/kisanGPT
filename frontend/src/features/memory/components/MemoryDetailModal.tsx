@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -27,6 +27,7 @@ import {
   FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { Badge } from "@/components/ui/Badge";
 import {
   MEMORY_CATEGORIES,
@@ -109,15 +110,36 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
       })
     : null;
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(containerRef, isOpen);
+
+  const handleEscape = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isOpen, handleEscape]);
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Memory detail"
           onClick={(e) => {
             if (e.target === e.currentTarget) onClose();
           }}
@@ -154,7 +176,7 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+                className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Close detail view"
               >
                 <X size={18} />
@@ -409,7 +431,7 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
                   <button
                     onClick={() => onPin(item.id)}
                     className={cn(
-                      "flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors min-h-[36px]",
+                      "flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors min-h-[44px]",
                       item.isPinned
                         ? "bg-amber-500/10 text-amber-600"
                         : "bg-muted hover:bg-muted/80 text-muted-foreground",
@@ -426,7 +448,7 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
                   <button
                     onClick={() => onSave(item.id)}
                     className={cn(
-                      "flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors min-h-[36px]",
+                      "flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-colors min-h-[44px]",
                       item.isSaved
                         ? "bg-violet-500/10 text-violet-600"
                         : "bg-muted hover:bg-muted/80 text-muted-foreground",
@@ -439,16 +461,16 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
                     {item.isSaved ? "Unsave" : "Save"}
                   </button>
                 )}
-                <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-muted hover:bg-muted/80 text-muted-foreground transition-colors min-h-[36px]">
+                <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-muted hover:bg-muted/80 text-muted-foreground transition-colors min-h-[44px]">
                   <Share2 size={13} />
                   Share
                 </button>
-                <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-muted hover:bg-muted/80 text-muted-foreground transition-colors min-h-[36px]">
+                <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-muted hover:bg-muted/80 text-muted-foreground transition-colors min-h-[44px]">
                   <Edit3 size={13} />
                   Edit
                 </button>
                 {item.relatedConversationId && (
-                  <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors min-h-[36px]">
+                  <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors min-h-[44px]">
                     <MessageCircle size={13} />
                     View Chat
                   </button>
@@ -459,7 +481,7 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
                       onDelete(item.id);
                       onClose();
                     }}
-                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors min-h-[36px] ml-auto"
+                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors min-h-[44px] ml-auto"
                   >
                     <Trash2 size={13} />
                     Delete

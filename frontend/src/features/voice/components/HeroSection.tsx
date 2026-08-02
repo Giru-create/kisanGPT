@@ -75,10 +75,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <Mic size={16} className="text-primary" aria-hidden="true" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-foreground">
-              Voice Assistant
-            </h2>
-            <p className="text-[10px] text-muted-foreground">
+            <h2 className="ds-heading-sm text-foreground">Voice Assistant</h2>
+            <p className="ds-caption text-muted-foreground">
               Speak naturally, get expert advice
             </p>
           </div>

@@ -72,9 +72,7 @@ export const StatCardsGrid: React.FC<StatCardsGridProps> = ({
               {WEATHER_LABELS[weather.condition]}
             </span>
           </div>
-          <p className="text-3xl font-bold text-foreground tabular-nums tracking-tight">
-            {weather.temperatureC}°
-          </p>
+          <p className="ds-stat-value tabular-nums">{weather.temperatureC}°</p>
           <p className="text-xs text-muted-foreground mt-1 font-medium">
             Temperature
           </p>
@@ -136,7 +134,7 @@ export const StatCardsGrid: React.FC<StatCardsGridProps> = ({
               </Chip>
             )}
           </div>
-          <p className="text-3xl font-bold text-foreground tabular-nums tracking-tight">
+          <p className="ds-stat-value tabular-nums">
             {primaryMarket?.price || "—"}
           </p>
           <p className="text-xs text-muted-foreground mt-1 font-medium truncate">
@@ -182,7 +180,7 @@ export const StatCardsGrid: React.FC<StatCardsGridProps> = ({
               </Chip>
             )}
           </div>
-          <p className="text-3xl font-bold text-foreground tabular-nums tracking-tight">
+          <p className="ds-stat-value tabular-nums">
             {healthyCrops}
             <span className="text-lg text-muted-foreground font-medium">
               /{cropHealthCards.length}
@@ -230,9 +228,7 @@ export const StatCardsGrid: React.FC<StatCardsGridProps> = ({
               aria-hidden="true"
             />
           </div>
-          <p className="text-3xl font-bold text-foreground tabular-nums tracking-tight">
-            {eligibleSchemes}
-          </p>
+          <p className="ds-stat-value tabular-nums">{eligibleSchemes}</p>
           <p className="text-xs text-muted-foreground mt-1 font-medium">
             Schemes Available
           </p>

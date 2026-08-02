@@ -1,5 +1,17 @@
 import type { Metadata } from "next";
-import { VoicePage } from "@/features/voice";
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/ui/Spinner";
+
+const VoicePage = dynamic(
+  () => import("@/features/voice").then((m) => m.VoicePage),
+  {
+    loading: () => (
+      <div className="ds-page flex items-center justify-center">
+        <Spinner size="md" />
+      </div>
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: "Voice Assistant | KisanGPT",

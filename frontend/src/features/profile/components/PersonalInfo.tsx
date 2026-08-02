@@ -106,7 +106,7 @@ export const PersonalInfo: React.FC<PersonalInfoProps> = ({
             <User size={16} className="text-primary" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-foreground">
+            <h2 className="ds-heading-sm text-foreground">
               Personal Information
             </h2>
             <p className="text-[10px] text-muted-foreground">

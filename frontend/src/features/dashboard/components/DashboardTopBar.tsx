@@ -26,7 +26,7 @@ export const DashboardTopBar: React.FC = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search fields, crops, or market data..."
               aria-label="Search dashboard"
-              className="w-full rounded-xl border border-border/60 bg-muted/30 pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 placeholder:text-muted-foreground/60 transition-all"
+              className="w-full rounded-xl border border-border/60 bg-muted/30 pl-10 pr-4 py-2.5 text-sm focus-visible:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 placeholder:text-muted-foreground/60 transition-all"
             />
           </div>
         </div>
@@ -35,7 +35,7 @@ export const DashboardTopBar: React.FC = () => {
           <button
             type="button"
             aria-label="Notifications"
-            className="relative p-2.5 rounded-xl text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all min-h-[40px] min-w-[40px] flex items-center justify-center"
+            className="relative p-2.5 rounded-xl text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <Bell size={19} />
             <span
@@ -51,7 +51,7 @@ export const DashboardTopBar: React.FC = () => {
 
           <Link
             href="/disease"
-            className="hidden lg:inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-all active:scale-95 min-h-[40px]"
+            className="hidden lg:inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-primary/90 transition-all active:scale-95 min-h-[44px]"
           >
             <Crop size={15} aria-hidden="true" />
             Analyze Crop

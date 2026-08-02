@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { SCANNING_STEPS } from "../constants/disease.constants";
@@ -56,10 +57,13 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({ previewUrl }) => {
       {previewUrl && (
         <div className="flex items-center gap-3 mb-5">
           <div className="h-14 w-14 rounded-xl overflow-hidden bg-muted shrink-0">
-            <img
+            <Image
               src={previewUrl}
               alt="Plant being analyzed"
+              width={56}
+              height={56}
               className="w-full h-full object-cover"
+              unoptimized
             />
           </div>
           <div>

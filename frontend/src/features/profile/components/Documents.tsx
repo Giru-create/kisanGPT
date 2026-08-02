@@ -55,7 +55,7 @@ export const Documents: React.FC<DocumentsProps> = ({
         {onUpload && (
           <button
             onClick={onUpload}
-            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors min-h-[36px]"
+            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors min-h-[44px]"
           >
             <Upload size={14} />
             Upload

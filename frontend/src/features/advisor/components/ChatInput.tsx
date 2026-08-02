@@ -7,6 +7,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React, { useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -98,10 +99,13 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               className="mb-3 relative inline-block"
             >
               <div className="relative rounded-xl overflow-hidden border border-border">
-                <img
+                <Image
                   src={imagePreview}
                   alt="Upload preview"
+                  width={96}
+                  height={96}
                   className="w-24 h-24 object-cover"
+                  unoptimized
                 />
                 <button
                   type="button"
@@ -156,7 +160,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             placeholder="Ask KisanGPT about your crops, soil, or markets..."
             rows={1}
             disabled={disabled}
-            className="w-full bg-transparent border-none focus:ring-0 resize-none min-h-[44px] max-h-48 text-sm py-3 px-4 custom-scrollbar placeholder:text-muted-foreground"
+            className="w-full bg-transparent border-none resize-none min-h-[44px] max-h-48 text-sm py-3 px-4 custom-scrollbar placeholder:text-muted-foreground"
             aria-label="Chat message input"
             aria-describedby="char-count"
           />
@@ -175,14 +179,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Attach image"
               >
                 <ImageIcon size={18} />
               </button>
               <button
                 type="button"
-                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Attach file"
                 disabled
                 title="File attachment coming soon"
@@ -191,7 +195,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               </button>
               <button
                 type="button"
-                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
+                className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Take photo"
                 disabled
                 title="Camera coming soon"

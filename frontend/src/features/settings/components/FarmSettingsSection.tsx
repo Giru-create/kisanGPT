@@ -56,7 +56,7 @@ export const FarmSettingsSection: React.FC<FarmSettingsSectionProps> = ({
             type="text"
             value={settings.farmLocation}
             onChange={(e) => handleLocationChange(e.target.value)}
-            className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm w-48 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm w-48 focus-visible:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             aria-label="Farm location"
           />
         </SettingsCard>

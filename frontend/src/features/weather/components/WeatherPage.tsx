@@ -167,17 +167,13 @@ const WeatherPageShell: React.FC<WeatherPageShellProps> = ({
   toggleUnit,
   children,
 }) => (
-  <main className="min-h-screen bg-background">
+  <section className="min-h-screen bg-background">
     <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
       {/* Page header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-bold text-foreground">
-            Weather Intelligence
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            AI-powered weather for your farm
-          </p>
+          <h1 className="ds-page-title">Weather Intelligence</h1>
+          <p className="ds-page-subtitle">AI-powered weather for your farm</p>
         </div>
 
         {/* °C / °F toggle */}
@@ -196,5 +192,5 @@ const WeatherPageShell: React.FC<WeatherPageShellProps> = ({
       {/* Page content */}
       {children}
     </div>
-  </main>
+  </section>
 );

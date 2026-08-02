@@ -51,7 +51,7 @@ export const PriorityAlertsCard: React.FC<PriorityAlertsCardProps> = ({
       className="rounded-2xl border border-border bg-card shadow-sm"
     >
       <div className="px-6 pt-6 pb-4">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+        <h2 className="ds-label-sm uppercase tracking-wider">
           Priority Alerts
         </h2>
       </div>

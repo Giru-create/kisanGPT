@@ -7,7 +7,7 @@ export const Skeleton: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-muted/60", className)}
+      className={cn("ds-skeleton", className)}
       aria-hidden="true"
       {...props}
     />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Camera,
@@ -112,15 +113,19 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
             className="rounded-2xl border border-border bg-card overflow-hidden"
           >
             <div className="relative aspect-[4/3] bg-muted overflow-hidden">
-              <img
+              <Image
                 src={preview}
                 alt="Selected plant image"
+                width={640}
+                height={480}
                 className="w-full h-full object-contain transition-transform duration-200"
                 style={{ transform: `scale(${zoom})` }}
+                unoptimized
               />
               {/* Zoom controls */}
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/60 rounded-full px-3 py-1.5">
                 <button
+                  type="button"
                   onClick={() => setZoom((z) => Math.max(0.5, z - 0.25))}
                   className="text-white/80 hover:text-white"
                   aria-label="Zoom out"
@@ -131,6 +136,7 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
                   {Math.round(zoom * 100)}%
                 </span>
                 <button
+                  type="button"
                   onClick={() => setZoom((z) => Math.min(3, z + 0.25))}
                   className="text-white/80 hover:text-white"
                   aria-label="Zoom in"

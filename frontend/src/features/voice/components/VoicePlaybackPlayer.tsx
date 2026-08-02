@@ -34,7 +34,7 @@ export const VoicePlaybackPlayer: React.FC<VoicePlaybackPlayerProps> = ({
         type="button"
         onClick={onPlayToggle}
         aria-label={isPlaying ? "Pause audio response" : "Play audio response"}
-        className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-sm hover:scale-105 transition-transform min-w-[40px] focus:outline-none focus:ring-2 focus:ring-primary"
+        className="flex items-center justify-center w-11 h-11 rounded-full bg-primary text-primary-foreground shadow-sm hover:scale-105 transition-transform min-w-[44px] focus-visible:outline-none focus:ring-2 focus:ring-primary"
       >
         {isPlaying ? (
           <Pause size={18} />
@@ -63,7 +63,7 @@ export const VoicePlaybackPlayer: React.FC<VoicePlaybackPlayerProps> = ({
         type="button"
         onClick={cycleSpeed}
         aria-label={`Playback speed: ${speed}x. Click to change.`}
-        className="px-2 py-1 text-[11px] font-bold rounded-lg bg-background text-foreground border border-border/50 hover:bg-muted transition-colors min-h-[32px]"
+        className="px-2 py-1 text-[11px] font-bold rounded-lg bg-background text-foreground border border-border/50 hover:bg-muted transition-colors min-h-[44px]"
       >
         {speed}x
       </button>

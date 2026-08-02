@@ -1,12 +1,8 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// AddMemoryModal.tsx
-// KisanGPT — Accessible Modal Form to Log New Farm Memory Record
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { X, Plus, Save } from "lucide-react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { MEMORY_CATEGORIES } from "../constants/memory.constants";
 import type { AddMemoryInput, MemoryCategory } from "../types/memory.types";
 
@@ -21,6 +17,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
   onClose,
   onSubmit,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [category, setCategory] =
     useState<Exclude<MemoryCategory, "all">>("soil");
   const [title, setTitle] = useState("");
@@ -28,6 +25,8 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
   const [cropName, setCropName] = useState("");
   const [season, setSeason] = useState("Kharif 2026");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useFocusTrap(containerRef, isOpen);
 
   const handleEscape = useCallback(
     (e: KeyboardEvent) => {
@@ -70,6 +69,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
 
   return (
     <div
+      ref={containerRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-memory-title"
@@ -118,7 +118,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
               onChange={(e) =>
                 setCategory(e.target.value as Exclude<MemoryCategory, "all">)
               }
-              className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
+              className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
             >
               {validCategories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -143,7 +143,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Soil NPK Test Result or Drip Irrigation Log"
-              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
+              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
             />
           </div>
 
@@ -198,7 +198,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter detailed observations, doses applied, yield harvested, or disease symptoms..."
-              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="w-full px-4 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             />
           </div>
 

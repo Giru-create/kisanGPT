@@ -1,5 +1,17 @@
 import type { Metadata } from "next";
-import { ProfilePage } from "@/features/profile";
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/ui/Spinner";
+
+const ProfilePage = dynamic(
+  () => import("@/features/profile").then((m) => m.ProfilePage),
+  {
+    loading: () => (
+      <div className="ds-page flex items-center justify-center">
+        <Spinner size="md" />
+      </div>
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: "Farmer Profile | KisanGPT",

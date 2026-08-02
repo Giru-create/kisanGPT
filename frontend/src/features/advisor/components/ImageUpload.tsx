@@ -1,11 +1,7 @@
 "use client";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ImageUpload.tsx
-// KisanGPT — Image upload overlay with drag and drop, camera, preview
-// ─────────────────────────────────────────────────────────────────────────────
-
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload,
@@ -16,6 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface ImageUploadProps {
   isOpen: boolean;
@@ -32,11 +29,28 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   isUploading = false,
   uploadProgress = 0,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useFocusTrap(containerRef, isOpen);
+
+  const handleEscape = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isOpen, handleEscape]);
 
   const handleFile = useCallback(
     (file: File) => {
@@ -106,10 +120,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Upload image"
         >
           {/* Close Button */}
           <button
@@ -131,10 +149,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative w-full rounded-xl overflow-hidden border border-border"
               >
-                <img
+                <Image
                   src={preview}
                   alt="Upload preview"
+                  width={640}
+                  height={256}
                   className="w-full h-64 object-cover"
+                  unoptimized
                 />
                 <button
                   type="button"

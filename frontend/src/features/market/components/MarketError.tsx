@@ -28,10 +28,10 @@ export const MarketError: React.FC<MarketErrorProps> = ({
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className={`rounded-2xl border p-5 flex flex-col items-center gap-4 text-center ${
+      className={`${
         isOffline
-          ? "border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30"
-          : "border-destructive/40 bg-destructive/5"
+          ? "rounded-2xl border border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/30 p-5 flex flex-col items-center gap-4 text-center"
+          : "ds-error-state p-5 gap-4"
       }`}
     >
       <div
@@ -55,7 +55,7 @@ export const MarketError: React.FC<MarketErrorProps> = ({
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-foreground">
+        <p className="ds-heading-sm text-foreground">
           {isOffline ? "You are offline" : "Unable to load market data"}
         </p>
         <p className="text-xs text-muted-foreground mt-1 max-w-xs">

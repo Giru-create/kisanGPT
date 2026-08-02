@@ -38,7 +38,7 @@ export const Alert: React.FC<AlertProps> = ({
           {title}
         </h5>
       )}
-      <div className="text-sm opacity-90">{children}</div>
+      <div className="ds-body-sm opacity-90">{children}</div>
     </div>
   );
 };

@@ -115,6 +115,7 @@ export const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
 
           {/* Main mic button */}
           <motion.button
+            type="button"
             onClick={isListening ? onStopListening : onStartListening}
             disabled={isProcessing}
             whileTap={{ scale: 0.95 }}

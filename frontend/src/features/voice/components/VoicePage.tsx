@@ -47,17 +47,15 @@ export const VoicePage: React.FC = () => {
           : "";
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
         <LiveRegion>{liveAnnouncement}</LiveRegion>
 
         {/* Page header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-xl font-bold text-foreground">
-              Voice Assistant
-            </h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <h1 className="ds-page-title">Voice Assistant</h1>
+            <p className="ds-page-subtitle">
               Speak naturally, get expert farming advice
             </p>
           </div>
@@ -67,7 +65,7 @@ export const VoicePage: React.FC = () => {
                 type="button"
                 onClick={clearMessages}
                 aria-label="Clear chat history"
-                className="p-2 rounded-xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+                className="p-2 rounded-xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
                 <Trash2 size={16} />
               </button>
@@ -76,7 +74,7 @@ export const VoicePage: React.FC = () => {
               type="button"
               onClick={() => setShowSettings(!showSettings)}
               aria-label="Voice settings"
-              className="p-2 rounded-xl text-muted-foreground hover:bg-accent transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-xl text-muted-foreground hover:bg-accent transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <Settings size={16} />
             </button>
@@ -176,7 +174,7 @@ export const VoicePage: React.FC = () => {
           />
         </footer>
       </div>
-    </main>
+    </section>
   );
 };
 

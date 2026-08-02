@@ -49,24 +49,24 @@ export const DashboardHero: React.FC = () => {
               <h2 className="text-white/90 text-sm font-semibold">
                 AI Daily Briefing
               </h2>
-              <p className="text-white/40 text-xs mt-0.5">
+              <p className="text-white/60 text-xs mt-0.5">
                 Based on your farm data + real-time conditions
               </p>
             </div>
           </div>
-          <span className="text-white/30 text-xs font-medium hidden sm:block">
+          <span className="text-white/60 text-xs font-medium hidden sm:block">
             Updated 2 min ago
           </span>
         </div>
 
         {/* Center: Main recommendation */}
         <div className="flex-1 flex flex-col justify-center py-6 sm:py-8">
-          <p className="text-white/95 text-xl sm:text-2xl lg:text-3xl font-bold leading-snug max-w-3xl tracking-tight">
+          <p className="text-white/95 ds-hero-title font-bold leading-snug max-w-3xl tracking-tight">
             Ideal window for wheat sowing opens{" "}
             <span className="text-emerald-400">tomorrow</span>. Rain expected
             Saturday will provide optimal soil moisture.
           </p>
-          <p className="text-white/50 text-sm sm:text-base mt-3 max-w-2xl leading-relaxed">
+          <p className="text-white/70 ds-body-md mt-3 max-w-2xl leading-relaxed">
             Postpone urea application until Monday to prevent leaching. Block A
             shows highest yield potential this season.
           </p>
@@ -84,7 +84,7 @@ export const DashboardHero: React.FC = () => {
                 />
               </div>
               <div>
-                <p className="text-white/40 text-[11px] font-medium uppercase tracking-wider">
+                <p className="text-white/60 text-[11px] font-medium uppercase tracking-wider">
                   Biggest Risk
                 </p>
                 <p className="text-white/90 text-sm font-semibold">
@@ -101,7 +101,7 @@ export const DashboardHero: React.FC = () => {
                 />
               </div>
               <div>
-                <p className="text-white/40 text-[11px] font-medium uppercase tracking-wider">
+                <p className="text-white/60 text-[11px] font-medium uppercase tracking-wider">
                   Best Opportunity
                 </p>
                 <p className="text-white/90 text-sm font-semibold">
@@ -114,7 +114,7 @@ export const DashboardHero: React.FC = () => {
                 <Zap size={16} className="text-blue-400" aria-hidden="true" />
               </div>
               <div>
-                <p className="text-white/40 text-[11px] font-medium uppercase tracking-wider">
+                <p className="text-white/60 text-[11px] font-medium uppercase tracking-wider">
                   AI Confidence
                 </p>
                 <p className="text-white/90 text-sm font-semibold">

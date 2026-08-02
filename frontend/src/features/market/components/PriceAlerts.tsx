@@ -104,7 +104,7 @@ export const PriceAlerts: React.FC<PriceAlertsProps> = ({
                     value={newCommodity}
                     onChange={(e) => setNewCommodity(e.target.value)}
                     placeholder="e.g. Wheat"
-                    className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="w-full px-3 py-2 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div>

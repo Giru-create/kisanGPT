@@ -7,6 +7,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Brain,
@@ -27,245 +28,251 @@ interface ChatMessageProps {
   message: ChatMessageType;
 }
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
-  const [isThinkingOpen, setIsThinkingOpen] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+export const ChatMessage: React.FC<ChatMessageProps> = React.memo(
+  ({ message }) => {
+    const [isThinkingOpen, setIsThinkingOpen] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(message.content);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
+    const handleCopy = () => {
+      navigator.clipboard.writeText(message.content);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    };
 
-  const handleSave = () => {
-    setIsSaved(!isSaved);
-  };
+    const handleSave = () => {
+      setIsSaved(!isSaved);
+    };
 
-  if (message.role === "user") {
+    if (message.role === "user") {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="flex flex-col items-end gap-1.5"
+        >
+          {message.imagePreview && (
+            <div className="rounded-2xl rounded-tr-none overflow-hidden border border-border max-w-[280px]">
+              <Image
+                src={message.imagePreview}
+                alt="Uploaded image"
+                width={280}
+                height={210}
+                className="w-full h-auto object-cover"
+                unoptimized
+                priority={false}
+              />
+            </div>
+          )}
+          <div className="bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">
+            <p className="text-sm leading-relaxed">{message.content}</p>
+          </div>
+          <span className="text-xs text-muted-foreground px-2">
+            {message.timestamp}
+          </span>
+        </motion.div>
+      );
+    }
+
     return (
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2 }}
-        className="flex flex-col items-end gap-1.5"
+        transition={{ duration: 0.3 }}
+        className="flex gap-4 group"
       >
-        {message.imagePreview && (
-          <div className="rounded-2xl rounded-tr-none overflow-hidden border border-border max-w-[280px]">
-            <img
-              src={message.imagePreview}
-              alt="Uploaded image"
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        )}
-        <div className="bg-primary text-primary-foreground px-5 py-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">
-          <p className="text-sm leading-relaxed">{message.content}</p>
+        {/* AI Avatar */}
+        <div
+          className="ds-icon-container-md bg-primary/10 shrink-0 shadow-md"
+          aria-hidden="true"
+        >
+          <Brain size={20} className="text-primary" />
         </div>
-        <span className="text-xs text-muted-foreground px-2">
-          {message.timestamp}
-        </span>
-      </motion.div>
-    );
-  }
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex gap-4 group"
-    >
-      {/* AI Avatar */}
-      <div
-        className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 shadow-md"
-        aria-hidden="true"
-      >
-        <Brain size={20} className="text-primary" />
-      </div>
-
-      <div className="flex-1 space-y-3 min-w-0">
-        {/* Thinking Block */}
-        {message.thinkingSteps && message.thinkingSteps.length > 0 && (
-          <details
-            className="border border-border rounded-xl overflow-hidden bg-muted/30"
-            open={isThinkingOpen}
-            onToggle={(e) =>
-              setIsThinkingOpen((e.target as HTMLDetailsElement).open)
-            }
-          >
-            <summary className="flex items-center justify-between px-4 py-2.5 cursor-pointer list-none hover:bg-muted/50 transition-colors">
-              <div className="flex items-center gap-2">
-                <Brain size={16} className="text-primary animate-pulse" />
-                <span className="text-sm font-medium text-muted-foreground">
-                  Reasoning with KisanGPT AI...
-                </span>
-              </div>
-              <ChevronDown
-                size={16}
-                className={cn(
-                  "text-muted-foreground transition-transform",
-                  isThinkingOpen && "rotate-180",
-                )}
-              />
-            </summary>
-            <div className="px-4 py-3 text-xs text-muted-foreground border-t border-border space-y-1.5 bg-background">
-              {message.thinkingSteps.map((step) => (
-                <p key={step.id}>{step.text}</p>
-              ))}
-            </div>
-          </details>
-        )}
-
-        {/* Confidence Badge */}
-        {message.confidence !== undefined && message.confidence > 0 && (
-          <div className="flex items-center gap-2">
-            <Badge
-              variant={
-                message.confidence >= 80
-                  ? "success"
-                  : message.confidence >= 60
-                    ? "warning"
-                    : "error"
+        <div className="flex-1 space-y-3 min-w-0">
+          {/* Thinking Block */}
+          {message.thinkingSteps && message.thinkingSteps.length > 0 && (
+            <details
+              className="border border-border rounded-xl overflow-hidden bg-muted/30"
+              open={isThinkingOpen}
+              onToggle={(e) =>
+                setIsThinkingOpen((e.target as HTMLDetailsElement).open)
               }
-              className="text-[10px]"
             >
-              {message.confidence}% confidence
-            </Badge>
+              <summary className="flex items-center justify-between px-4 py-2.5 cursor-pointer list-none hover:bg-muted/50 transition-colors">
+                <div className="flex items-center gap-2">
+                  <Brain size={16} className="text-primary animate-pulse" />
+                  <span className="text-sm font-medium text-muted-foreground">
+                    Reasoning with KisanGPT AI...
+                  </span>
+                </div>
+                <ChevronDown
+                  size={16}
+                  className={cn(
+                    "text-muted-foreground transition-transform",
+                    isThinkingOpen && "rotate-180",
+                  )}
+                />
+              </summary>
+              <div className="px-4 py-3 text-xs text-muted-foreground border-t border-border space-y-1.5 bg-background">
+                {message.thinkingSteps.map((step) => (
+                  <p key={step.id}>{step.text}</p>
+                ))}
+              </div>
+            </details>
+          )}
+
+          {/* Confidence Badge */}
+          {message.confidence !== undefined && message.confidence > 0 && (
+            <div className="flex items-center gap-2">
+              <Badge
+                variant={
+                  message.confidence >= 80
+                    ? "success"
+                    : message.confidence >= 60
+                      ? "warning"
+                      : "error"
+                }
+                className="text-[10px]"
+              >
+                {message.confidence}% confidence
+              </Badge>
+            </div>
+          )}
+
+          {/* Main Content */}
+          <div className="space-y-3 text-foreground leading-relaxed text-sm">
+            {message.content.split("\n\n").map((paragraph, i) => {
+              const trimmed = paragraph.trim();
+              if (!trimmed) return null;
+
+              // Detect markdown table
+              if (trimmed.includes("|") && trimmed.startsWith("|")) {
+                return <MarkdownTable key={i} content={trimmed} />;
+              }
+
+              // Detect markdown list
+              if (
+                trimmed.startsWith("- ") ||
+                trimmed.startsWith("* ") ||
+                /^\d+\.\s/.test(trimmed)
+              ) {
+                return <MarkdownList key={i} content={trimmed} />;
+              }
+
+              return (
+                <p
+                  key={i}
+                  dangerouslySetInnerHTML={{ __html: formatContent(trimmed) }}
+                />
+              );
+            })}
           </div>
-        )}
 
-        {/* Main Content */}
-        <div className="space-y-3 text-foreground leading-relaxed text-sm">
-          {message.content.split("\n\n").map((paragraph, i) => {
-            const trimmed = paragraph.trim();
-            if (!trimmed) return null;
-
-            // Detect markdown table
-            if (trimmed.includes("|") && trimmed.startsWith("|")) {
-              return <MarkdownTable key={i} content={trimmed} />;
-            }
-
-            // Detect markdown list
-            if (
-              trimmed.startsWith("- ") ||
-              trimmed.startsWith("* ") ||
-              /^\d+\.\s/.test(trimmed)
-            ) {
-              return <MarkdownList key={i} content={trimmed} />;
-            }
-
-            return (
-              <p
-                key={i}
-                dangerouslySetInnerHTML={{ __html: formatContent(trimmed) }}
-              />
-            );
-          })}
-        </div>
-
-        {/* Response Cards */}
-        {message.responseCards && message.responseCards.length > 0 && (
-          <div className="space-y-3">
-            {message.responseCards.map((card, i) => (
-              <ResponseCard key={i} data={card} />
-            ))}
-          </div>
-        )}
-
-        {/* Recommended Actions */}
-        {message.recommendedActions &&
-          message.recommendedActions.length > 0 && (
-            <div className="flex flex-wrap gap-2 pt-1">
-              {message.recommendedActions.map((action) => (
-                <button
-                  key={action.id}
-                  type="button"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
-                >
-                  <CheckCircle2 size={12} />
-                  {action.label}
-                </button>
+          {/* Response Cards */}
+          {message.responseCards && message.responseCards.length > 0 && (
+            <div className="space-y-3">
+              {message.responseCards.map((card, i) => (
+                <ResponseCard key={i} data={card} />
               ))}
             </div>
           )}
 
-        {/* Sources */}
-        {message.sources && message.sources.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2">
-            {message.sources.map((source) => (
-              <div key={source.id} className="group/tip relative">
-                <span className="bg-muted px-2.5 py-1 rounded text-xs font-bold text-primary cursor-help border border-border">
-                  Source: {source.title}
-                </span>
-                <div className="absolute bottom-full left-0 mb-2 w-48 p-2 bg-foreground text-background text-xs rounded shadow-xl opacity-0 group-hover/tip:opacity-100 transition-opacity pointer-events-none z-50">
-                  {source.tooltip}
-                </div>
+          {/* Recommended Actions */}
+          {message.recommendedActions &&
+            message.recommendedActions.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {message.recommendedActions.map((action) => (
+                  <button
+                    key={action.id}
+                    type="button"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
+                  >
+                    <CheckCircle2 size={12} />
+                    {action.label}
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+            )}
 
-        {/* Action Buttons */}
-        <div className="flex gap-1 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            type="button"
-            onClick={handleCopy}
-            className={cn(
-              "p-1.5 rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center transition-colors",
-              isCopied
-                ? "text-emerald-500"
-                : "text-muted-foreground hover:text-primary",
-            )}
-            aria-label={isCopied ? "Copied" : "Copy message"}
-          >
-            {isCopied ? <CheckCircle2 size={16} /> : <Copy size={16} />}
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            className={cn(
-              "p-1.5 rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center transition-colors",
-              isSaved
-                ? "text-primary"
-                : "text-muted-foreground hover:text-primary",
-            )}
-            aria-label={isSaved ? "Saved" : "Save response"}
-          >
-            <Bookmark size={16} />
-          </button>
-          <button
-            type="button"
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
-            aria-label="Mark as helpful"
-            disabled
-            title="Feedback coming soon"
-          >
-            <ThumbsUp size={16} />
-          </button>
-          <button
-            type="button"
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
-            aria-label="Mark as not helpful"
-            disabled
-            title="Feedback coming soon"
-          >
-            <ThumbsDown size={16} />
-          </button>
-          <button
-            type="button"
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[32px] min-w-[32px] flex items-center justify-center"
-            aria-label="Share response"
-            disabled
-            title="Share coming soon"
-          >
-            <Share2 size={16} />
-          </button>
+          {/* Sources */}
+          {message.sources && message.sources.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-2">
+              {message.sources.map((source) => (
+                <div key={source.id} className="group/tip relative">
+                  <span className="bg-muted px-2.5 py-1 rounded text-xs font-bold text-primary cursor-help border border-border">
+                    Source: {source.title}
+                  </span>
+                  <div className="absolute bottom-full left-0 mb-2 w-48 p-2 bg-foreground text-background text-xs rounded shadow-xl opacity-0 group-hover/tip:opacity-100 transition-opacity pointer-events-none z-50">
+                    {source.tooltip}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex gap-1 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              type="button"
+              onClick={handleCopy}
+              className={cn(
+                "p-1.5 rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors",
+                isCopied
+                  ? "text-emerald-500"
+                  : "text-muted-foreground hover:text-primary",
+              )}
+              aria-label={isCopied ? "Copied" : "Copy message"}
+            >
+              {isCopied ? <CheckCircle2 size={16} /> : <Copy size={16} />}
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              className={cn(
+                "p-1.5 rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors",
+                isSaved
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary",
+              )}
+              aria-label={isSaved ? "Saved" : "Save response"}
+            >
+              <Bookmark size={16} />
+            </button>
+            <button
+              type="button"
+              className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Mark as helpful"
+              disabled
+              title="Feedback coming soon"
+            >
+              <ThumbsUp size={16} />
+            </button>
+            <button
+              type="button"
+              className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Mark as not helpful"
+              disabled
+              title="Feedback coming soon"
+            >
+              <ThumbsDown size={16} />
+            </button>
+            <button
+              type="button"
+              className="p-1.5 text-muted-foreground hover:text-primary transition-colors rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Share response"
+              disabled
+              title="Share coming soon"
+            >
+              <Share2 size={16} />
+            </button>
+          </div>
         </div>
-      </div>
-    </motion.div>
-  );
-};
+      </motion.div>
+    );
+  },
+);
 
 // ---------------------------------------------------------------------------
 // Markdown Helpers
@@ -321,6 +328,7 @@ function MarkdownTable({ content }: { content: string }) {
             {headers.map((h, i) => (
               <th
                 key={i}
+                scope="col"
                 className="px-3 py-2 text-left font-semibold text-foreground"
               >
                 {h}

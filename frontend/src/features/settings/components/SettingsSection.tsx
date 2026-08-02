@@ -29,7 +29,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
       className="rounded-2xl border border-border bg-card p-5 shadow-sm"
     >
       <div className="mb-4">
-        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+        <h3 className="ds-heading-md text-foreground">{title}</h3>
         {description && (
           <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
         )}

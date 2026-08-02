@@ -30,10 +30,10 @@ export const WeatherError: React.FC<WeatherErrorProps> = ({
 
       {/* Heading */}
       <div className="flex flex-col gap-1.5">
-        <h2 className="text-lg font-semibold text-foreground">
+        <h2 className="ds-heading-md text-foreground">
           Weather data unavailable
         </h2>
-        <p className="text-sm text-muted-foreground max-w-xs">
+        <p className="ds-body-sm text-muted-foreground max-w-xs">
           {message ??
             "We couldn't load the weather for your location. Check your internet connection and try again."}
         </p>

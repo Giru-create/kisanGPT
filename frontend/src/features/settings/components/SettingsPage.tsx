@@ -51,15 +51,15 @@ export const SettingsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
         <SettingsSkeleton />
-      </main>
+      </section>
     );
   }
 
   if (error || !data) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center p-8">
+      <section className="min-h-screen bg-background flex items-center justify-center p-8">
         <div className="text-center space-y-4">
           <div className="h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center mx-auto">
             <span className="text-2xl">⚠️</span>
@@ -71,7 +71,7 @@ export const SettingsPage: React.FC = () => {
             {error ?? "An unexpected error occurred."}
           </p>
         </div>
-      </main>
+      </section>
     );
   }
 
@@ -129,7 +129,7 @@ export const SettingsPage: React.FC = () => {
   );
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <LiveRegion>
         {isLoading
           ? "Loading settings..."
@@ -143,8 +143,8 @@ export const SettingsPage: React.FC = () => {
           transition={{ duration: 0.3 }}
           className="mb-6"
         >
-          <h1 className="text-xl font-bold text-foreground">Settings</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <h1 className="ds-page-title">Settings</h1>
+          <p className="ds-page-subtitle">
             Personalize your KisanGPT experience
           </p>
         </motion.div>
@@ -229,7 +229,7 @@ export const SettingsPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 

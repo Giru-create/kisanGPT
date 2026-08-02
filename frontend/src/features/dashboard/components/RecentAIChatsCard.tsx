@@ -33,7 +33,7 @@ export const RecentAIChatsCard: React.FC<RecentAIChatsCardProps> = ({
       className="rounded-2xl border border-border bg-card shadow-sm"
     >
       <div className="px-6 pt-6 pb-4 flex items-center justify-between">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+        <h2 className="ds-label-sm uppercase tracking-wider">
           Recent AI Chats
         </h2>
         <Link

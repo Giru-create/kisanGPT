@@ -20,12 +20,12 @@ export const AIAdvisor: React.FC = () => {
       {/* Main Content Area with Right Sidebar */}
       <div className="flex flex-1 overflow-hidden">
         {/* Chat Area */}
-        <main
+        <section
           id="main-content"
           className="flex-1 flex flex-col min-w-0 overflow-hidden"
         >
           <ChatWindow />
-        </main>
+        </section>
 
         {/* Right Sidebar - Farm Context */}
         <FarmContextSidebar />

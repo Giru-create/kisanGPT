@@ -31,10 +31,8 @@ export const SchemeError: React.FC<SchemeErrorProps> = ({
           aria-hidden="true"
         />
       </div>
-      <h2 className="text-lg font-semibold text-foreground">
-        Failed to Load Schemes
-      </h2>
-      <p className="text-sm text-muted-foreground max-w-xs">{message}</p>
+      <h2 className="ds-heading-md text-foreground">Failed to Load Schemes</h2>
+      <p className="ds-body-sm text-muted-foreground max-w-xs">{message}</p>
       <Button
         variant="primary"
         size="md"

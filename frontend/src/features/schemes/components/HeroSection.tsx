@@ -29,10 +29,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onQuickSearch }) => {
             <Sparkles size={16} className="text-primary" aria-hidden="true" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-foreground">
+            <h2 className="ds-heading-sm text-foreground">
               AI Scheme Recommendations
             </h2>
-            <p className="text-[10px] text-muted-foreground">
+            <p className="ds-caption text-muted-foreground">
               Personalized for your farm profile
             </p>
           </div>

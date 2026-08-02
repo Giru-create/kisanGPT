@@ -1,10 +1,17 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// app/dashboard/page.tsx
-// KisanGPT — Farmer Dashboard route entry point
-// ─────────────────────────────────────────────────────────────────────────────
-
 import type { Metadata } from "next";
-import { FarmerDashboard } from "@/features/dashboard";
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/ui/Spinner";
+
+const FarmerDashboard = dynamic(
+  () => import("@/features/dashboard").then((m) => m.FarmerDashboard),
+  {
+    loading: () => (
+      <div className="ds-page flex items-center justify-center">
+        <Spinner size="md" />
+      </div>
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: "Farmer Dashboard | KisanGPT",

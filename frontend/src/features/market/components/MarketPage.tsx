@@ -45,15 +45,13 @@ export const MarketPage: React.FC = () => {
   } = useMarket();
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
         {/* Page header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-xl font-bold text-foreground">
-              Market Intelligence
-            </h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <h1 className="ds-page-title">Market Intelligence</h1>
+            <p className="ds-page-subtitle">
               AI-powered mandi prices &amp; market insights
             </p>
           </div>
@@ -200,7 +198,7 @@ export const MarketPage: React.FC = () => {
           closeAlertDialog();
         }}
       />
-    </main>
+    </section>
   );
 };
 

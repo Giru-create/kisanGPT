@@ -27,7 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex flex-col flex-1 p-4 space-y-6">
         <div>
           {!isCollapsed && (
-            <h2 className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 select-none">
+            <h2 className="px-3 ds-label-sm uppercase tracking-wider mb-3 select-none">
               Foundation Navigation
             </h2>
           )}
@@ -52,12 +52,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {!isCollapsed && (
           <div className="mt-auto p-4 rounded-lg bg-accent/40 border border-border/60">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-foreground">
-                Status
-              </span>
+              <span className="ds-label-sm text-foreground">Status</span>
               <Badge variant="success">Phase 1</Badge>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="ds-caption leading-relaxed">
               Frontend Foundation ready. Modular design system active.
             </p>
           </div>

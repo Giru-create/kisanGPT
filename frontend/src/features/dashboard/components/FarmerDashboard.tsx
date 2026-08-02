@@ -61,7 +61,7 @@ export const FarmerDashboard: React.FC = () => {
               advisorySafe={dashboardState.data.weatherSummary.advisorySafe}
             />
 
-            <main id="main-content" className="ds-page-content-wide">
+            <section id="main-content" className="ds-page-content-wide">
               <div
                 className="ds-section-wide"
                 {...motionPresets.staggerContainer}
@@ -118,7 +118,7 @@ export const FarmerDashboard: React.FC = () => {
                   />
                 </div>
               </div>
-            </main>
+            </section>
           </>
         )}
       </AnimatePresence>

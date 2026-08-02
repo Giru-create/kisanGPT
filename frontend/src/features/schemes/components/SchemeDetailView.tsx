@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   X,
@@ -15,6 +15,7 @@ import {
   Link2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import {
@@ -39,7 +40,10 @@ export const SchemeDetailView: React.FC<SchemeDetailViewProps> = ({
   onApply,
   onSave,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [expandedFaq, setExpandedFaq] = React.useState<string | null>(null);
+
+  useFocusTrap(containerRef, isOpen);
 
   const handleEscape = useCallback(
     (e: KeyboardEvent) => {
@@ -77,6 +81,7 @@ export const SchemeDetailView: React.FC<SchemeDetailViewProps> = ({
 
       {/* Panel */}
       <motion.div
+        ref={containerRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={`scheme-title-${scheme.id}`}

@@ -30,13 +30,7 @@ export const DetectionError: React.FC<DetectionErrorProps> = ({
   className,
 }) => {
   return (
-    <div
-      className={cn(
-        "rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center flex flex-col items-center gap-4",
-        className,
-      )}
-      role="alert"
-    >
+    <div className={cn("ds-error-state p-6 gap-4", className)} role="alert">
       <div className="rounded-full bg-destructive/10 p-4">
         <AlertCircle
           size={40}
@@ -46,9 +40,7 @@ export const DetectionError: React.FC<DetectionErrorProps> = ({
       </div>
 
       <div className="space-y-1.5">
-        <h2 className="text-lg font-semibold text-foreground">
-          Analysis Failed
-        </h2>
+        <h2 className="ds-heading-md text-foreground">Analysis Failed</h2>
         <p className="text-sm text-muted-foreground max-w-xs">{message}</p>
       </div>
 

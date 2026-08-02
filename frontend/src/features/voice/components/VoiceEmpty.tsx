@@ -39,9 +39,7 @@ export const VoiceEmpty: React.FC<VoiceEmptyProps> = ({
       </motion.div>
 
       {/* Title */}
-      <h3 className="text-base font-bold text-foreground mb-2">
-        Start Speaking
-      </h3>
+      <h3 className="ds-heading-sm text-foreground mb-2">Start Speaking</h3>
       <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed mb-5">
         Ask anything about farming. Our AI understands multiple Indian languages
         and provides expert advice.

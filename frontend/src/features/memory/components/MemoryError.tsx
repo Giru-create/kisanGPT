@@ -29,10 +29,10 @@ export const MemoryError: React.FC<MemoryErrorProps> = ({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <h2 className="text-lg font-semibold text-foreground">
+        <h2 className="ds-heading-md text-foreground">
           Farm Memory Load Failure
         </h2>
-        <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+        <p className="ds-body-sm text-muted-foreground max-w-xs leading-relaxed">
           {message}
         </p>
       </div>

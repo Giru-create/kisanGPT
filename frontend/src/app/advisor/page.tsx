@@ -1,10 +1,17 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// app/advisor/page.tsx
-// KisanGPT — AI Advisor route entry point
-// ─────────────────────────────────────────────────────────────────────────────
-
 import type { Metadata } from "next";
-import { AIAdvisor } from "@/features/advisor";
+import dynamic from "next/dynamic";
+import { Spinner } from "@/components/ui/Spinner";
+
+const AIAdvisor = dynamic(
+  () => import("@/features/advisor").then((m) => m.AIAdvisor),
+  {
+    loading: () => (
+      <div className="ds-page flex items-center justify-center">
+        <Spinner size="md" />
+      </div>
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: "AI Advisor | KisanGPT",

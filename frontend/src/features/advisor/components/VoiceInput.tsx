@@ -1,15 +1,10 @@
 "use client";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// VoiceInput.tsx
-// KisanGPT — Voice input overlay with waveform visualization
-// Beautiful recording, thinking, and speaking states
-// ─────────────────────────────────────────────────────────────────────────────
-
-import React from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, X, Loader2, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useAdvisorStore } from "../store/advisorStore";
 
 interface VoiceInputProps {
@@ -25,17 +20,34 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
   onClose,
   onSend,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { voiceStatus, voiceVolume, voiceTranscript, resetVoice } =
     useAdvisorStore();
+
+  useFocusTrap(containerRef, isOpen);
 
   const isListening = voiceStatus === "listening";
   const isThinking = voiceStatus === "thinking";
   const isSpeaking = voiceStatus === "speaking";
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     resetVoice();
     onClose();
-  };
+  }, [resetVoice, onClose]);
+
+  const handleEscape = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    },
+    [handleClose],
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
+    }
+  }, [isOpen, handleEscape]);
 
   const handleVoiceToggle = () => {
     if (isListening) {
@@ -50,10 +62,14 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Voice input"
         >
           {/* Close Button */}
           <button

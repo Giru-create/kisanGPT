@@ -40,15 +40,13 @@ export const SchemesPage: React.FC = () => {
   } = useSchemes();
 
   return (
-    <main className="min-h-screen bg-background">
+    <section className="min-h-screen bg-background">
       <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
         {/* Page header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-xl font-bold text-foreground">
-              Government Schemes
-            </h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <h1 className="ds-page-title">Government Schemes</h1>
+            <p className="ds-page-subtitle">
               AI-powered scheme discovery &amp; tracking
             </p>
           </div>
@@ -221,7 +219,7 @@ export const SchemesPage: React.FC = () => {
           onApply={closeDetail}
         />
       </div>
-    </main>
+    </section>
   );
 };
 

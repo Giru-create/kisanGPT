@@ -17,7 +17,7 @@ export const TypingIndicator: React.FC = () => {
       className="flex gap-4"
     >
       <div
-        className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 shadow-md"
+        className="ds-icon-container-md bg-primary/10 shrink-0 shadow-md"
         aria-hidden="true"
       >
         <Brain size={20} className="text-primary animate-pulse" />

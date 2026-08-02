@@ -36,10 +36,8 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
             <Brain size={16} className="text-primary" aria-hidden="true" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-foreground">
-              AI Memory System
-            </h2>
-            <p className="text-[10px] text-muted-foreground">
+            <h2 className="ds-heading-sm text-foreground">AI Memory System</h2>
+            <p className="ds-caption text-muted-foreground">
               KisanGPT remembers your farm journey
             </p>
           </div>

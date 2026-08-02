@@ -34,7 +34,7 @@ export const MemoryHeader: React.FC<MemoryHeaderProps> = ({
           <Link
             href="/dashboard"
             aria-label="Back to Dashboard"
-            className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+            className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <ArrowLeft size={20} />
           </Link>
@@ -70,7 +70,7 @@ export const MemoryHeader: React.FC<MemoryHeaderProps> = ({
         <button
           type="button"
           onClick={onAddClick}
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-primary text-primary-foreground font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all min-h-[40px]"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-primary text-primary-foreground font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition-all min-h-[44px]"
         >
           <Plus size={16} />
           <span className="hidden sm:inline">Add Memory</span>

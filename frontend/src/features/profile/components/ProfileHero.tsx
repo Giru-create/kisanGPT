@@ -79,16 +79,16 @@ export const ProfileHero: React.FC<ProfileHeroProps> = ({
           <div className="flex-1 min-w-0 space-y-2">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h1 className="text-lg font-bold text-foreground tracking-tight">
+                <h1 className="ds-heading-lg text-foreground">
                   {profile.name}
                 </h1>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1 ds-body-sm text-muted-foreground">
                     <MapPin size={12} />
                     {profile.village}, {profile.district}, {profile.state}
                   </span>
                   <span className="text-muted-foreground">·</span>
-                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1 ds-body-sm text-muted-foreground">
                     <Globe size={12} />
                     {LANGUAGE_LABELS[profile.preferredLanguage] ??
                       profile.preferredLanguage}

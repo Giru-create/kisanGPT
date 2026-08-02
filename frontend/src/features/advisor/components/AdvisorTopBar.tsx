@@ -91,7 +91,7 @@ export const AdvisorTopBar: React.FC = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search conversations..."
             aria-label="Search conversations"
-            className="w-full rounded-full border border-border bg-muted/50 pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            className="w-full rounded-full border border-border bg-muted/50 pl-10 pr-4 py-2 text-sm focus-visible:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
         </div>
       </div>
@@ -103,7 +103,7 @@ export const AdvisorTopBar: React.FC = () => {
           type="button"
           onClick={startNewConversation}
           aria-label="New conversation"
-          className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors active:scale-95 min-h-[40px]"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors active:scale-95 min-h-[44px]"
         >
           <Plus size={16} aria-hidden="true" />
           <span className="hidden sm:inline">New</span>
@@ -113,7 +113,7 @@ export const AdvisorTopBar: React.FC = () => {
         <button
           type="button"
           aria-label="Voice input"
-          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
         >
           <Mic size={18} />
         </button>
@@ -122,7 +122,7 @@ export const AdvisorTopBar: React.FC = () => {
         <button
           type="button"
           aria-label="Notifications"
-          className="relative p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+          className="relative p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
         >
           <Bell size={18} />
           <span
@@ -141,7 +141,7 @@ export const AdvisorTopBar: React.FC = () => {
         <button
           type="button"
           aria-label="Settings"
-          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
         >
           <Settings size={18} />
         </button>
@@ -153,7 +153,7 @@ export const AdvisorTopBar: React.FC = () => {
           aria-label={
             showRightPanel ? "Close context panel" : "Open context panel"
           }
-          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center hidden xl:flex"
+          className="p-2 rounded-full text-muted-foreground hover:bg-muted transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center hidden xl:flex"
         >
           {showRightPanel ? (
             <PanelRightClose size={18} />

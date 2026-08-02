@@ -27,8 +27,8 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
         />
       )}
     </div>
-    <h2 className="text-lg font-semibold text-foreground mb-1">{title}</h2>
-    <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+    <h2 className="ds-heading-md text-foreground mb-1">{title}</h2>
+    <p className="ds-body-sm text-muted-foreground max-w-xs leading-relaxed">
       {message}
     </p>
     {action && <div className="mt-4">{action}</div>}

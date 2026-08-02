@@ -111,7 +111,7 @@ export const CommodityExplorer: React.FC<CommodityExplorerProps> = ({
           placeholder="Search commodity, mandi, state..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-8 py-2.5 text-xs rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          className="w-full pl-9 pr-8 py-2.5 text-xs rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           aria-label="Search commodities"
         />
         {search && (

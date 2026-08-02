@@ -147,7 +147,7 @@ export const NotificationSettingsSection: React.FC<
                 type="time"
                 value={settings.quietHoursStart}
                 onChange={(e) => update("quietHoursStart", e.target.value)}
-                className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm focus-visible:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 aria-label="Quiet hours start"
               />
             </SettingsCard>
@@ -157,7 +157,7 @@ export const NotificationSettingsSection: React.FC<
                 type="time"
                 value={settings.quietHoursEnd}
                 onChange={(e) => update("quietHoursEnd", e.target.value)}
-                className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm focus-visible:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 aria-label="Quiet hours end"
               />
             </SettingsCard>

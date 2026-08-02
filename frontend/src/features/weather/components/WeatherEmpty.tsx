@@ -25,7 +25,7 @@ export const WeatherEmpty: React.FC<WeatherEmptyProps> = ({
 
       {/* Copy */}
       <div className="flex flex-col gap-2">
-        <h3 className="text-base font-bold text-foreground">
+        <h3 className="ds-heading-sm text-foreground mb-2">
           Tell us where your farm is
         </h3>
         <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">

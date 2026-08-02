@@ -91,7 +91,7 @@ export const FarmOverviewCard: React.FC<FarmOverviewProps> = ({
       {/* Farm stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/20 p-3 text-center">
-          <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300">
+          <p className="ds-heading-lg text-emerald-700 dark:text-emerald-300">
             {farm.totalLandArea}
           </p>
           <p className="text-[10px] text-muted-foreground mt-0.5">
@@ -99,19 +99,17 @@ export const FarmOverviewCard: React.FC<FarmOverviewProps> = ({
           </p>
         </div>
         <div className="rounded-xl bg-primary/5 border border-primary/20 p-3 text-center">
-          <p className="text-lg font-bold text-primary">
-            {farm.numberOfFields}
-          </p>
+          <p className="ds-heading-lg text-primary">{farm.numberOfFields}</p>
           <p className="text-[10px] text-muted-foreground mt-0.5">Fields</p>
         </div>
         <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-3 text-center">
-          <p className="text-lg font-bold text-amber-700 dark:text-amber-300">
+          <p className="ds-heading-lg text-amber-700 dark:text-amber-300">
             {livestock.reduce((sum, l) => sum + l.count, 0)}
           </p>
           <p className="text-[10px] text-muted-foreground mt-0.5">Livestock</p>
         </div>
         <div className="rounded-xl bg-violet-500/5 border border-violet-500/20 p-3 text-center">
-          <p className="text-lg font-bold text-violet-700 dark:text-violet-300">
+          <p className="ds-heading-lg text-violet-700 dark:text-violet-300">
             {equipment.length}
           </p>
           <p className="text-[10px] text-muted-foreground mt-0.5">Equipment</p>
