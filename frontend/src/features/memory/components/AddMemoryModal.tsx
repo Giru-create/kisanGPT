@@ -162,7 +162,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
                 value={cropName}
                 onChange={(e) => setCropName(e.target.value)}
                 placeholder="Wheat / Paddy / Mustard"
-                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
+                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
               />
             </div>
             <div className="space-y-1.5">
@@ -178,7 +178,7 @@ export const AddMemoryModal: React.FC<AddMemoryModalProps> = ({
                 value={season}
                 onChange={(e) => setSeason(e.target.value)}
                 placeholder="Kharif 2026"
-                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
+                className="w-full px-3.5 py-2.5 rounded-2xl bg-muted/50 border border-border/60 text-xs font-medium text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary min-h-[44px]"
               />
             </div>
           </div>

@@ -46,7 +46,7 @@ export const Chip: React.FC<ChipProps> = React.memo(
         <button
           type="button"
           onClick={onRemove}
-          className="ml-0.5 rounded-full p-0.5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+          className="ml-0.5 rounded-full p-1.5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center -my-2"
           aria-label="Remove"
         >
           <svg

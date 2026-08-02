@@ -27,7 +27,6 @@ export const EmergencyAlertBanner: React.FC<EmergencyAlertBannerProps> = ({
   return (
     <motion.aside
       role="alert"
-      aria-live="assertive"
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}

@@ -36,7 +36,7 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
         className={cn(
           "h-9 px-3 pr-8 rounded-lg border border-border bg-card text-foreground text-sm",
           "appearance-none cursor-pointer",
-          "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+          "focus-visible:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
           "transition-colors duration-200",
         )}
       >

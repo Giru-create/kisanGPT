@@ -86,7 +86,7 @@ export const VoiceSettingsSection: React.FC<VoiceSettingsSectionProps> = ({
             type="text"
             value={settings.wakeWord}
             onChange={(e) => handleWakeWordChange(e.target.value)}
-            className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm w-36 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="h-9 px-3 rounded-lg border border-border bg-card text-foreground text-sm w-36 focus-visible:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             aria-label="Wake word"
           />
         </SettingsCard>

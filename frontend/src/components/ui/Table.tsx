@@ -47,7 +47,12 @@ export const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-  <th ref={ref} scope="col" className={cn("ds-table-head", className)} {...props} />
+  <th
+    ref={ref}
+    scope="col"
+    className={cn("ds-table-head", className)}
+    {...props}
+  />
 ));
 TableHead.displayName = "TableHead";
 

@@ -35,7 +35,7 @@ export const SettingsSearch: React.FC<SettingsSearchProps> = ({
         className={cn(
           "w-full h-11 pl-10 pr-10 rounded-xl border border-border bg-card text-foreground",
           "text-sm placeholder:text-muted-foreground",
-          "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+          "focus-visible:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
           "transition-colors duration-200",
         )}
         aria-label="Search settings"

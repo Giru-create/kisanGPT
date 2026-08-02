@@ -32,7 +32,7 @@ export const ProfilePage: React.FC = () => {
 
   if (isLoading) {
     return (
-    <section className="min-h-screen bg-background">
+      <section className="min-h-screen bg-background">
         <ProfileSkeleton />
       </section>
     );

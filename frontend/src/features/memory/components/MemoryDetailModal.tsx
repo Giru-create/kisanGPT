@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -67,6 +67,10 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
   onPin,
   onSave,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useFocusTrap(containerRef, isOpen);
+
   React.useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -75,16 +79,6 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
       };
     }
   }, [isOpen]);
-
-  React.useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      return () => document.removeEventListener("keydown", handleEscape);
-    }
-  }, [isOpen, onClose]);
 
   if (!item) return null;
 
@@ -109,23 +103,6 @@ export const MemoryDetailModal: React.FC<MemoryDetailModalProps> = ({
         day: "numeric",
       })
     : null;
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  useFocusTrap(containerRef, isOpen);
-
-  const handleEscape = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    },
-    [onClose],
-  );
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      return () => document.removeEventListener("keydown", handleEscape);
-    }
-  }, [isOpen, handleEscape]);
 
   return (
     <AnimatePresence>
