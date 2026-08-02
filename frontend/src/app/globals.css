@@ -535,3 +535,23 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+/* High contrast mode */
+.high-contrast {
+  --ring: 0 0% 0%;
+  --border: 0 0% 0%;
+}
+
+.high-contrast * {
+  border-color: hsl(0 0% 0%) !important;
+}
+
+/* Reduce motion mode */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

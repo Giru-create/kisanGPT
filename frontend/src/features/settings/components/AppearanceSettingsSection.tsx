@@ -5,9 +5,10 @@
 
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/store/themeStore";
 import { SettingsSection } from "./SettingsSection";
 import { SettingsCard } from "./SettingsCard";
 import { ToggleSwitch } from "./ToggleSwitch";
@@ -29,6 +30,12 @@ const THEME_ICONS: Record<string, React.FC<{ className?: string }>> = {
   system: Monitor,
 };
 
+const FONT_SIZE_MAP: Record<FontSize, string> = {
+  small: "14px",
+  medium: "16px",
+  large: "18px",
+};
+
 interface AppearanceSettingsSectionProps {
   settings: AppearanceSettings;
   onUpdate: (updates: { appearance: AppearanceSettings }) => void;
@@ -37,6 +44,42 @@ interface AppearanceSettingsSectionProps {
 export const AppearanceSettingsSection: React.FC<
   AppearanceSettingsSectionProps
 > = ({ settings, onUpdate }) => {
+  const { setTheme } = useTheme();
+
+  // Sync theme changes to the actual theme store
+  useEffect(() => {
+    setTheme(settings.theme);
+  }, [settings.theme, setTheme]);
+
+  // Apply font size to document root
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--font-size-base",
+      FONT_SIZE_MAP[settings.fontSize],
+    );
+  }, [settings.fontSize]);
+
+  // Apply contrast setting
+  useEffect(() => {
+    const root = document.documentElement;
+    if (settings.contrast === "high") {
+      root.classList.add("high-contrast");
+    } else {
+      root.classList.remove("high-contrast");
+    }
+  }, [settings.contrast]);
+
+  // Apply reduce motion setting
+  useEffect(() => {
+    const root = document.documentElement;
+    if (settings.reduceMotion) {
+      root.classList.add("reduce-motion");
+    } else {
+      root.classList.remove("reduce-motion");
+    }
+  }, [settings.reduceMotion]);
+
   const handleThemeChange = (theme: string) => {
     onUpdate({ appearance: { ...settings, theme: theme as ThemeMode } });
   };

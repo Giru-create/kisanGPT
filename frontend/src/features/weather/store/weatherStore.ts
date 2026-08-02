@@ -30,7 +30,13 @@ interface WeatherStore {
 // ---------------------------------------------------------------------------
 
 export const useWeatherStore = create<WeatherStore>((set) => ({
-  location: null,
+  location: {
+    village: "Karnal",
+    district: "Karnal",
+    state: "Haryana",
+    lat: 29.6857,
+    lng: 76.9905,
+  },
   unit: "celsius",
 
   setLocation: (location) => set({ location }),

@@ -12,16 +12,16 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
-      {/* Top Header */}
+    <div className="h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary overflow-hidden">
+      {/* Fixed Top Header */}
       <Header onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
 
-      {/* Main Body Shell */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Collapsible Sidebar */}
+      {/* Body: Sidebar + Scrollable Content */}
+      <div className="flex flex-1 min-h-0">
+        {/* Sticky Sidebar */}
         <Sidebar isCollapsed={sidebarCollapsed} />
 
-        {/* Main Content Landmark Area */}
+        {/* Scrollable Main Content */}
         <main
           id="main-content"
           tabIndex={-1}

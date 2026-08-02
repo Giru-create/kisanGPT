@@ -20,7 +20,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside
       aria-label="Sidebar Navigation"
       className={cn(
-        "hidden lg:flex flex-col border-r border-border bg-card/50 transition-all duration-200 shrink-0",
+        "hidden lg:flex flex-col border-r border-border bg-card/50 transition-all duration-200 shrink-0 sticky top-14 h-[calc(100vh-3.5rem)]",
         isCollapsed ? "w-16" : "w-64",
         className,
       )}
@@ -56,9 +56,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Navigation */}
-      <div className="flex flex-col flex-1 overflow-y-auto">
+      <div className="flex flex-col flex-1 min-h-0">
         <nav
-          className="flex-1 space-y-0.5 px-3 py-3"
+          className="flex-1 space-y-0.5 px-3 py-3 overflow-y-auto"
           aria-label="Sidebar Section Links"
         >
           {MAIN_NAV_ITEMS.map((item) => (
