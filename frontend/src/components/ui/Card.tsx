@@ -9,7 +9,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const variantStyles = {
   default: "border-border bg-card shadow-sm",
   interactive:
-    "border-border bg-card shadow-sm hover:shadow-md hover:border-border/80 cursor-pointer",
+    "border-border bg-card shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer transition-all duration-200",
   muted: "border-border bg-muted/30 shadow-none",
   elevated: "border-border bg-card shadow-md",
 };

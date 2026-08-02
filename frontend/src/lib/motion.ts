@@ -89,6 +89,37 @@ export const motionPresets = {
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.25 },
   },
+
+  /** Button/link tap feedback */
+  tapScale: {
+    whileTap: { scale: 0.97 },
+    transition: { duration: 0.1 },
+  },
+
+  /** Card hover with shadow elevation */
+  cardLift: {
+    rest: { y: 0, boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)" },
+    hover: {
+      y: -2,
+      boxShadow: "0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)",
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
+  },
+
+  /** Dialog/modal entrance + exit */
+  dialogEnter: {
+    initial: { opacity: 0, scale: 0.96, y: 8 },
+    animate: { opacity: 1, scale: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.96, y: 8 },
+    transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },
+  },
+
+  /** Page section entrance */
+  sectionEnter: {
+    initial: { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.25, ease: "easeOut" },
+  },
 } as const;
 
 export type MotionPreset = (typeof motionPresets)[keyof typeof motionPresets];

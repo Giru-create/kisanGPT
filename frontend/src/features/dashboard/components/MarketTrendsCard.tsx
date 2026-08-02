@@ -2,7 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, ArrowUpRight } from "lucide-react";
+import { motionPresets } from "@/lib/motion";
 import type { MarketTrendItem } from "../types/dashboard.types";
 
 interface MarketTrendsCardProps {
@@ -37,7 +39,8 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
   const primary = trends[0];
 
   return (
-    <section
+    <motion.section
+      {...motionPresets.sectionEnter}
       role="region"
       aria-label="Market Trends"
       className="rounded-2xl border border-border bg-card p-6 shadow-sm"
@@ -129,7 +132,7 @@ export const MarketTrendsCard: React.FC<MarketTrendsCardProps> = ({
           <ArrowUpRight size={13} aria-hidden="true" />
         </Link>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

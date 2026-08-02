@@ -2,7 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Droplets, Bug, Leaf, Cloud, ArrowUpRight } from "lucide-react";
+import { motionPresets } from "@/lib/motion";
 import type { AIAdvisorChat } from "../types/dashboard.types";
 
 interface RecentAIChatsCardProps {
@@ -27,7 +29,8 @@ export const RecentAIChatsCard: React.FC<RecentAIChatsCardProps> = ({
   chats,
 }) => {
   return (
-    <section
+    <motion.section
+      {...motionPresets.sectionEnter}
       role="region"
       aria-label="Recent AI Advisor Chats"
       className="rounded-2xl border border-border bg-card shadow-sm"
@@ -79,7 +82,7 @@ export const RecentAIChatsCard: React.FC<RecentAIChatsCardProps> = ({
           );
         })}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

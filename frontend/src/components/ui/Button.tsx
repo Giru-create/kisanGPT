@@ -27,7 +27,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const baseStyles =
-      "ds-btn transition-all focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 select-none rounded-xl";
+      "ds-btn transition-all duration-150 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 select-none rounded-xl active:scale-[0.97]";
 
     const variantStyles = {
       primary:

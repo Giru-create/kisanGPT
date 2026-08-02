@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Landmark,
   ArrowUpRight,
@@ -9,6 +10,7 @@ import {
   Bug,
   CloudRain,
 } from "lucide-react";
+import { motionPresets } from "@/lib/motion";
 import type { PriorityAlert } from "../types/dashboard.types";
 
 interface PriorityAlertsCardProps {
@@ -45,7 +47,8 @@ export const PriorityAlertsCard: React.FC<PriorityAlertsCardProps> = ({
   alerts,
 }) => {
   return (
-    <section
+    <motion.section
+      {...motionPresets.sectionEnter}
       role="region"
       aria-label="Priority Alerts"
       className="rounded-2xl border border-border bg-card shadow-sm"
@@ -93,7 +96,7 @@ export const PriorityAlertsCard: React.FC<PriorityAlertsCardProps> = ({
           );
         })}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

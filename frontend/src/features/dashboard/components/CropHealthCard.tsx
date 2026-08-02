@@ -19,7 +19,7 @@ export const CropHealthCard: React.FC<CropHealthCardProps> = ({ items }) => {
           return (
             <div
               key={item.id}
-              className={`group relative rounded-2xl border bg-card p-5 shadow-sm transition-all hover:shadow-md ${
+              className={`group relative rounded-2xl border bg-card p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${
                 isAlert
                   ? "border-red-500/25 hover:border-red-500/40"
                   : "border-border hover:border-primary/30"
