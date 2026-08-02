@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Search, Bell, Crop } from "lucide-react";
+import { Search, Crop } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Button } from "@/components/ui/Button";
 import { MobileNav } from "@/components/navigation/MobileNav";
+import { NotificationDropdown } from "@/components/ui/NotificationDropdown";
 
 export interface HeaderProps {
   onToggleSidebar?: () => void;
@@ -98,17 +99,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           </div>
 
           {/* Notifications */}
-          <button
-            type="button"
-            aria-label="Notifications"
-            className="relative p-2 rounded-lg text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-          >
-            <Bell size={18} />
-            <span
-              aria-hidden="true"
-              className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-background"
-            />
-          </button>
+          <NotificationDropdown />
 
           <ThemeToggle className="h-9 px-3 text-xs" />
 

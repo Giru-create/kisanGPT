@@ -88,10 +88,6 @@ export const FarmerDashboard: React.FC = () => {
                 </div>
 
                 <div {...motionPresets.staggerItem}>
-                  <div className="ds-section-header">
-                    <div className="ds-section-header-bar" />
-                    <h2>Market Intelligence</h2>
-                  </div>
                   <MarketTrendsCard trends={dashboardState.data.marketTrends} />
                 </div>
 
@@ -101,7 +97,7 @@ export const FarmerDashboard: React.FC = () => {
 
                 <div
                   {...motionPresets.staggerItem}
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"
                 >
                   <RecentAIChatsCard
                     chats={dashboardState.data.aiAdvisorChats}

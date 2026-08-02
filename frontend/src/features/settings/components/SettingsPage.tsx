@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// SettingsPage.tsx
-// KisanGPT — Main settings page component
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
 import React, { useMemo } from "react";
@@ -136,7 +131,7 @@ export const SettingsPage: React.FC = () => {
           : `Settings - ${activeCategoryInfo?.label ?? ""}`}
       </LiveRegion>
 
-      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 pb-10 pt-6">
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -149,38 +144,41 @@ export const SettingsPage: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Mobile nav toggle */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setMobileNavOpen(!isMobileNavOpen)}
-              className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-xl border border-border text-sm",
-                "bg-card hover:bg-muted/50 transition-colors",
-              )}
-              aria-label="Toggle navigation"
-            >
-              {isMobileNavOpen ? (
-                <X className="h-4 w-4" />
-              ) : (
-                <Menu className="h-4 w-4" />
-              )}
-              {activeCategoryInfo?.label ?? "Menu"}
-            </button>
-          </div>
+        {/* Mobile nav toggle */}
+        <div className="lg:hidden mb-4">
+          <button
+            onClick={() => setMobileNavOpen(!isMobileNavOpen)}
+            className={cn(
+              "flex items-center gap-2 px-3 py-2 rounded-xl border border-border text-sm",
+              "bg-card hover:bg-muted/50 transition-colors",
+            )}
+            aria-label="Toggle navigation"
+          >
+            {isMobileNavOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
+            {activeCategoryInfo?.label ?? "Menu"}
+          </button>
+        </div>
 
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar */}
           <div
             className={cn(
-              "lg:w-64 shrink-0",
+              "lg:w-56 shrink-0",
               isMobileNavOpen ? "block" : "hidden lg:block",
             )}
           >
-            <div className="sticky top-20 space-y-4">
+            <div className="lg:sticky lg:top-20 space-y-4">
               <SettingsSearch value={searchQuery} onChange={setSearchQuery} />
               <SettingsSidebar
                 activeCategory={activeCategory}
-                onNavigate={handleNavigate}
+                onNavigate={(cat) => {
+                  handleNavigate(cat);
+                  setMobileNavOpen(false);
+                }}
               />
             </div>
           </div>

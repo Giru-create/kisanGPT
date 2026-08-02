@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Trash2, Settings } from "lucide-react";
+import { Trash2, Settings, AlertCircle } from "lucide-react";
 import { useVoice } from "../hooks/useVoice";
+import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 import { HeroSection } from "./HeroSection";
 import { VoiceInterface } from "./VoiceInterface";
 import { ConversationView } from "./ConversationView";
@@ -30,12 +31,43 @@ export const VoicePage: React.FC = () => {
     clearMessages,
   } = useVoice();
 
+  const speechRecognition = useSpeechRecognition();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [showSettings, setShowSettings] = React.useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [useBrowserSpeech, setUseBrowserSpeech] = useState(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (
+      speechRecognition.isSupported &&
+      speechRecognition.transcript &&
+      !speechRecognition.isListening
+    ) {
+      sendTextQuery(speechRecognition.transcript);
+      speechRecognition.resetTranscript();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    speechRecognition.isSupported,
+    speechRecognition.transcript,
+    speechRecognition.isListening,
+    sendTextQuery,
+    speechRecognition.resetTranscript,
+  ]);
+
+  const handleBrowserStartListening = () => {
+    setUseBrowserSpeech(true);
+    speechRecognition.startListening(
+      language === "hi-IN" ? "hi-IN" : language === "pa-IN" ? "pa-IN" : "en-US",
+    );
+  };
+
+  const handleBrowserStopListening = () => {
+    speechRecognition.stopListening();
+  };
 
   const liveAnnouncement =
     voiceState.status === "listening"
@@ -45,6 +77,9 @@ export const VoicePage: React.FC = () => {
         : voiceState.status === "speaking"
           ? "KisanGPT is responding"
           : "";
+
+  const browserUnsupported =
+    !speechRecognition.isSupported && typeof navigator !== "undefined";
 
   return (
     <section className="min-h-screen bg-background">
@@ -81,6 +116,30 @@ export const VoicePage: React.FC = () => {
           </div>
         </div>
 
+        {/* Browser unsupported notice */}
+        {browserUnsupported && (
+          <div
+            role="alert"
+            className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm"
+          >
+            <AlertCircle
+              size={18}
+              className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"
+              aria-hidden="true"
+            />
+            <div>
+              <p className="font-semibold text-foreground">
+                Speech recognition not supported
+              </p>
+              <p className="text-muted-foreground mt-0.5 text-xs">
+                Your browser doesn&apos;t support speech recognition. You can
+                still type your questions below or try Chrome/Edge for voice
+                input.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Content */}
         <AnimatePresence mode="wait">
           {/* Error */}
@@ -96,7 +155,11 @@ export const VoicePage: React.FC = () => {
               <VoiceError
                 code={voiceState.code}
                 message={voiceState.message}
-                onRetry={handleStartListening}
+                onRetry={
+                  useBrowserSpeech
+                    ? handleBrowserStartListening
+                    : handleStartListening
+                }
               />
             </motion.div>
           )}
@@ -115,16 +178,32 @@ export const VoicePage: React.FC = () => {
               <HeroSection
                 language={language}
                 voiceStatus={voiceState.status}
-                onStartConversation={handleStartListening}
+                onStartConversation={
+                  speechRecognition.isSupported
+                    ? handleBrowserStartListening
+                    : handleStartListening
+                }
               />
 
               {/* Voice Interface */}
               <VoiceInterface
-                voiceState={voiceState}
+                voiceState={
+                  speechRecognition.isListening
+                    ? { status: "listening", volumeLevel: 0.5 }
+                    : voiceState
+                }
                 language={language}
-                volumeLevel={volumeLevel}
-                onStartListening={handleStartListening}
-                onStopListening={handleStopListening}
+                volumeLevel={speechRecognition.isListening ? 0.5 : volumeLevel}
+                onStartListening={
+                  speechRecognition.isSupported
+                    ? handleBrowserStartListening
+                    : handleStartListening
+                }
+                onStopListening={
+                  speechRecognition.isSupported
+                    ? handleBrowserStopListening
+                    : handleStopListening
+                }
               />
 
               {/* Conversation or Empty */}
@@ -166,10 +245,22 @@ export const VoicePage: React.FC = () => {
         {/* Sticky Voice Input Bar */}
         <footer className="sticky bottom-0 z-30 mt-4">
           <VoiceInputBar
-            voiceState={voiceState}
+            voiceState={
+              speechRecognition.isListening
+                ? { status: "listening", volumeLevel: 0.5 }
+                : voiceState
+            }
             language={language}
-            onStartListening={handleStartListening}
-            onStopListening={handleStopListening}
+            onStartListening={
+              speechRecognition.isSupported
+                ? handleBrowserStartListening
+                : handleStartListening
+            }
+            onStopListening={
+              speechRecognition.isSupported
+                ? handleBrowserStopListening
+                : handleStopListening
+            }
             onSendText={sendTextQuery}
           />
         </footer>

@@ -136,9 +136,6 @@ export const ProfilePage: React.FC = () => {
 
       {/* Main Content */}
       <div className="mx-auto max-w-2xl px-4 pb-10 pt-6 flex flex-col gap-5">
-        {/* Hero (always visible) */}
-        <ProfileHero profile={profile} onEdit={() => setIsEditing(true)} />
-
         {/* Tabs */}
         <nav
           role="tablist"

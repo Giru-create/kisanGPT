@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// SettingsCard.tsx
-// KisanGPT — Reusable settings row component
-// ─────────────────────────────────────────────────────────────────────────────
-
 "use client";
 
 import React from "react";
@@ -24,7 +19,7 @@ export const SettingsCard: React.FC<SettingsCardProps> = ({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-4 p-4 rounded-xl bg-muted/30 border border-border/50",
+        "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-xl bg-muted/30 border border-border/50",
         "hover:bg-muted/50 transition-colors duration-200",
         className,
       )}
