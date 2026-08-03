@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, MicOff, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -28,6 +28,22 @@ export const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
   const isError = voiceState.status === "error";
   const labels = STATUS_LABELS[language] || STATUS_LABELS["hi-IN"];
 
+  const [tick, setTick] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (isListening || isSpeaking) {
+      const animate = () => {
+        setTick((t) => t + 1);
+        rafRef.current = requestAnimationFrame(animate);
+      };
+      rafRef.current = requestAnimationFrame(animate);
+      return () => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      };
+    }
+  }, [isListening, isSpeaking]);
+
   const statusLabel = isListening
     ? labels.listening
     : isProcessing
@@ -37,6 +53,8 @@ export const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
         : isError
           ? voiceState.message
           : labels.idle;
+
+  void tick;
 
   return (
     <motion.section
@@ -51,10 +69,11 @@ export const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
         {/* Waveform visualization */}
         <div className="flex items-center justify-center gap-1 h-12">
           {Array.from({ length: 24 }).map((_, i) => {
+            const now = Date.now();
             const height = isListening
-              ? 12 + Math.sin(Date.now() / 200 + i * 0.5) * volumeLevel * 36
+              ? 12 + Math.sin(now / 200 + i * 0.5) * volumeLevel * 36
               : isSpeaking
-                ? 12 + Math.sin(Date.now() / 300 + i * 0.3) * 24
+                ? 12 + Math.sin(now / 300 + i * 0.3) * 24
                 : 4;
             return (
               <motion.div

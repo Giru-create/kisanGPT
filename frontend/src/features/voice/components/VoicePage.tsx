@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Trash2, Settings, AlertCircle } from "lucide-react";
 import { useVoice } from "../hooks/useVoice";
@@ -17,6 +17,11 @@ import { VoiceSkeleton } from "./VoiceSkeleton";
 import { VoiceError } from "./VoiceError";
 import { VoiceInputBar } from "./VoiceInputBar";
 import { LiveRegion } from "@/components/accessibility/LiveRegion";
+import type { VoiceLanguage } from "../types/voice.types";
+
+function speechLangCode(lang: VoiceLanguage): string {
+  return lang;
+}
 
 export const VoicePage: React.FC = () => {
   const {
@@ -35,6 +40,7 @@ export const VoicePage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [useBrowserSpeech, setUseBrowserSpeech] = useState(false);
+  const transcriptSentRef = useRef(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -43,10 +49,12 @@ export const VoicePage: React.FC = () => {
   useEffect(() => {
     if (
       speechRecognition.isSupported &&
-      speechRecognition.transcript &&
-      !speechRecognition.isListening
+      speechRecognition.transcript.trim() &&
+      !speechRecognition.isListening &&
+      !transcriptSentRef.current
     ) {
-      sendTextQuery(speechRecognition.transcript);
+      transcriptSentRef.current = true;
+      sendTextQuery(speechRecognition.transcript.trim());
       speechRecognition.resetTranscript();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,16 +66,21 @@ export const VoicePage: React.FC = () => {
     speechRecognition.resetTranscript,
   ]);
 
-  const handleBrowserStartListening = () => {
-    setUseBrowserSpeech(true);
-    speechRecognition.startListening(
-      language === "hi-IN" ? "hi-IN" : language === "pa-IN" ? "pa-IN" : "en-US",
-    );
-  };
+  useEffect(() => {
+    if (speechRecognition.isListening) {
+      transcriptSentRef.current = false;
+    }
+  }, [speechRecognition.isListening]);
 
-  const handleBrowserStopListening = () => {
+  const handleBrowserStartListening = useCallback(() => {
+    if (speechRecognition.isListening) return;
+    setUseBrowserSpeech(true);
+    speechRecognition.startListening(speechLangCode(language));
+  }, [speechRecognition, language]);
+
+  const handleBrowserStopListening = useCallback(() => {
     speechRecognition.stopListening();
-  };
+  }, [speechRecognition]);
 
   const liveAnnouncement =
     voiceState.status === "listening"
@@ -82,7 +95,7 @@ export const VoicePage: React.FC = () => {
     !speechRecognition.isSupported && typeof navigator !== "undefined";
 
   return (
-    <section className="min-h-screen bg-background">
+    <section className="bg-background">
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <LiveRegion>{liveAnnouncement}</LiveRegion>
 
@@ -177,7 +190,11 @@ export const VoicePage: React.FC = () => {
               {/* Hero */}
               <HeroSection
                 language={language}
-                voiceStatus={voiceState.status}
+                voiceStatus={
+                  speechRecognition.isListening
+                    ? "listening"
+                    : voiceState.status
+                }
                 onStartConversation={
                   speechRecognition.isSupported
                     ? handleBrowserStartListening
