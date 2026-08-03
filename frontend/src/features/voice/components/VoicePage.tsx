@@ -17,10 +17,18 @@ import { VoiceSkeleton } from "./VoiceSkeleton";
 import { VoiceError } from "./VoiceError";
 import { VoiceInputBar } from "./VoiceInputBar";
 import { LiveRegion } from "@/components/accessibility/LiveRegion";
-import type { VoiceLanguage } from "../types/voice.types";
+import type { VoiceLanguage, VoiceErrorCode } from "../types/voice.types";
 
 function speechLangCode(lang: VoiceLanguage): string {
   return lang;
+}
+
+function mapSpeechErrorToCode(error: string): VoiceErrorCode {
+  if (error.includes("denied") || error.includes("not allowed"))
+    return "PERMISSION_DENIED";
+  if (error.includes("No speech")) return "NO_SPEECH";
+  if (error.includes("Network")) return "NETWORK_ERROR";
+  return "UNKNOWN";
 }
 
 export const VoicePage: React.FC = () => {
@@ -82,17 +90,38 @@ export const VoicePage: React.FC = () => {
     speechRecognition.stopListening();
   }, [speechRecognition]);
 
-  const liveAnnouncement =
-    voiceState.status === "listening"
-      ? "Listening... Speak now"
-      : voiceState.status === "processing"
-        ? "Analyzing query..."
-        : voiceState.status === "speaking"
-          ? "KisanGPT is responding"
-          : "";
+  const hasSpeechError = !!speechRecognition.error;
+  const hasStoreError = voiceState.status === "error";
+  const hasError = hasSpeechError || hasStoreError;
+
+  const derivedErrorState = hasSpeechError
+    ? ({
+        status: "error" as const,
+        message: speechRecognition.error!,
+        code: mapSpeechErrorToCode(speechRecognition.error!),
+      } as const)
+    : voiceState;
+
+  const derivedVoiceStateForUI = speechRecognition.isListening
+    ? ({ status: "listening" as const, volumeLevel: 0.5 } as const)
+    : hasSpeechError
+      ? derivedErrorState
+      : voiceState;
+
+  const liveAnnouncement = speechRecognition.isListening
+    ? "Listening... Speak now"
+    : voiceState.status === "processing"
+      ? "Analyzing query..."
+      : voiceState.status === "speaking"
+        ? "KisanGPT is responding"
+        : "";
 
   const browserUnsupported =
     !speechRecognition.isSupported && typeof navigator !== "undefined";
+
+  const retryHandler = useBrowserSpeech
+    ? handleBrowserStartListening
+    : handleStartListening;
 
   return (
     <section className="bg-background">
@@ -156,7 +185,7 @@ export const VoicePage: React.FC = () => {
         {/* Content */}
         <AnimatePresence mode="wait">
           {/* Error */}
-          {voiceState.status === "error" && (
+          {hasError && (
             <motion.div
               key="error"
               initial={{ opacity: 0, y: 8 }}
@@ -166,19 +195,27 @@ export const VoicePage: React.FC = () => {
               className="flex flex-col gap-5"
             >
               <VoiceError
-                code={voiceState.code}
-                message={voiceState.message}
-                onRetry={
-                  useBrowserSpeech
-                    ? handleBrowserStartListening
-                    : handleStartListening
+                code={
+                  hasSpeechError
+                    ? mapSpeechErrorToCode(speechRecognition.error!)
+                    : hasStoreError && voiceState.status === "error"
+                      ? voiceState.code
+                      : "UNKNOWN"
                 }
+                message={
+                  hasSpeechError
+                    ? speechRecognition.error!
+                    : hasStoreError && voiceState.status === "error"
+                      ? voiceState.message
+                      : ""
+                }
+                onRetry={retryHandler}
               />
             </motion.div>
           )}
 
           {/* Main content */}
-          {voiceState.status !== "error" && (
+          {!hasError && (
             <motion.div
               key="content"
               initial={{ opacity: 0 }}
@@ -204,11 +241,7 @@ export const VoicePage: React.FC = () => {
 
               {/* Voice Interface */}
               <VoiceInterface
-                voiceState={
-                  speechRecognition.isListening
-                    ? { status: "listening", volumeLevel: 0.5 }
-                    : voiceState
-                }
+                voiceState={derivedVoiceStateForUI}
                 language={language}
                 volumeLevel={speechRecognition.isListening ? 0.5 : volumeLevel}
                 onStartListening={
@@ -262,11 +295,7 @@ export const VoicePage: React.FC = () => {
         {/* Sticky Voice Input Bar */}
         <footer className="sticky bottom-0 z-30 mt-4">
           <VoiceInputBar
-            voiceState={
-              speechRecognition.isListening
-                ? { status: "listening", volumeLevel: 0.5 }
-                : voiceState
-            }
+            voiceState={derivedVoiceStateForUI}
             language={language}
             onStartListening={
               speechRecognition.isSupported
