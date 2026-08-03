@@ -45,7 +45,7 @@ export const MarketPage: React.FC = () => {
   } = useMarket();
 
   return (
-    <section className="min-h-screen bg-background">
+    <section className="bg-background">
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Page header */}
         <div className="flex items-center justify-between mb-6">
