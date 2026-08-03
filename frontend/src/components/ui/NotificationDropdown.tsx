@@ -20,7 +20,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     category: "alert",
     title: "Frost Warning",
     message: "Frost expected Saturday night. Protect sensitive crops.",
-    timestamp: new Date(Date.now() - 30 * 60 * 1000),
+    timestamp: new Date(0),
     read: false,
   },
   {
@@ -28,7 +28,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     category: "reminder",
     title: "Irrigation Reminder",
     message: "Block A needs irrigation within 2 days.",
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    timestamp: new Date(0),
     read: false,
   },
   {
@@ -36,7 +36,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     category: "update",
     title: "Market Price Update",
     message: "Wheat price increased by 2.01% today.",
-    timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
+    timestamp: new Date(0),
     read: true,
   },
   {
@@ -44,7 +44,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     category: "alert",
     title: "Pest Detection",
     message: "Aphid activity found on Mustard in Block B.",
-    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
+    timestamp: new Date(0),
     read: true,
   },
   {
@@ -52,7 +52,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     category: "reminder",
     title: "Scheme Deadline",
     message: "PM-KISAN application deadline in 3 days.",
-    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
+    timestamp: new Date(0),
     read: true,
   },
 ];
@@ -80,6 +80,16 @@ export const NotificationDropdown: React.FC = () => {
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const offsets = [30, 120, 240, 360, 1440];
+    setNotifications((prev) =>
+      prev.map((n, i) => ({
+        ...n,
+        timestamp: new Date(Date.now() - (offsets[i] ?? 0) * 60 * 1000),
+      })),
+    );
+  }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 

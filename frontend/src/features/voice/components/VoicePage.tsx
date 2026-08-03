@@ -116,8 +116,13 @@ export const VoicePage: React.FC = () => {
         ? "KisanGPT is responding"
         : "";
 
-  const browserUnsupported =
-    !speechRecognition.isSupported && typeof navigator !== "undefined";
+  const [browserUnsupported, setBrowserUnsupported] = useState(false);
+
+  useEffect(() => {
+    if (!speechRecognition.isSupported) {
+      setBrowserUnsupported(true);
+    }
+  }, [speechRecognition.isSupported]);
 
   const retryHandler = useBrowserSpeech
     ? handleBrowserStartListening

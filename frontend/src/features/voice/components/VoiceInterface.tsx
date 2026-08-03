@@ -54,8 +54,6 @@ export const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
           ? voiceState.message
           : labels.idle;
 
-  void tick;
-
   return (
     <motion.section
       role="region"
@@ -69,11 +67,10 @@ export const VoiceInterface: React.FC<VoiceInterfaceProps> = ({
         {/* Waveform visualization */}
         <div className="flex items-center justify-center gap-1 h-12">
           {Array.from({ length: 24 }).map((_, i) => {
-            const now = Date.now();
             const height = isListening
-              ? 12 + Math.sin(now / 200 + i * 0.5) * volumeLevel * 36
+              ? 12 + Math.sin(tick / 12 + i * 0.5) * volumeLevel * 36
               : isSpeaking
-                ? 12 + Math.sin(now / 300 + i * 0.3) * 24
+                ? 12 + Math.sin(tick / 18 + i * 0.3) * 24
                 : 4;
             return (
               <motion.div
