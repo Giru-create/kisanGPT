@@ -113,7 +113,7 @@ export const ChatWindow: React.FC = () => {
               key="messages"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="max-w-3xl mx-auto space-y-6"
+              className="space-y-6"
             >
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />

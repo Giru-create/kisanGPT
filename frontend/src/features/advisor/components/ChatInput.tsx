@@ -88,7 +88,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 
   return (
     <div className="p-3 md:p-4 bg-background/80 backdrop-blur-md border-t border-border">
-      <div className="max-w-3xl mx-auto relative">
+      <div className="relative">
         {/* Image Preview */}
         <AnimatePresence>
           {imagePreview && (

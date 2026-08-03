@@ -41,7 +41,7 @@ export const SchemesPage: React.FC = () => {
 
   return (
     <section className="min-h-screen bg-background">
-      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Page header */}
         <div className="flex items-center justify-between mb-6">
           <div>

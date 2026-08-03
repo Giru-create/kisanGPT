@@ -135,7 +135,7 @@ export const ProfilePage: React.FC = () => {
       </LiveRegion>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6 flex flex-col gap-5">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col gap-5">
         {/* Tabs */}
         <nav
           role="tablist"

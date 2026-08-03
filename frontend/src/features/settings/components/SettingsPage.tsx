@@ -131,7 +131,7 @@ export const SettingsPage: React.FC = () => {
           : `Settings - ${activeCategoryInfo?.label ?? ""}`}
       </LiveRegion>
 
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 pb-10 pt-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}

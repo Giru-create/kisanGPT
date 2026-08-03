@@ -83,7 +83,7 @@ export const VoicePage: React.FC = () => {
 
   return (
     <section className="min-h-screen bg-background">
-      <div className="mx-auto max-w-2xl px-4 pb-10 pt-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <LiveRegion>{liveAnnouncement}</LiveRegion>
 
         {/* Page header */}
