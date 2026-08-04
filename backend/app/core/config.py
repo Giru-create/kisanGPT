@@ -1,3 +1,4 @@
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -54,6 +55,40 @@ class Settings(BaseSettings):
     RATE_LIMIT_VOICE_PER_MINUTE: int = 20
     RATE_LIMIT_WEATHER_PER_MINUTE: int = 30
     RATE_LIMIT_MARKET_PER_MINUTE: int = 30
+
+    # Production security settings
+    TRUSTED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
+    SESSION_COOKIE_SECURE: bool = False
+    SESSION_COOKIE_HTTPONLY: bool = True
+    SESSION_COOKIE_SAMESITE: str = "lax"
+
+    @model_validator(mode="after")
+    def _validate_production_settings(self) -> "Settings":
+        """Validate security-critical settings on startup."""
+        if not self.DEBUG:
+            if not self.GEMINI_API_KEY:
+                import warnings
+
+                warnings.warn(
+                    "GEMINI_API_KEY is empty — AI features will fail",
+                    stacklevel=2,
+                )
+            if not self.FIREBASE_SERVICE_ACCOUNT_KEY:
+                import warnings
+
+                warnings.warn(
+                    "FIREBASE_SERVICE_ACCOUNT_KEY is empty — auth will be rejected",
+                    stacklevel=2,
+                )
+            if self.SESSION_COOKIE_SECURE is False:
+                import warnings
+
+                warnings.warn(
+                    "SESSION_COOKIE_SECURE is False in production — "
+                    "cookies will be sent over HTTP",
+                    stacklevel=2,
+                )
+        return self
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

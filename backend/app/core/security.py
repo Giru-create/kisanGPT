@@ -11,6 +11,7 @@ from firebase_admin import auth
 from app.core.config import settings
 from app.core.exceptions import UnauthorizedError
 from app.core.logging import logger
+from app.core.security_monitor import log_auth_failure
 from app.schemas.auth import CurrentUser
 
 _firebase_init_success = False
@@ -86,11 +87,16 @@ async def get_current_user(
     try:
         decoded_token = auth.verify_id_token(token)
     except auth.ExpiredIdTokenError as err:
+        log_auth_failure(
+            client_ip="unknown", path="/api/v1", detail="Token has expired"
+        )
         raise UnauthorizedError("Token has expired") from err
     except auth.InvalidIdTokenError as err:
+        log_auth_failure(client_ip="unknown", path="/api/v1", detail="Invalid token")
         raise UnauthorizedError("Invalid token") from err
     except Exception as err:
         logger.exception("Token verification failed")
+        log_auth_failure(client_ip="unknown", path="/api/v1", detail=str(err))
         raise UnauthorizedError("Could not verify token") from err
 
     uid = decoded_token.get("uid", "")

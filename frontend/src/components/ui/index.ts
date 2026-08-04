@@ -58,3 +58,7 @@ export {
 export { ThemeToggle } from "./ThemeToggle";
 
 export { Tooltip } from "./Tooltip";
+
+export { SafeLink } from "./SafeLink";
+
+export { ErrorBoundary } from "./ErrorBoundary";

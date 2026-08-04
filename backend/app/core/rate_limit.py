@@ -15,6 +15,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.core.config import settings
 from app.core.logging import logger
+from app.core.security_monitor import log_rate_limit_exceeded
 
 
 class _SlidingWindowCounter:
@@ -147,6 +148,12 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
                     "endpoint": endpoint_name,
                     "path": path,
                 },
+            )
+            log_rate_limit_exceeded(
+                client_ip=self._client_ip(request),
+                path=path,
+                endpoint=endpoint_name,
+                user_id=user_id,
             )
             return Response(
                 status_code=429,

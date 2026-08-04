@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.core.logging import logger
+from app.core.security_monitor import log_suspicious_request
 
 if TYPE_CHECKING:
     from fastapi import FastAPI, Request
@@ -24,8 +25,39 @@ _SECURITY_HEADERS: dict[str, str] = {
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
+    _SUSPICIOUS_EXTENSIONS = frozenset(
+        {
+            ".env",
+            ".git",
+            ".svn",
+            ".htaccess",
+            ".htpasswd",
+            ".DS_Store",
+            "Thumbs.db",
+            ".bak",
+            ".sql",
+            ".dump",
+        }
+    )
+
     async def dispatch(self, request: Request, call):  # type: ignore[override]
         start = time.perf_counter()
+        path = request.url.path
+
+        # Detect suspicious path patterns
+        for ext in self._SUSPICIOUS_EXTENSIONS:
+            if path.endswith(ext):
+                client_ip = request.headers.get("x-forwarded-for", "").split(",")[
+                    0
+                ].strip() or (request.client.host if request.client else "unknown")
+                log_suspicious_request(
+                    client_ip=client_ip,
+                    path=path,
+                    method=request.method,
+                    detail=f"Request for sensitive file: {ext}",
+                )
+                break
+
         response = await call(request)
         duration_ms = (time.perf_counter() - start) * 1000
         logger.info(

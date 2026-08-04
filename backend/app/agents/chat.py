@@ -4,6 +4,12 @@ from typing import TYPE_CHECKING
 
 from google import genai
 
+from app.core.ai_guardrails import (
+    detect_harmful_content,
+    detect_jailbreak,
+    safe_fallback,
+    validate_llm_output,
+)
 from app.core.config import settings
 from app.core.logging import logger
 from app.core.prompt_security import (
@@ -61,17 +67,19 @@ class ChatAgent:
         contents = self._build_contents(messages)
         last_message = messages[-1].content
 
-        if detect_injection(last_message):
+        if detect_injection(last_message) or detect_jailbreak(last_message):
             logger.warning(
-                "Prompt injection attempt detected in chat",
+                "Prompt injection/jailbreak attempt detected in chat",
                 extra={"preview": last_message[:120]},
             )
-            return (
-                "I noticed your message may contain instructions that are "
-                "not related to farming. I can only help with agricultural "
-                "topics like crops, weather, market prices, and government "
-                "schemes. Please ask a farming-related question."
+            return safe_fallback("jailbreak")
+
+        if detect_harmful_content(last_message):
+            logger.warning(
+                "Harmful content request detected in chat",
+                extra={"preview": last_message[:120]},
             )
+            return safe_fallback("unsafe")
 
         logger.info("Generating chat response", extra={"model": self._model})
         client = self._get_client()
@@ -83,7 +91,7 @@ class ChatAgent:
                 history=contents[:-1] if len(contents) > 1 else None,
             ),
         )
-        return response.text or ""
+        return validate_llm_output(response.text or "")
 
     async def generate_stream(
         self,
@@ -92,17 +100,20 @@ class ChatAgent:
         contents = self._build_contents(messages)
         last_message = messages[-1].content
 
-        if detect_injection(last_message):
+        if detect_injection(last_message) or detect_jailbreak(last_message):
             logger.warning(
-                "Prompt injection attempt detected in chat stream",
+                "Prompt injection/jailbreak attempt detected in chat stream",
                 extra={"preview": last_message[:120]},
             )
-            yield (
-                "I noticed your message may contain instructions that are "
-                "not related to farming. I can only help with agricultural "
-                "topics like crops, weather, market prices, and government "
-                "schemes. Please ask a farming-related question."
+            yield safe_fallback("jailbreak")
+            return
+
+        if detect_harmful_content(last_message):
+            logger.warning(
+                "Harmful content request detected in chat stream",
+                extra={"preview": last_message[:120]},
             )
+            yield safe_fallback("unsafe")
             return
 
         logger.info("Streaming chat response", extra={"model": self._model})

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, Any
 
+from app.core.ai_guardrails import validate_llm_output
 from app.core.logging import logger
 from app.core.prompt_security import sanitise_external_context
 from app.llm.prompts import GENERATOR_SYSTEM_PROMPT, GENERATOR_USER_TEMPLATE
@@ -53,7 +54,7 @@ class ResponseGenerator:
             )
             if not response.strip():
                 return self._fallback(message, tool_results)
-            return response
+            return validate_llm_output(response)
         except Exception as exc:
             logger.warning(
                 "Response generator failed, using fallback",

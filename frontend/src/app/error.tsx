@@ -4,7 +4,8 @@ import React from "react";
 import { Button } from "@/components/ui/Button";
 
 export default function GlobalError({
-  error,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  error: _error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -18,7 +19,7 @@ export default function GlobalError({
         </div>
         <h1 className="ds-heading-lg">Something went wrong</h1>
         <p className="ds-body-sm text-muted-foreground">
-          {error.message || "An unexpected error occurred. Please try again."}
+          An unexpected error occurred. Please try again.
         </p>
         <Button onClick={reset} size="sm">
           Try Again
