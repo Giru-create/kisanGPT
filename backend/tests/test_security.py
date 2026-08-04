@@ -28,9 +28,11 @@ def test_extract_token_bearer_only() -> None:
 
 @pytest.mark.asyncio
 async def test_get_current_user_missing_header() -> None:
-    with patch("app.core.security._firebase_init_success", True):
-        with pytest.raises(UnauthorizedError, match="Missing Authorization header"):
-            await get_current_user(authorization=None)
+    with (
+        patch("app.core.security._firebase_init_success", True),
+        pytest.raises(UnauthorizedError, match="Missing Authorization header"),
+    ):
+        await get_current_user(authorization=None)
 
 
 @pytest.mark.asyncio
@@ -54,9 +56,11 @@ async def test_get_current_user_expired_token(mock_verify: MagicMock) -> None:
     from firebase_admin.auth import ExpiredIdTokenError
 
     mock_verify.side_effect = ExpiredIdTokenError("Token expired", "expired")
-    with patch("app.core.security._firebase_init_success", True):
-        with pytest.raises(UnauthorizedError, match="Token has expired"):
-            await get_current_user(authorization="Bearer expired-token")
+    with (
+        patch("app.core.security._firebase_init_success", True),
+        pytest.raises(UnauthorizedError, match="Token has expired"),
+    ):
+        await get_current_user(authorization="Bearer expired-token")
 
 
 @pytest.mark.asyncio
@@ -65,6 +69,8 @@ async def test_get_current_user_invalid_token(mock_verify: MagicMock) -> None:
     from firebase_admin.auth import InvalidIdTokenError
 
     mock_verify.side_effect = InvalidIdTokenError("Invalid token")
-    with patch("app.core.security._firebase_init_success", True):
-        with pytest.raises(UnauthorizedError, match="Invalid token"):
-            await get_current_user(authorization="Bearer bad-token")
+    with (
+        patch("app.core.security._firebase_init_success", True),
+        pytest.raises(UnauthorizedError, match="Invalid token"),
+    ):
+        await get_current_user(authorization="Bearer bad-token")
