@@ -5,6 +5,7 @@ from fastapi import APIRouter, UploadFile
 from app.core.security import (  # noqa: TC001 — needed at runtime by FastAPI
     CurrentUserDependency,
 )
+from app.core.upload import secure_read_upload
 from app.schemas.voice import (
     TextToSpeechRequest,  # noqa: TC001 — needed at runtime by FastAPI
     VoiceChatRequest,  # noqa: TC001 — needed at runtime by FastAPI
@@ -20,7 +21,7 @@ async def speech_to_text(
     file: UploadFile,
     language: str = "hi-IN",
 ) -> dict[str, object]:
-    audio_bytes = await file.read()
+    audio_bytes = await secure_read_upload(file)
     result = await voice_service.transcribe(audio_bytes, language)
     return result.model_dump(mode="json")
 

@@ -20,7 +20,7 @@
     "@tanstack/react-query": "^5.101.4",
     "framer-motion": "^11.3.21",
     "lucide-react": "^0.441.0",
-    "next": "15.3.4",
+    "next": "15.5.21",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "zustand": "^4.5.5"
@@ -36,7 +36,7 @@
     "@vitejs/plugin-react": "^6.0.4",
     "autoprefixer": "^10.5.4",
     "eslint": "^9.17.0",
-    "eslint-config-next": "15.3.4",
+    "eslint-config-next": "15.5.21",
     "jsdom": "^25.0.1",
     "postcss": "^8.5.22",
     "prettier": "^3.4.2",

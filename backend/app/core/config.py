@@ -22,6 +22,7 @@ class Settings(BaseSettings):
 
     GEMINI_VISION_MODEL: str = "gemini-2.0-flash"
     MAX_IMAGE_SIZE_MB: int = 10
+    MAX_UPLOAD_SIZE_MB: int = 50
     DISEASE_TIMEOUT: float = 60.0
     DISEASE_CACHE_TTL: int = 3600
 
@@ -45,6 +46,14 @@ class Settings(BaseSettings):
     VOICE_STT_TIMEOUT: float = 30.0
     VOICE_TTS_TIMEOUT: float = 30.0
     VOICE_SUPPORTED_LANGUAGES: list[str] = ["hi-IN", "pa-IN", "en-US"]
+
+    RATE_LIMIT_ENABLED: bool = True
+    RATE_LIMIT_DEFAULT_PER_MINUTE: int = 60
+    RATE_LIMIT_CHAT_PER_MINUTE: int = 20
+    RATE_LIMIT_DISEASE_PER_MINUTE: int = 10
+    RATE_LIMIT_VOICE_PER_MINUTE: int = 20
+    RATE_LIMIT_WEATHER_PER_MINUTE: int = 30
+    RATE_LIMIT_MARKET_PER_MINUTE: int = 30
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

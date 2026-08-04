@@ -28,7 +28,7 @@ class OpenWeatherMapProvider(WeatherProvider):
     """OpenWeatherMap provider (Current Weather + 5-day Forecast)."""
 
     BASE_URL = "https://api.openweathermap.org/data/2.5"
-    GEO_URL = "http://api.openweathermap.org/geo/1.0"
+    GEO_URL = "https://api.openweathermap.org/geo/1.0"
 
     def __init__(self, api_key: str, timeout: float = 10.0) -> None:
         self._api_key = api_key

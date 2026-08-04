@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from fastapi import APIRouter, UploadFile
 
+from app.core.upload import secure_read_upload
 from app.schemas.disease import DiseaseDetectionResponse
 from app.services.diagnosis import diagnosis_service
 
@@ -19,7 +20,7 @@ async def detect_disease(
     file: UploadFile,
 ) -> DiseaseDetectionResponse:
     content_type = file.content_type or "application/octet-stream"
-    image_bytes = await file.read()
+    image_bytes = await secure_read_upload(file)
 
     result = await diagnosis_service.detect(
         image_bytes=image_bytes,

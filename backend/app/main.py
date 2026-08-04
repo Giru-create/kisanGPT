@@ -6,6 +6,7 @@ from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
 from app.core.lifespan import lifespan
 from app.core.middleware import register_middleware
+from app.core.rate_limit import register_rate_limiting
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -17,6 +18,7 @@ app = FastAPI(
 
 register_exception_handlers(app)
 register_middleware(app)
+register_rate_limiting(app)
 
 app.add_middleware(
     CORSMiddleware,
