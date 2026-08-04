@@ -125,6 +125,7 @@ class TestPriceAlert:
     def test_valid(self) -> None:
         a = PriceAlert(
             id="alert-1",
+            user_id="user-1",
             commodity="Wheat",
             target_price=2500.0,
             condition="above",
@@ -133,6 +134,7 @@ class TestPriceAlert:
         )
         assert a.condition == "above"
         assert a.is_active is True
+        assert a.user_id == "user-1"
 
 
 class TestPriceAlertCreate:

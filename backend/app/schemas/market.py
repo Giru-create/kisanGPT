@@ -45,6 +45,7 @@ class MarketTrendResponse(BaseModel):
 
 class PriceAlert(BaseModel):
     id: str
+    user_id: str
     commodity: str
     target_price: float
     condition: str = Field(..., pattern=r"^(above|below)$")

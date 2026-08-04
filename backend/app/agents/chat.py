@@ -6,13 +6,18 @@ from google import genai
 
 from app.core.config import settings
 from app.core.logging import logger
+from app.core.prompt_security import (
+    build_secure_system_prompt,
+    detect_injection,
+    wrap_user_content,
+)
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
     from app.schemas.chat import ChatMessage
 
-SYSTEM_PROMPT = """\
+_BASE_SYSTEM_PROMPT = """\
 You are KisanGPT, an AI farming assistant designed for Indian farmers.
 
 Your responsibilities:
@@ -31,6 +36,8 @@ Guidelines:
 - Provide actionable advice when possible
 - If unsure, say so honestly rather than guessing
 - Never provide dangerous or illegal advice"""
+
+SYSTEM_PROMPT = build_secure_system_prompt(_BASE_SYSTEM_PROMPT)
 
 
 class ChatAgent:
@@ -54,11 +61,23 @@ class ChatAgent:
         contents = self._build_contents(messages)
         last_message = messages[-1].content
 
+        if detect_injection(last_message):
+            logger.warning(
+                "Prompt injection attempt detected in chat",
+                extra={"preview": last_message[:120]},
+            )
+            return (
+                "I noticed your message may contain instructions that are "
+                "not related to farming. I can only help with agricultural "
+                "topics like crops, weather, market prices, and government "
+                "schemes. Please ask a farming-related question."
+            )
+
         logger.info("Generating chat response", extra={"model": self._model})
         client = self._get_client()
         response = await client.aio.models.generate_content(
             model=self._model,
-            contents=last_message,
+            contents=wrap_user_content(last_message),
             config=genai.types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
                 history=contents[:-1] if len(contents) > 1 else None,
@@ -73,11 +92,24 @@ class ChatAgent:
         contents = self._build_contents(messages)
         last_message = messages[-1].content
 
+        if detect_injection(last_message):
+            logger.warning(
+                "Prompt injection attempt detected in chat stream",
+                extra={"preview": last_message[:120]},
+            )
+            yield (
+                "I noticed your message may contain instructions that are "
+                "not related to farming. I can only help with agricultural "
+                "topics like crops, weather, market prices, and government "
+                "schemes. Please ask a farming-related question."
+            )
+            return
+
         logger.info("Streaming chat response", extra={"model": self._model})
         client = self._get_client()
         async for chunk in await client.aio.models.generate_content_stream(
             model=self._model,
-            contents=last_message,
+            contents=wrap_user_content(last_message),
             config=genai.types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
                 history=contents[:-1] if len(contents) > 1 else None,

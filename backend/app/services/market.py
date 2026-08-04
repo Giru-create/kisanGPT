@@ -139,6 +139,7 @@ class MarketService:
     def create_alert(self, user_id: str, alert_data: PriceAlertCreate) -> PriceAlert:
         alert = PriceAlert(
             id=str(uuid.uuid4()),
+            user_id=user_id,
             commodity=alert_data.commodity,
             target_price=alert_data.target_price,
             condition=alert_data.condition,
@@ -158,11 +159,11 @@ class MarketService:
         return alert
 
     def get_alerts(self, user_id: str) -> list[PriceAlert]:
-        return [a for a in self._alerts if a.is_active]
+        return [a for a in self._alerts if a.is_active and a.user_id == user_id]
 
     def delete_alert(self, user_id: str, alert_id: str) -> bool:
         for alert in self._alerts:
-            if alert.id == alert_id:
+            if alert.id == alert_id and alert.user_id == user_id:
                 alert.is_active = False
                 return True
         return False

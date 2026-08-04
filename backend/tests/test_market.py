@@ -214,6 +214,7 @@ class TestMarketService:
         )
         assert alert.commodity == "Wheat"
         assert alert.target_price == 2500.0
+        assert alert.user_id == "user-1"
 
         alerts = service.get_alerts("user-1")
         assert len(alerts) == 1
@@ -223,6 +224,28 @@ class TestMarketService:
 
         alerts_after = service.get_alerts("user-1")
         assert len(alerts_after) == 0
+
+    @pytest.mark.asyncio
+    async def test_alerts_ownership_enforcement(self) -> None:
+        from app.schemas.market import PriceAlertCreate
+
+        service = MarketService()
+        alert = service.create_alert(
+            "user-1",
+            PriceAlertCreate(commodity="Wheat", target_price=2500.0, condition="above"),
+        )
+
+        # user-2 cannot see user-1's alerts
+        alerts_user2 = service.get_alerts("user-2")
+        assert len(alerts_user2) == 0
+
+        # user-2 cannot delete user-1's alerts
+        deleted = service.delete_alert("user-2", alert.id)
+        assert deleted is False
+
+        # user-1's alert is still active
+        alerts_user1 = service.get_alerts("user-1")
+        assert len(alerts_user1) == 1
 
 
 class TestForecastSummary:

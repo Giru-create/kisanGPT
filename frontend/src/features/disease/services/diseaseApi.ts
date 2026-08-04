@@ -4,6 +4,7 @@
 // Handles multipart file upload to FastAPI /api/v1/disease/detect
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { getAuthHeaders } from "@/lib/authHeaders";
 import type { DiagnosisResult } from "../types/disease.types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
@@ -18,8 +19,11 @@ export const diseaseApi = {
     const formData = new FormData();
     formData.append("file", file);
 
+    const authHeaders = await getAuthHeaders();
+
     const response = await fetch(`${BASE_URL}/disease/detect`, {
       method: "POST",
+      headers: authHeaders,
       body: formData,
     });
 

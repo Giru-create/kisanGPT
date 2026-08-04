@@ -5,6 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { apiClient } from "@/lib/apiClient";
+import { getAuthHeaders } from "@/lib/authHeaders";
 import type {
   STTResult,
   TTSResult,
@@ -21,9 +22,12 @@ export const voiceApi = {
     formData.append("file", audioBlob, "recording.webm");
     formData.append("language", language);
 
+    const authHeaders = await getAuthHeaders();
+
     const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
     const response = await fetch(`${BASE_URL}/voice/stt`, {
       method: "POST",
+      headers: authHeaders,
       body: formData,
     });
 

@@ -6,6 +6,7 @@ import json
 from typing import TYPE_CHECKING, Any
 
 from app.core.logging import logger
+from app.core.prompt_security import sanitise_external_context
 from app.llm.prompts import GENERATOR_SYSTEM_PROMPT, GENERATOR_USER_TEMPLATE
 
 if TYPE_CHECKING:
@@ -89,7 +90,8 @@ class ResponseGenerator:
             for i, doc in enumerate(knowledge, 1):
                 content = doc.get("content", "")
                 source = doc.get("source", "")
-                parts.append(f"  [{i}] ({source}) {content}")
+                sanitised = sanitise_external_context(content)
+                parts.append(f"  [{i}] ({source}) {sanitised}")
             parts.append("")
 
         # Add tool outputs

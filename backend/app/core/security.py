@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import time
 from typing import Annotated
 
 import firebase_admin
@@ -12,17 +13,33 @@ from app.core.exceptions import UnauthorizedError
 from app.core.logging import logger
 from app.schemas.auth import CurrentUser
 
-_firebase_initialized = False
+_firebase_init_success = False
+_firebase_init_attempted = False
+_firebase_last_attempt: float = 0.0
+_RETRY_COOLDOWN_SECONDS = 60.0
 
 
 def _init_firebase() -> None:
-    global _firebase_initialized  # noqa: PLW0603
-    if _firebase_initialized:
+    global _firebase_init_success  # noqa: PLW0603
+    global _firebase_init_attempted  # noqa: PLW0603
+    global _firebase_last_attempt  # noqa: PLW0603
+
+    if _firebase_init_success:
         return
 
+    now = time.monotonic()
+    elapsed = now - _firebase_last_attempt
+    if _firebase_init_attempted and elapsed < _RETRY_COOLDOWN_SECONDS:
+        return
+
+    _firebase_init_attempted = True
+    _firebase_last_attempt = now
+
     if not settings.FIREBASE_SERVICE_ACCOUNT_KEY:
-        logger.warning("FIREBASE_SERVICE_ACCOUNT_KEY not set — auth will fail")
-        _firebase_initialized = True
+        logger.warning(
+            "FIREBASE_SERVICE_ACCOUNT_KEY not set — "
+            "all authentication requests will be rejected"
+        )
         return
 
     try:
@@ -30,11 +47,19 @@ def _init_firebase() -> None:
         firebase_admin.initialize_app(
             firebase_admin.credentials.Certificate(service_account_info)
         )
-        _firebase_initialized = True
-        logger.info("Firebase Admin SDK initialized")
+        _firebase_init_success = True
+        logger.info("Firebase Admin SDK initialized successfully")
+    except json.JSONDecodeError:
+        logger.critical(
+            "FIREBASE_SERVICE_ACCOUNT_KEY is not valid JSON — "
+            "Firebase Admin SDK NOT initialized"
+        )
     except Exception:
-        logger.exception("Failed to initialize Firebase Admin SDK")
-        _firebase_initialized = True
+        logger.critical(
+            "Firebase Admin SDK initialization failed — "
+            "all authentication requests will be rejected",
+            exc_info=True,
+        )
 
 
 def _extract_token(authorization: str | None) -> str:
@@ -52,6 +77,11 @@ async def get_current_user(
     authorization: Annotated[str | None, Header()] = None,
 ) -> CurrentUser:
     _init_firebase()
+
+    if not _firebase_init_success:
+        raise UnauthorizedError(
+            "Authentication service is not configured"
+        )
 
     token = _extract_token(authorization)
 

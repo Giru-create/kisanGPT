@@ -84,7 +84,7 @@ async def create_price_alert(
     alert_data: PriceAlertCreate,
 ) -> PriceAlert:
     return market_service.create_alert(
-        user_id=current_user["uid"],
+        user_id=current_user.user_id,
         alert_data=alert_data,
     )
 
@@ -93,7 +93,7 @@ async def create_price_alert(
 async def get_price_alerts(
     current_user: CurrentUserDependency,
 ) -> PriceAlertResponse:
-    alerts = market_service.get_alerts(user_id=current_user["uid"])
+    alerts = market_service.get_alerts(user_id=current_user.user_id)
     return PriceAlertResponse(alerts=alerts, total_count=len(alerts))
 
 
@@ -103,7 +103,7 @@ async def delete_price_alert(
     alert_id: str,
 ) -> dict[str, str]:
     deleted = market_service.delete_alert(
-        user_id=current_user["uid"], alert_id=alert_id
+        user_id=current_user.user_id, alert_id=alert_id
     )
     if not deleted:
         return {"detail": "Alert not found"}

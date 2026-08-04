@@ -17,6 +17,33 @@ export class ApiError extends Error {
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
+// ---------------------------------------------------------------------------
+// Centralised token provider
+// ---------------------------------------------------------------------------
+// Call `setTokenGetter(fn)` once at app startup (e.g. from an AuthProvider)
+// so that every apiClient request automatically includes a fresh token.
+// Individual requests can still override via the explicit `token` option.
+
+type TokenGetter = () => Promise<string | null>;
+
+let _tokenGetter: TokenGetter | null = null;
+
+export function setTokenGetter(getter: TokenGetter): void {
+  _tokenGetter = getter;
+}
+
+async function _resolveToken(explicit?: string): Promise<string | undefined> {
+  if (explicit) return explicit;
+  if (_tokenGetter) {
+    try {
+      return (await _tokenGetter()) ?? undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
+}
+
 export interface RequestOptions extends Omit<RequestInit, "body"> {
   params?: Record<string, string | number | boolean | undefined | null>;
   body?: unknown;
@@ -30,7 +57,7 @@ async function request<T>(
   const {
     params,
     body,
-    token,
+    token: explicitToken,
     headers: customHeaders,
     ...customInit
   } = options;
@@ -58,6 +85,7 @@ async function request<T>(
     ...(customHeaders as Record<string, string>),
   };
 
+  const token = await _resolveToken(explicitToken);
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
