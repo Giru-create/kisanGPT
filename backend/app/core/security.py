@@ -79,9 +79,7 @@ async def get_current_user(
     _init_firebase()
 
     if not _firebase_init_success:
-        raise UnauthorizedError(
-            "Authentication service is not configured"
-        )
+        raise UnauthorizedError("Authentication service is not configured")
 
     token = _extract_token(authorization)
 

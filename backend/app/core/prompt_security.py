@@ -104,9 +104,7 @@ def wrap_user_content(content: str) -> str:
     return f"<user_content>\n{content}\n</user_content>"
 
 
-def sanitise_external_context(
-    text: str, max_length: int = 4000
-) -> str:
+def sanitise_external_context(text: str, max_length: int = 4000) -> str:
     """Sanitise external context (retrieved docs, tool outputs) before
     insertion into prompts.
 
