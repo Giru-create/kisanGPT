@@ -48,6 +48,15 @@ export interface RequestOptions extends Omit<RequestInit, "body"> {
   params?: Record<string, string | number | boolean | undefined | null>;
   body?: unknown;
   token?: string;
+  retry?: number;
+  retryDelay?: number;
+}
+
+const RETRYABLE_METHODS = new Set(["GET", "HEAD"]);
+const RETRYABLE_STATUS_CODES = new Set([408, 429, 500, 502, 503, 504]);
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function request<T>(
@@ -59,6 +68,8 @@ async function request<T>(
     body,
     token: explicitToken,
     headers: customHeaders,
+    retry = 0,
+    retryDelay = 1000,
     ...customInit
   } = options;
 
@@ -99,45 +110,89 @@ async function request<T>(
     init.body = JSON.stringify(body);
   }
 
-  const response = await fetch(url, init);
+  const method = init.method?.toUpperCase() ?? "GET";
+  let lastError: Error | null = null;
+  const maxAttempts = RETRYABLE_METHODS.has(method) ? retry + 1 : 1;
 
-  if (!response.ok) {
-    let errorData: unknown;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
-      errorData = await response.json();
-    } catch {
-      errorData = await response.text();
+      const response = await fetch(url, init);
+
+      if (!response.ok) {
+        if (
+          RETRYABLE_STATUS_CODES.has(response.status) &&
+          attempt < maxAttempts - 1
+        ) {
+          await sleep(retryDelay * 2 ** attempt);
+          continue;
+        }
+
+        let errorData: unknown;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = await response.text();
+        }
+        const message =
+          typeof errorData === "object" && errorData && "detail" in errorData
+            ? String((errorData as { detail: unknown }).detail)
+            : `Request failed with status ${response.status}`;
+        throw new ApiError(message, response.status, errorData);
+      }
+
+      if (response.status === 204) {
+        return {} as T;
+      }
+
+      return response.json() as Promise<T>;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (error instanceof ApiError) throw error;
+      if (attempt < maxAttempts - 1) {
+        await sleep(retryDelay * 2 ** attempt);
+      }
     }
-    const message =
-      typeof errorData === "object" && errorData && "detail" in errorData
-        ? String((errorData as { detail: unknown }).detail)
-        : `Request failed with status ${response.status}`;
-    throw new ApiError(message, response.status, errorData);
   }
 
-  if (response.status === 204) {
-    return {} as T;
-  }
-
-  return response.json() as Promise<T>;
+  throw lastError ?? new Error("Request failed");
 }
 
 export const apiClient = {
   get: <T>(endpoint: string, options?: RequestOptions): Promise<T> =>
-    request<T>(endpoint, { ...options, method: "GET" }),
+    request<T>(endpoint, {
+      ...options,
+      method: "GET",
+      retry: options?.retry ?? 3,
+    }),
 
   post: <T>(
     endpoint: string,
     body?: unknown,
     options?: RequestOptions,
-  ): Promise<T> => request<T>(endpoint, { ...options, method: "POST", body }),
+  ): Promise<T> =>
+    request<T>(endpoint, {
+      ...options,
+      method: "POST",
+      body,
+      retry: options?.retry ?? 0,
+    }),
 
   put: <T>(
     endpoint: string,
     body?: unknown,
     options?: RequestOptions,
-  ): Promise<T> => request<T>(endpoint, { ...options, method: "PUT", body }),
+  ): Promise<T> =>
+    request<T>(endpoint, {
+      ...options,
+      method: "PUT",
+      body,
+      retry: options?.retry ?? 0,
+    }),
 
   delete: <T>(endpoint: string, options?: RequestOptions): Promise<T> =>
-    request<T>(endpoint, { ...options, method: "DELETE" }),
+    request<T>(endpoint, {
+      ...options,
+      method: "DELETE",
+      retry: options?.retry ?? 0,
+    }),
 };

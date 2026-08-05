@@ -111,7 +111,7 @@ describe("memoryService", () => {
       "fetch",
       vi.fn().mockResolvedValue({
         ok: false,
-        status: 500,
+        status: 400,
         json: () => Promise.resolve({ detail: "Server error" }),
       }),
     );

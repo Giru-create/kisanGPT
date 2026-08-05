@@ -9,6 +9,7 @@ from __future__ import annotations
 import time
 from collections import defaultdict
 from collections.abc import Callable  # noqa: TC003
+from typing import TYPE_CHECKING
 
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -16,6 +17,9 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from app.core.config import settings
 from app.core.logging import logger
 from app.core.security_monitor import log_rate_limit_exceeded
+
+if TYPE_CHECKING:
+    import asyncio
 
 
 class _SlidingWindowCounter:
@@ -54,6 +58,19 @@ class _SlidingWindowCounter:
         now = time.monotonic()
         return max(0.0, bucket[0] + self.window_seconds - now)
 
+    def cleanup(self) -> int:
+        """Remove expired keys. Returns number of keys removed."""
+        now = time.monotonic()
+        cutoff = now - self.window_seconds
+        to_remove: list[str] = []
+        for key, bucket in self._buckets.items():
+            self._buckets[key] = bucket = [t for t in bucket if t > cutoff]
+            if not bucket:
+                to_remove.append(key)
+        for key in to_remove:
+            del self._buckets[key]
+        return len(to_remove)
+
 
 # ---------------------------------------------------------------------------
 # Path → rate-limit config mapping
@@ -83,16 +100,31 @@ def _resolve_limit(path: str) -> tuple[str, int]:
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """Sliding-window rate limiter keyed by IP (anonymous) or user_id (auth'd)."""
 
+    _CLEANUP_INTERVAL = 300
+
     def __init__(self, app: Callable) -> None:  # type: ignore[override]
         super().__init__(app)
-        self._window = 60  # 1-minute sliding window
+        self._window = 60
         self._counters: dict[str, _SlidingWindowCounter] = {}
+        self._last_cleanup = time.monotonic()
+        self._cleanup_task: asyncio.Task[None] | None = None
 
     def _get_counter(self, endpoint_name: str, limit: int) -> _SlidingWindowCounter:
         key = f"{endpoint_name}:{limit}"
         if key not in self._counters:
             self._counters[key] = _SlidingWindowCounter(self._window, limit)
         return self._counters[key]
+
+    def _maybe_cleanup(self) -> None:
+        now = time.monotonic()
+        if now - self._last_cleanup < self._CLEANUP_INTERVAL:
+            return
+        self._last_cleanup = now
+        total_removed = 0
+        for counter in self._counters.values():
+            total_removed += counter.cleanup()
+        if total_removed:
+            logger.debug("Rate limiter cleanup", extra={"removed_keys": total_removed})
 
     def _client_ip(self, request: Request) -> str:
         forwarded = request.headers.get("x-forwarded-for")
@@ -103,6 +135,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: Callable) -> Response:  # type: ignore[override]
         if not settings.RATE_LIMIT_ENABLED:
             return await call_next(request)
+
+        self._maybe_cleanup()
 
         # Skip rate limiting for health checks and docs
         path = request.url.path

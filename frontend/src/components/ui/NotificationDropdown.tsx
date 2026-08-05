@@ -98,6 +98,22 @@ export const NotificationDropdown: React.FC = () => {
     buttonRef.current?.focus();
   }, []);
 
+  const toggleOpen = useCallback(() => setIsOpen((prev) => !prev), []);
+
+  const markAsRead = useCallback((id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
+    );
+  }, []);
+
+  const markAllRead = useCallback(() => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  }, []);
+
+  const dismiss = useCallback((id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -122,20 +138,6 @@ export const NotificationDropdown: React.FC = () => {
     };
   }, [isOpen, close]);
 
-  const markAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
-    );
-  };
-
-  const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-  };
-
-  const dismiss = (id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-  };
-
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -144,7 +146,7 @@ export const NotificationDropdown: React.FC = () => {
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
         aria-expanded={isOpen}
         aria-haspopup="true"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="relative p-2.5 rounded-xl text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
       >
         <Bell size={18} />
