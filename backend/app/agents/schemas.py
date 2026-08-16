@@ -3,9 +3,36 @@
 from __future__ import annotations
 
 import time
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
+
+
+class IntentType(StrEnum):
+    """Supported primary intent types."""
+
+    DISEASE = "disease"
+    WEATHER = "weather"
+    MARKET = "market"
+    SCHEME = "scheme"
+    KNOWLEDGE = "knowledge"
+    GENERAL = "general"
+    GREETING = "greeting"
+
+
+class IntentClassification(BaseModel):
+    """Structured result of user intent classification.
+
+    Used by IntentClassifier to determine which specialist agents
+    should handle a user message.
+    """
+
+    primary_intent: IntentType
+    secondary_intents: list[IntentType] = Field(default_factory=list)
+    confidence: float = Field(ge=0.0, le=1.0)
+    entities: dict[str, Any] = Field(default_factory=dict)
+    reasoning: str = ""
 
 
 class AgentResult(BaseModel):

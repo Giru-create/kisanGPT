@@ -1,0 +1,81 @@
+warning: in the working copy of 'backend/app/agents/__init__.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'backend/app/agents/schemas.py', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/backend/app/agents/__init__.py b/backend/app/agents/__init__.py[m
+[1mindex 6721fde..72ba166 100644[m
+[1m--- a/backend/app/agents/__init__.py[m
+[1m+++ b/backend/app/agents/__init__.py[m
+[36m@@ -1,13 +1,20 @@[m
+ from app.agents.base import BaseAgent[m
+ from app.agents.context import AgentContext[m
+ from app.agents.executor import execute[m
+[32m+[m[32mfrom app.agents.intent_classifier import IntentClassifier[m
+ from app.agents.master import MasterAgent[m
+ from app.agents.orchestrator import Orchestrator[m
+ from app.agents.planner import plan[m
+ from app.agents.registry import ToolRegistry, default_registry[m
+ from app.agents.response_agent import ResponseAgent[m
+ from app.agents.router import AgentRouter[m
+[31m-from app.agents.schemas import AgentConfig, AgentMetrics, AgentResult[m
+[32m+[m[32mfrom app.agents.schemas import ([m
+[32m+[m[32m    AgentConfig,[m
+[32m+[m[32m    AgentMetrics,[m
+[32m+[m[32m    AgentResult,[m
+[32m+[m[32m    IntentClassification,[m
+[32m+[m[32m    IntentType,[m
+[32m+[m[32m)[m
+ [m
+ __all__ = [[m
+     "AgentContext",[m
+[36m@@ -16,6 +23,9 @@[m [m__all__ = [[m
+     "AgentResult",[m
+     "AgentRouter",[m
+     "BaseAgent",[m
+[32m+[m[32m    "IntentClassification",[m
+[32m+[m[32m    "IntentClassifier",[m
+[32m+[m[32m    "IntentType",[m
+     "MasterAgent",[m
+     "Orchestrator",[m
+     "ResponseAgent",[m
+[1mdiff --git a/backend/app/agents/schemas.py b/backend/app/agents/schemas.py[m
+[1mindex 7909b6a..4f54c32 100644[m
+[1m--- a/backend/app/agents/schemas.py[m
+[1m+++ b/backend/app/agents/schemas.py[m
+[36m@@ -3,11 +3,38 @@[m
+ from __future__ import annotations[m
+ [m
+ import time[m
+[32m+[m[32mfrom enum import StrEnum[m
+ from typing import Any[m
+ [m
+ from pydantic import BaseModel, Field[m
+ [m
+ [m
+[32m+[m[32mclass IntentType(StrEnum):[m
+[32m+[m[32m    """Supported primary intent types."""[m
+[32m+[m
+[32m+[m[32m    DISEASE = "disease"[m
+[32m+[m[32m    WEATHER = "weather"[m
+[32m+[m[32m    MARKET = "market"[m
+[32m+[m[32m    SCHEME = "scheme"[m
+[32m+[m[32m    KNOWLEDGE = "knowledge"[m
+[32m+[m[32m    GENERAL = "general"[m
+[32m+[m[32m    GREETING = "greeting"[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass IntentClassification(BaseModel):[m
+[32m+[m[32m    """Structured result of user intent classification.[m
+[32m+[m
+[32m+[m[32m    Used by IntentClassifier to determine which specialist agents[m
+[32m+[m[32m    should handle a user message.[m
+[32m+[m[32m    """[m
+[32m+[m
+[32m+[m[32m    primary_intent: IntentType[m
+[32m+[m[32m    secondary_intents: list[IntentType] = Field(default_factory=list)[m
+[32m+[m[32m    confidence: float = Field(ge=0.0, le=1.0)[m
+[32m+[m[32m    entities: dict[str, Any] = Field(default_factory=dict)[m
+[32m+[m[32m    reasoning: str = ""[m
+[32m+[m
+[32m+[m
+ class AgentResult(BaseModel):[m
+     """Standardised result returned by every agent.[m
+ [m
